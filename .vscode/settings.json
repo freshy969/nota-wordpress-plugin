@@ -1,0 +1,10 @@
+{
+  "[php]": {
+    "editor.defaultFormatter": "valeryanm.vscode-phpsab",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false,
+    "files.insertFinalNewline": true
+  },
+  "phpsab.standard": "WordPress"
+}
