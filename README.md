@@ -37,3 +37,13 @@ Then disable the builtin PHP language features:
 - Go to Extensions
 - Search for `@builtin php`
 - Disable `PHP Language Features`. Leave `PHP Language Basics` enabled for syntax highlighting.
+
+## Local development
+When developing locally, you'll want to override some defaults:
+```
+WP_DEBUG=true // enables WP debugging
+WP_DEBUG_LOG=true // logs errors etc to a file
+WP_DEBUG_DISPLAY=false // stops WP displaying error logs etc in the UI
+WP_NOTA_DEBUG=true // enables Nota debugging
+WP_NOTA_API_URL=http://localhost:3010/ // URL for your local API
+```

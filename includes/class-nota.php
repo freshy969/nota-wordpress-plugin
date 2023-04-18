@@ -33,6 +33,13 @@ class Nota {
 	public $api;
 
 	/**
+	 * WP Rest class
+	 * 
+	 * @var Nota_WP_Rest
+	 */
+	public $wp_rest;
+
+	/**
 	 * Main Nota Instance.
 	 * Ensures only one instance of Nota is loaded or can be loaded.
 	 * 
@@ -58,6 +65,7 @@ class Nota {
 	 */
 	private function define_constants() {
 		define( 'NOTA_ABSPATH', dirname( NOTA_PLUGIN_FILE ) . '/' );
+		define( 'NOTA_NONCE', 'nota_nonce' );
 	}
 
 	/**
@@ -67,9 +75,11 @@ class Nota {
 		include_once NOTA_ABSPATH . 'includes/class-nota-logger.php';
 		include_once NOTA_ABSPATH . 'includes/class-nota-settings.php';
 		include_once NOTA_ABSPATH . 'includes/class-nota-api.php';
+		include_once NOTA_ABSPATH . 'includes/class-nota-wp-rest.php';
 
 		$this->settings = new Nota_Settings();
-		$this->api      = new Nota_Api( $settings );
+		$this->api      = new Nota_Api( $this->settings );
+		$this->wp_rest  = new Nota_WP_Rest( $this->api );
 	}
 
 	/**
