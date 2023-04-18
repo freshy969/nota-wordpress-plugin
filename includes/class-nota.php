@@ -2,7 +2,7 @@
 /**
  * Nota setup
  * 
- * @package Nota
+ * @package NotaPlugin
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,6 +17,13 @@ class Nota {
 	 * @var Nota
 	 */
 	protected static $_instance = null; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+
+	/**
+	 * Settings class
+	 * 
+	 * @var Nota_Settings
+	 */
+	public $settings;
 
 	/**
 	 * Main Nota Instance.
@@ -36,6 +43,7 @@ class Nota {
 	 */
 	public function __construct() {
 		$this->define_constants();  
+		$this->includes();
 	}
 
 	/**
@@ -43,6 +51,15 @@ class Nota {
 	 */
 	private function define_constants() {
 		define( 'NOTA_ABSPATH', dirname( NOTA_PLUGIN_FILE ) . '/' );
+	}
+
+	/**
+	 * Includes files
+	 */
+	private function includes() {
+		include_once NOTA_ABSPATH . 'includes/class-nota-settings.php';
+
+		$this->settings = new Nota_Settings();
 	}
 }
 Nota::instance();
