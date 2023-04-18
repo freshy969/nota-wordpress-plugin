@@ -26,6 +26,13 @@ class Nota {
 	public $settings;
 
 	/**
+	 * API class
+	 * 
+	 * @var Nota_API
+	 */
+	public $api;
+
+	/**
 	 * Main Nota Instance.
 	 * Ensures only one instance of Nota is loaded or can be loaded.
 	 * 
@@ -57,9 +64,19 @@ class Nota {
 	 * Includes files
 	 */
 	private function includes() {
+		include_once NOTA_ABSPATH . 'includes/class-nota-logger.php';
 		include_once NOTA_ABSPATH . 'includes/class-nota-settings.php';
+		include_once NOTA_ABSPATH . 'includes/class-nota-api.php';
 
 		$this->settings = new Nota_Settings();
+		$this->api      = new Nota_Api( $settings );
+	}
+
+	/**
+	 * Is the site in Nota debug mode?
+	 */
+	public static function is_debug_mode() {
+		return defined( 'WP_NOTA_DEBUG' ) && WP_NOTA_DEBUG;
 	}
 }
 Nota::instance();
