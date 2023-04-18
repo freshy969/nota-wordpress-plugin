@@ -53,9 +53,13 @@ class Nota_Api {
 			'Authorization' => 'Bearer ' . $this->settings->get_option( 'api_key' ),
 		);
 
-		$request_args = array(
-			'method'  => $method,
-			'headers' => array_merge( $headers, $default_headers ),
+		$request_args = array_merge(
+			$args,
+			array(
+				'method'  => $method,
+				'headers' => array_merge( $headers, $default_headers ),
+				'timeout' => 30, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
+			)
 		);
 		$url          = $this->get_api_url() . $endpoint;
 		$response     = wp_remote_request( $url, $request_args );
@@ -70,7 +74,7 @@ class Nota_Api {
 	public function get_text_summary( $text ) {
 		$response = $this->make_request(
 			'POST',
-			'/notasum/v1/summary',
+			'notasum/v1/summary',
 			array(
 				'body' => array(
 					'text' => $text,

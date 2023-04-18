@@ -39,11 +39,11 @@ Then disable the builtin PHP language features:
 - Disable `PHP Language Features`. Leave `PHP Language Basics` enabled for syntax highlighting.
 
 ## Local development
-When developing locally, you'll want to override some defaults:
+When developing locally, you'll want to override some defaults. Add these to your `wp-config.php` file.
 ```
-WP_DEBUG=true // enables WP debugging
-WP_DEBUG_LOG=true // logs errors etc to a file
-WP_DEBUG_DISPLAY=false // stops WP displaying error logs etc in the UI
-WP_NOTA_DEBUG=true // enables Nota debugging
-WP_NOTA_API_URL=http://localhost:3010/ // URL for your local API
+define( 'WP_DEBUG', true ); // enables WP debugging
+define( 'WP_DEBUG_LOG', true ); // logs errors etc to a file
+define( 'WP_DEBUG_DISPLAY', false ); // stops WP displaying error logs etc in the UI
+define( 'WP_NOTA_DEBUG', true ); // enables Nota debugging
+define( 'WP_NOTA_API_URL', 'http://localhost:3010/' ); // URL for your local API
 ```

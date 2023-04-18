@@ -34,19 +34,19 @@ class Nota_WP_Rest {
 	 * Handles actions
 	 */
 	public function handle_action() {
-		if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( $_REQUEST['nonce'], NOTA_NONCE ) ) {
+		if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( $_REQUEST['nonce'], NOTA_PLUGIN_NONCE ) ) {
 			exit( 'Invalid nonce' );
 		}
 
 		$actions = array(
 			'get_text_summary' => array( $this, 'get_text_summary' ),
 		);
-		if ( ! isset( $_REQUEST['action'] ) || ! isset( $actions[ $_REQUEST['action'] ] ) ) {
+		if ( ! isset( $_REQUEST['nota_action'] ) || ! isset( $actions[ $_REQUEST['nota_action'] ] ) ) {
 			wp_send_json_error( array( 'message' => 'invalid action' ), 400 );
 			return;
 		}
 
-		$response = $actions[ $_REQUEST['action'] ]();
+		$response = $actions[ $_REQUEST['nota_action'] ]();
 		if ( is_wp_error( $response ) ) {
 			wp_send_json_error( $response );
 		} else {

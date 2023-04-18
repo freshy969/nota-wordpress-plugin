@@ -102,7 +102,7 @@ class Nota_Settings {
 			'setting_field_key' => $this->setting_field_key,
 			'setting_page_slug' => $this->setting_page_slug,
 		);
-		include_once NOTA_ABSPATH . 'templates/admin/settings-page.php';
+		include_once NOTA_PLUGIN_ABSPATH . 'templates/admin/settings-page.php';
 	}
 
 	/**
