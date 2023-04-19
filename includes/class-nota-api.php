@@ -81,6 +81,7 @@ class Nota_Api {
 				),
 			)
 		);
+
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}

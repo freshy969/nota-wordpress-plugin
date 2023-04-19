@@ -58,12 +58,15 @@ class Nota_WP_Rest {
 	 * Gets text summary
 	 */
 	private function get_text_summary() {
-		if ( ! isset( $_REQUEST['text'] ) ) {
-			wp_send_json_error( array( 'message' => 'Text is required' ), 400 );
+		if ( ! isset( $_REQUEST['html'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
 			return;
 		}
 
-		return $this->api->get_text_summary( $_REQUEST['text'] );
+		// strip HTML tags from text.
+		$text = wp_strip_all_tags( $_REQUEST['html'] );
+
+		return $this->api->get_text_summary( $text );
 	}
 	
 
