@@ -88,4 +88,28 @@ class Nota_Api {
 		return wp_remote_retrieve_body( $response );
 	}
 
+	/**
+	 * Gets the headline from the text
+	 * 
+	 * @param string $text Text to get headlines from.
+	 * @param int    $count Number of headlines to get.
+	 */
+	public function get_text_headlines( $text, $count ) {
+		$response = $this->make_request(
+			'POST',
+			'notasum/v1/headlines',
+			array(
+				'body' => array(
+					'text'  => $text,
+					'count' => $count,
+				),
+			)
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		return wp_remote_retrieve_body( $response );
+	}
+
 }

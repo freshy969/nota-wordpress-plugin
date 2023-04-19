@@ -39,7 +39,8 @@ class Nota_WP_Rest {
 		}
 
 		$actions = array(
-			'get_text_summary' => array( $this, 'get_text_summary' ),
+			'get_text_summary'   => array( $this, 'get_text_summary' ),
+			'get_text_headlines' => array( $this, 'get_text_headlines' ),
 		);
 		if ( ! isset( $_REQUEST['nota_action'] ) || ! isset( $actions[ $_REQUEST['nota_action'] ] ) ) {
 			wp_send_json_error( array( 'message' => 'invalid action' ), 400 );
@@ -69,5 +70,20 @@ class Nota_WP_Rest {
 		return $this->api->get_text_summary( $text );
 	}
 	
+	/**
+	 *  Gets headlines
+	 */
+	private function get_text_headlines() {
+		if ( ! isset( $_REQUEST['html'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text  = wp_strip_all_tags( $_REQUEST['html'] );
+		$count = isset( $_REQUEST['count'] ) ? (int) $_REQUEST['count'] : 3;
+
+		return $this->api->get_text_summary( $text, $count );
+	}
 
 }
