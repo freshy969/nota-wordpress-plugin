@@ -63,29 +63,42 @@ class Nota_Api {
 		);
 		$url          = $this->get_api_url() . $endpoint;
 		$response     = wp_remote_request( $url, $request_args );
-		return $response;
+		$status_code  = (int) wp_remote_retrieve_response_code( $response );
+
+		if ( $status_code < 200 || $status_code > 299 ) {
+			return new WP_Error(
+				'nota_api_error',
+				'Non-200 status code returned from Nota API',
+				[
+					'body'        => json_decode( wp_remote_retrieve_body( $response ) ),
+					'status_code' => $status_code,
+				]
+			);
+		}
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		return json_decode( wp_remote_retrieve_body( $response ) );
 	}
 
 	/**
 	 * Gets a text summary
 	 * 
 	 * @param string $text Text to summarise.
+	 * @param string $length_option How long the summary should be.
 	 */
-	public function get_text_summary( $text ) {
-		$response = $this->make_request(
+	public function get_text_summary( $text, $length_option ) {
+		return $this->make_request(
 			'POST',
 			'notasum/v1/summary',
 			array(
 				'body' => array(
-					'text' => $text,
+					'text'         => $text,
+					'lengthOption' => $length_option,
 				),
 			)
 		);
-
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		return wp_remote_retrieve_body( $response );
 	}
 
 	/**
@@ -95,7 +108,7 @@ class Nota_Api {
 	 * @param int    $count Number of headlines to get.
 	 */
 	public function get_text_headlines( $text, $count ) {
-		$response = $this->make_request(
+		return $this->make_request(
 			'POST',
 			'notasum/v1/headlines',
 			array(
@@ -105,11 +118,6 @@ class Nota_Api {
 				),
 			)
 		);
-
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		return wp_remote_retrieve_body( $response );
 	}
 
 }
