@@ -58,7 +58,7 @@ class Nota_Api {
 			array(
 				'method'  => $method,
 				'headers' => array_merge( $headers, $default_headers ),
-				'timeout' => 30, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
+				'timeout' => MINUTE_IN_SECONDS * 2, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 			)
 		);
 		$url          = $this->get_api_url() . $endpoint;
@@ -66,6 +66,7 @@ class Nota_Api {
 		$status_code  = (int) wp_remote_retrieve_response_code( $response );
 
 		if ( $status_code < 200 || $status_code > 299 ) {
+			Nota_Logger::debug( wp_remote_retrieve_body( $response ) );
 			return new WP_Error(
 				'nota_api_error',
 				'Non-200 status code returned from Nota API',
