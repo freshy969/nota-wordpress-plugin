@@ -56,7 +56,15 @@ class Nota_Post_Tools {
 	 * Adds meta boxes
 	 */
 	public function add_meta_boxes() {
-		add_meta_box( 'nota-post-tools', __( 'Nota Tools', 'nota' ), array( $this, 'render_post_tools' ), $this->get_tools_supported_post_types(), 'side', 'high' );
+		add_meta_box(
+			'nota-post-tools',
+			__( 'Nota Tools', 'nota' ),
+			array( $this, 'render_post_tools' ),
+			$this->get_tools_supported_post_types(),
+			'normal',
+			'high',
+			[ '__block_editor_compatible_meta_box' => true ]
+		);
 	}
 
 	/**
