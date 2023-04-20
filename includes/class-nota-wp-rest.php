@@ -38,18 +38,25 @@ class Nota_WP_Rest {
 			exit( 'Invalid nonce' );
 		}
 
+		if ( ! isset( $_REQUEST['nota'] ) ) {
+			wp_send_json_error( array( 'message' => 'Missing Nota data' ) );
+			return;
+		}
+
+		$payload = $_REQUEST['nota'];
+
 		$actions = array(
 			'get_text_summary'   => array( $this, 'get_text_summary' ),
 			'get_text_headlines' => array( $this, 'get_text_headlines' ),
 		);
-		if ( ! isset( $_REQUEST['nota_action'] ) || ! isset( $actions[ $_REQUEST['nota_action'] ] ) ) {
+		if ( ! isset( $payload['nota_action'] ) || ! isset( $actions[ $payload['nota_action'] ] ) ) {
 			wp_send_json_error( array( 'message' => 'invalid action' ), 400 );
 			return;
 		}
 
-		$response = $actions[ $_REQUEST['nota_action'] ]();
+		$response = $actions[ $payload['nota_action'] ]( $payload );
 		if ( is_wp_error( $response ) ) {
-			wp_send_json_error( $response );
+			wp_send_json_error( $response, 400 );
 		} else {
 			wp_send_json( $response );
 		}
@@ -57,31 +64,36 @@ class Nota_WP_Rest {
 
 	/**
 	 * Gets text summary
+	 * 
+	 * @param array $data Data sent with the request.
 	 */
-	private function get_text_summary() {
-		if ( ! isset( $_REQUEST['html'] ) ) {
+	private function get_text_summary( $data ) {
+		if ( ! isset( $data['html'] ) ) {
 			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
 			return;
 		}
 
 		// strip HTML tags from text.
-		$text = wp_strip_all_tags( $_REQUEST['html'] );
+		$text          = wp_strip_all_tags( $data['html'] );
+		$length_option = (string) isset( $data['length_option'] ) ? $data['length_option'] : '1 sentence';
 
-		return $this->api->get_text_summary( $text );
+		return $this->api->get_text_summary( $text, $length_option );
 	}
 	
 	/**
 	 *  Gets headlines
+	 *
+	 * @param array $data Data sent with the request.
 	 */
-	private function get_text_headlines() {
-		if ( ! isset( $_REQUEST['html'] ) ) {
+	private function get_text_headlines( $data ) {
+		if ( ! isset( $data['html'] ) ) {
 			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
 			return;
 		}
 
 		// strip HTML tags from text.
-		$text  = wp_strip_all_tags( $_REQUEST['html'] );
-		$count = isset( $_REQUEST['count'] ) ? (int) $_REQUEST['count'] : 3;
+		$text  = wp_strip_all_tags( $data['html'] );
+		$count = isset( $data['count'] ) ? (int) $data['count'] : 3;
 
 		return $this->api->get_text_summary( $text, $count );
 	}
