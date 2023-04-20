@@ -36,7 +36,8 @@ class Nota_Post_Tools {
 		global $post;
 		if ( 'post-new.php' === $hook || 'post.php' === $hook ) {
 			if ( in_array( $post->post_type, $this->get_tools_supported_post_types() ) ) {
-				wp_register_script( 'nota-post-tools', NOTA_PLUGIN_URL . 'assets/js/post-tools.js', [ 'jquery' ], NOTA_PLUGIN_VERSION, true );
+				$tool_script_args = include NOTA_PLUGIN_ABSPATH . 'dist/js/postTools.asset.php';
+				wp_register_script( 'nota-post-tools', NOTA_PLUGIN_URL . 'dist/js/postTools.js', $tool_script_args['dependencies'], $tool_script_args['version'], true );
 				wp_localize_script(
 					'nota-post-tools',
 					'notaTools',

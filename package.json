@@ -1,0 +1,14 @@
+{
+  "name": "nota-wordpress-plugin",
+  "version": "0.1.0",
+  "description": "The Nota WordPress plugin.",
+  "devDependencies": {
+    "@wordpress/scripts": "^26.2.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
+  }
+}
