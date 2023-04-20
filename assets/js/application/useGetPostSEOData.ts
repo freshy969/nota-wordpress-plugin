@@ -27,13 +27,13 @@ interface Args {
 export const useGetPostSEOData = ({ nlpService }: Args): Output => {
   const { mutate: mutateHeadline, ...headline } = useMutation({
     mutationFn: ({ postHTML }: { postHTML: string }) => {
-      return nlpService.getHeadlines({ text: postHTML, count: 3 })
+      return nlpService.getHeadlines({ postHTML, count: 3 })
     },
   })
   const { mutate: mutateSummary, ...summary } = useMutation({
     mutationFn: ({ postHTML }: { postHTML: string }) => {
       return nlpService.getSummary({
-        text: postHTML,
+        postHTML,
         lengthOption: '1-sentence',
       })
     },
