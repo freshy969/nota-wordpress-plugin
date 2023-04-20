@@ -18,7 +18,7 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "assets/*": ["./assets/*"]
+      "assets/*": ["assets/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

@@ -1,4 +1,10 @@
 {
+  "css.validate": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
+  },
+  "editor.formatOnSave": true,
   "[php]": {
     "editor.defaultFormatter": "valeryanm.vscode-phpsab",
     "editor.formatOnSave": true,
@@ -6,5 +12,6 @@
     "editor.insertSpaces": false,
     "files.insertFinalNewline": true
   },
-  "phpsab.standard": "WordPress"
+  "phpsab.standard": "WordPress",
+  "typescript.preferences.importModuleSpecifier": "non-relative"
 }

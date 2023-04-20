@@ -1,15 +1,15 @@
-const path = require("path");
-const defaultConfig = require("@wordpress/scripts/config/webpack.config");
+const path = require('path')
+const defaultConfig = require('@wordpress/scripts/config/webpack.config')
 
 module.exports = {
   ...defaultConfig,
   entry: {
-    postTools: "./assets/js/tools.ts",
+    postTools: path.resolve(process.cwd(), 'assets/js/postTools.ts'),
   },
   output: {
     ...defaultConfig.output,
-    path: path.resolve("dist", "js"),
-    filename: "[name].js",
+    path: path.resolve(process.cwd(), 'dist', 'js'),
+    filename: '[name].js',
   },
   module: {
     ...defaultConfig.module,
@@ -19,9 +19,9 @@ module.exports = {
         test: /\.tsx?$/,
         use: [
           {
-            loader: "ts-loader",
+            loader: 'ts-loader',
             options: {
-              configFile: "tsconfig.json",
+              configFile: 'tsconfig.json',
               transpileOnly: true,
             },
           },
@@ -30,12 +30,16 @@ module.exports = {
     ],
   },
   resolve: {
+    ...(defaultConfig.resolve ? defaultConfig.resolve : {}),
+    alias: {
+      assets: path.resolve(process.cwd(), 'assets/'),
+    },
     extensions: [
-      ".ts",
-      ".tsx",
+      '.ts',
+      '.tsx',
       ...(defaultConfig.resolve
-        ? defaultConfig.resolve.extensions || [".js", ".jsx"]
+        ? defaultConfig.resolve.extensions || ['.js', '.jsx']
         : []),
     ],
   },
-};
+}
