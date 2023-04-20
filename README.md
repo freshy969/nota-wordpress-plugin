@@ -38,7 +38,12 @@ Then disable the builtin PHP language features:
 - Search for `@builtin php`
 - Disable `PHP Language Features`. Leave `PHP Language Basics` enabled for syntax highlighting.
 
+## TypeScript & React
+Run `yarn` to install all dependencies.
+
 ## Local development
+
+### PHP
 When developing locally, you'll want to override some defaults. Add these to your `wp-config.php` file.
 ```
 define( 'WP_DEBUG', true ); // enables WP debugging
@@ -47,3 +52,10 @@ define( 'WP_DEBUG_DISPLAY', false ); // stops WP displaying error logs etc in th
 define( 'WP_NOTA_DEBUG', true ); // enables Nota debugging
 define( 'WP_NOTA_API_URL', 'http://localhost:3010/' ); // URL for your local API
 ```
+### JS / TS
+All front-end assets ( JS, CSS ) are compiled and the compiled versions are not checked in to version control. You'll need to start the development server to compile the assets and watch for changes.
+```
+yarn start
+```
+
+
