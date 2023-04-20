@@ -36,8 +36,8 @@ class Nota_Post_Tools {
 		global $post;
 		if ( 'post-new.php' === $hook || 'post.php' === $hook ) {
 			if ( in_array( $post->post_type, $this->get_tools_supported_post_types() ) ) {
-				$tool_script_args = include NOTA_PLUGIN_ABSPATH . 'dist/js/postTools.asset.php';
-				wp_register_script( 'nota-post-tools', NOTA_PLUGIN_URL . 'dist/js/postTools.js', $tool_script_args['dependencies'], $tool_script_args['version'], true );
+				$tool_script_args = include NOTA_PLUGIN_ABSPATH . 'dist/postTools.asset.php';
+				wp_register_script( 'nota-post-tools', NOTA_PLUGIN_URL . 'dist/postTools.js', $tool_script_args['dependencies'], $tool_script_args['version'], true );
 				wp_localize_script(
 					'nota-post-tools',
 					'notaTools',
@@ -47,6 +47,7 @@ class Nota_Post_Tools {
 					]
 				);
 				wp_enqueue_script( 'nota-post-tools' );
+				wp_enqueue_style( 'nota-post-tools-style', NOTA_PLUGIN_URL . 'dist/postTools.css', [], $tool_script_args['version'] );
 			}
 		}
 	}

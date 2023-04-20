@@ -1,4 +1,4 @@
-// import 'assets/css/styles.css'
+import 'assets/css/styles.css'
 import { createRoot, render, createElement } from '@wordpress/element'
 import { PostToolsMetaBox } from 'assets/js/components/PostToolsMetaBox'
 

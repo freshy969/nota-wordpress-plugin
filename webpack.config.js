@@ -8,7 +8,7 @@ module.exports = {
   },
   output: {
     ...defaultConfig.output,
-    path: path.resolve(process.cwd(), 'dist', 'js'),
+    path: path.resolve(process.cwd(), 'dist'),
     filename: '[name].js',
   },
   module: {
