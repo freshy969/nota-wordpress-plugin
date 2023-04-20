@@ -68,14 +68,14 @@ class Nota_WP_Rest {
 	 * @param array $data Data sent with the request.
 	 */
 	private function get_text_summary( $data ) {
-		if ( ! isset( $data['html'] ) ) {
+		if ( ! isset( $data['postHTML'] ) ) {
 			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
 			return;
 		}
 
 		// strip HTML tags from text.
-		$text          = wp_strip_all_tags( $data['html'] );
-		$length_option = (string) isset( $data['length_option'] ) ? $data['length_option'] : '1 sentence';
+		$text          = wp_strip_all_tags( $data['postHTML'] );
+		$length_option = (string) isset( $data['length_option'] ) ? $data['length_option'] : '1-sentence';
 
 		return $this->api->get_text_summary( $text, $length_option );
 	}
@@ -86,16 +86,16 @@ class Nota_WP_Rest {
 	 * @param array $data Data sent with the request.
 	 */
 	private function get_text_headlines( $data ) {
-		if ( ! isset( $data['html'] ) ) {
+		if ( ! isset( $data['postHTML'] ) ) {
 			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
 			return;
 		}
 
 		// strip HTML tags from text.
-		$text  = wp_strip_all_tags( $data['html'] );
+		$text  = wp_strip_all_tags( $data['postHTML'] );
 		$count = isset( $data['count'] ) ? (int) $data['count'] : 3;
 
-		return $this->api->get_text_summary( $text, $count );
+		return $this->api->get_text_headlines( $text, $count );
 	}
 
 }
