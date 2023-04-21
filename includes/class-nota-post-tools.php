@@ -14,7 +14,7 @@ class Nota_Post_Tools {
 	/**
 	 * Post tools constructor
 	 */
-	public function __construct() {         
+	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
