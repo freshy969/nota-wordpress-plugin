@@ -1,6 +1,6 @@
 import 'assets/css/styles.css'
 import { createRoot, render, createElement } from '@wordpress/element'
-import { PostToolsMetaBox } from 'assets/js/components/PostToolsMetaBox'
+import { PostToolsMetaBox } from 'assets/js/components/PostToolsMetaBox/PostToolsMetaBox'
 
 const init = () => {
   const domElement = document.getElementById('nota-post-tools-meta-box-root')

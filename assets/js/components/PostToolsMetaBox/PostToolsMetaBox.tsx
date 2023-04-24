@@ -3,7 +3,7 @@ import { nlpService } from 'assets/js/services/nlpService/nlpService'
 import { useSelect } from '@wordpress/data'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from '@wordpress/element'
-import { Button } from 'assets/js/components/Button'
+import { Button } from 'assets/js/components/Button/Button'
 
 // Where does WP keep these?
 interface WPDataCoreEditor {
