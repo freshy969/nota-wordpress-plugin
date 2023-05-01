@@ -1,9 +1,10 @@
 import { useGetPostSEOData } from 'assets/js/application/useGetPostSEOData'
 import { nlpService } from 'assets/js/services/nlpService/nlpService'
-import { useSelect } from '@wordpress/data'
+import { useSelect, useDispatch } from '@wordpress/data'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from '@wordpress/element'
-import { Button } from 'assets/js/components/Button/Button'
+import { TextOptionList } from 'assets/js/components/TextOptionList/TextOptionList'
+import { Button } from '@wordpress/components'
 
 // Where does WP keep these?
 interface WPDataCoreEditor {
@@ -25,6 +26,7 @@ const PostToolsMetaBoxInner = () => {
   const getPostSeoData = useGetPostSEOData({
     nlpService,
   })
+  const { editPost } = useDispatch('core/editor')
 
   return (
     <div>
@@ -36,6 +38,7 @@ const PostToolsMetaBoxInner = () => {
               postHTML,
             })
           }}
+          variant="primary"
         >
           Optimise with Nota
         </Button>
@@ -78,11 +81,18 @@ const PostToolsMetaBoxInner = () => {
                     <div>There was an error</div>
                   ) : (
                     <div>
-                      {(getPostSeoData.headlines.data?.headlines || []).map(
-                        (headline) => (
-                          <div key={headline}>{headline}</div>
-                        ),
-                      )}
+                      <TextOptionList
+                        options={getPostSeoData.headlines.data?.headlines}
+                        onSelect={(headline) => {
+                          console.log('using', headline)
+                          editPost({
+                            title: headline,
+                          })
+                        }}
+                        updateOptions={(nextHeadlines) => {
+                          console.log(nextHeadlines)
+                        }}
+                      />
                     </div>
                   )}
                 </div>
