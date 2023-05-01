@@ -6,8 +6,14 @@ interface Props {
   options?: string[]
   updateOptions: (options: string[]) => void
   onSelect: (option: string) => void
+  onRefresh: () => void
 }
-export function TextOptionList({ options, updateOptions, onSelect }: Props) {
+export function TextOptionList({
+  options,
+  updateOptions,
+  onSelect,
+  onRefresh,
+}: Props) {
   const [edit, setEdit] = useState(false)
   const [edits, setEdits] = useState(options || [])
   const displayedOptions = edit ? edits : options
@@ -44,7 +50,9 @@ export function TextOptionList({ options, updateOptions, onSelect }: Props) {
             >
               Edit suggestions
             </Button>
-            <Button variant="tertiary">Refresh suggestions</Button>
+            <Button variant="tertiary" onClick={onRefresh}>
+              Refresh suggestions
+            </Button>
           </div>
         )}
       </div>

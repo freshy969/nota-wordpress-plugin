@@ -12,6 +12,7 @@ interface OutputSection<TData> {
   isLoading: boolean
   data?: TData
   update: (data: TData) => void
+  refresh: (args: RunArgs) => void
 }
 
 interface Output {
@@ -31,8 +32,14 @@ export const useGetPostSEOData = ({ nlpService }: Args): Output => {
   const [headlines, setHeadlines] = useState<string[]>([])
 
   const { mutate: mutateHeadline, ...headline } = useMutation({
-    mutationFn: ({ postHTML }: { postHTML: string }) => {
-      return nlpService.getHeadlines({ postHTML, count: 3 })
+    mutationFn: ({
+      postHTML,
+      regenerate,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+    }) => {
+      return nlpService.getHeadlines({ postHTML, count: 3, regenerate })
     },
     onSuccess: (data) => {
       setHeadlines(data.headlines)
@@ -61,6 +68,9 @@ export const useGetPostSEOData = ({ nlpService }: Args): Output => {
       isLoading: headline.isLoading,
       data: headlines,
       update: setHeadlines,
+      refresh: (args: RunArgs) => {
+        mutateHeadline({ postHTML: args.postHTML, regenerate: true })
+      },
     },
     run,
     summary: {

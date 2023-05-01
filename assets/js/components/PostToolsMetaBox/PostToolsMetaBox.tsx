@@ -89,6 +89,11 @@ const PostToolsMetaBoxInner = () => {
                           })
                         }}
                         updateOptions={getPostSeoData.headlines.update}
+                        onRefresh={() =>
+                          getPostSeoData.headlines.refresh({
+                            postHTML,
+                          })
+                        }
                       />
                     </div>
                   )}
