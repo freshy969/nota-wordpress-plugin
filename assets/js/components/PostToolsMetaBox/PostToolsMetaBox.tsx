@@ -70,35 +70,23 @@ const PostToolsMetaBoxInner = () => {
               )}
             </div>
             <div>
-              <h3 className="ntw-mb-2 ntw-mt-0 ntw-text-lg ntw-font-bold">
-                Headlines
-              </h3>
-              {getPostSeoData.headlines.isLoading ? (
-                'Loading...'
-              ) : (
-                <div>
-                  {getPostSeoData.headlines.isError ? (
-                    <div>There was an error</div>
-                  ) : (
-                    <div>
-                      <TextOptionList
-                        options={getPostSeoData.headlines.data}
-                        onSelect={(headline) => {
-                          editPost({
-                            title: headline,
-                          })
-                        }}
-                        updateOptions={getPostSeoData.headlines.update}
-                        onRefresh={() =>
-                          getPostSeoData.headlines.refresh({
-                            postHTML,
-                          })
-                        }
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
+              <TextOptionList
+                title="Headlines"
+                isLoading={getPostSeoData.headlines.isLoading}
+                hasError={getPostSeoData.headlines.isError}
+                options={getPostSeoData.headlines.data}
+                onSelect={(headline) => {
+                  editPost({
+                    title: headline,
+                  })
+                }}
+                updateOptions={getPostSeoData.headlines.update}
+                onRefresh={() =>
+                  getPostSeoData.headlines.refresh({
+                    postHTML,
+                  })
+                }
+              />
             </div>
           </div>
         </div>
