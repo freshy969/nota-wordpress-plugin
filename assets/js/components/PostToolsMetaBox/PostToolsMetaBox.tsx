@@ -82,16 +82,13 @@ const PostToolsMetaBoxInner = () => {
                   ) : (
                     <div>
                       <TextOptionList
-                        options={getPostSeoData.headlines.data?.headlines}
+                        options={getPostSeoData.headlines.data}
                         onSelect={(headline) => {
-                          console.log('using', headline)
                           editPost({
                             title: headline,
                           })
                         }}
-                        updateOptions={(nextHeadlines) => {
-                          console.log(nextHeadlines)
-                        }}
+                        updateOptions={getPostSeoData.headlines.update}
                       />
                     </div>
                   )}

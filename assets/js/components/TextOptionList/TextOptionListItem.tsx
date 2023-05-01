@@ -1,4 +1,4 @@
-import { Button } from '@wordpress/components'
+import { Button, TextControl } from '@wordpress/components'
 
 interface Props {
   value: string
@@ -16,7 +16,7 @@ export function TextOptionListItem({
   return (
     <div>
       {edit ? (
-        <input value={value} onChange={(e) => onChange(e.target.value)} />
+        <TextControl value={value} onChange={(e) => onChange(e)} />
       ) : (
         <div className="ntw-flex ntw-items-center ntw-justify-between">
           <div className="ntw-flex-1">{value}</div>

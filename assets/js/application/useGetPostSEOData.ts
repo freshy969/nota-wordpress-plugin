@@ -1,18 +1,21 @@
 import { useMutation } from '@tanstack/react-query'
-import { useCallback } from '@wordpress/element'
+import { useCallback, useState } from '@wordpress/element'
 import { NlpService } from 'assets/js/application/ports'
-import { Headlines, Summary } from 'assets/js/domain/nlp'
+import { Summary } from 'assets/js/domain/nlp'
 
 interface RunArgs {
   postHTML: string
 }
 
+interface OutputSection<TData> {
+  isError: boolean
+  isLoading: boolean
+  data?: TData
+  update: (data: TData) => void
+}
+
 interface Output {
-  headlines: {
-    isError: boolean
-    isLoading: boolean
-    data?: Headlines
-  }
+  headlines: OutputSection<string[]>
   run: (args: RunArgs) => void
   summary: {
     isError: boolean
@@ -25,9 +28,14 @@ interface Args {
   nlpService: Pick<NlpService, 'getHeadlines' | 'getSummary'>
 }
 export const useGetPostSEOData = ({ nlpService }: Args): Output => {
+  const [headlines, setHeadlines] = useState<string[]>([])
+
   const { mutate: mutateHeadline, ...headline } = useMutation({
     mutationFn: ({ postHTML }: { postHTML: string }) => {
       return nlpService.getHeadlines({ postHTML, count: 3 })
+    },
+    onSuccess: (data) => {
+      setHeadlines(data.headlines)
     },
   })
   const { mutate: mutateSummary, ...summary } = useMutation({
@@ -51,7 +59,8 @@ export const useGetPostSEOData = ({ nlpService }: Args): Output => {
     headlines: {
       isError: headline.isError,
       isLoading: headline.isLoading,
-      data: headline.data,
+      data: headlines,
+      update: setHeadlines,
     },
     run,
     summary: {
