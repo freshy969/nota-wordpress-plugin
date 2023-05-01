@@ -31,7 +31,12 @@ export function TextOptionList({
       ) : (
         <div>
           {hasError ? (
-            <div>There was an error</div>
+            <div>
+              There was an error.{' '}
+              <Button variant="link" onClick={onRefresh}>
+                Retry
+              </Button>
+            </div>
           ) : (
             <div>
               <div className="ntw-mb-4">
