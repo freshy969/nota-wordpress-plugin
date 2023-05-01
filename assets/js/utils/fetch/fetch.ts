@@ -1,9 +1,6 @@
 import axios from 'axios'
-import {
-  FetchError,
-  FetchResponse,
-  RequestOptions,
-} from 'assets/js/utils/fetch/types'
+import { FetchResponse, RequestOptions } from 'assets/js/utils/fetch/types'
+import { FetchError } from 'assets/js/utils/fetch/FetchError'
 
 function get<T>(url: string, options?: RequestOptions) {
   return request<T>('GET', url, options)
