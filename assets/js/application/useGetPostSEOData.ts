@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useCallback, useState } from '@wordpress/element'
-import { NlpService } from 'assets/js/application/ports'
+import { NlpService } from 'assets/js/services/types'
 import { Summary } from 'assets/js/domain/nlp'
 
 interface RunArgs {

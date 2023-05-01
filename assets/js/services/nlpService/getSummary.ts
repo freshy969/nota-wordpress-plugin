@@ -1,4 +1,4 @@
-import { NlpService } from 'assets/js/application/ports'
+import { NlpService } from 'assets/js/services/types'
 import fetch from 'assets/js/utils/fetch/fetch'
 import qs from 'qs'
 
