@@ -2,7 +2,7 @@
 /**
  * Nota setup
  * 
- * @package Nota
+ * @package NotaPlugin
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,6 +17,34 @@ class Nota {
 	 * @var Nota
 	 */
 	protected static $_instance = null; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+
+	/**
+	 * Settings class
+	 * 
+	 * @var Nota_Settings
+	 */
+	public $settings;
+
+	/**
+	 * API class
+	 * 
+	 * @var Nota_API
+	 */
+	public $api;
+
+	/**
+	 * WP Rest class
+	 * 
+	 * @var Nota_WP_Rest
+	 */
+	public $wp_rest;
+
+	/**
+	 * WP Post tools class
+	 * 
+	 * @var Nota_Post_Tools
+	 */
+	public $post_tools;
 
 	/**
 	 * Main Nota Instance.
@@ -36,13 +64,39 @@ class Nota {
 	 */
 	public function __construct() {
 		$this->define_constants();  
+		$this->includes();
 	}
 
 	/**
 	 * Defines constants
 	 */
 	private function define_constants() {
-		define( 'NOTA_ABSPATH', dirname( NOTA_PLUGIN_FILE ) . '/' );
+		define( 'NOTA_PLUGIN_ABSPATH', dirname( NOTA_PLUGIN_FILE ) . '/' );
+		define( 'NOTA_PLUGIN_URL', plugins_url( '/', NOTA_PLUGIN_FILE ) );
+		define( 'NOTA_PLUGIN_NONCE', 'NOTA_PLUGIN_NONCE' );
+	}
+
+	/**
+	 * Includes files
+	 */
+	private function includes() {
+		include_once NOTA_PLUGIN_ABSPATH . 'includes/class-nota-logger.php';
+		include_once NOTA_PLUGIN_ABSPATH . 'includes/class-nota-settings.php';
+		include_once NOTA_PLUGIN_ABSPATH . 'includes/class-nota-api.php';
+		include_once NOTA_PLUGIN_ABSPATH . 'includes/class-nota-wp-rest.php';
+		include_once NOTA_PLUGIN_ABSPATH . 'includes/class-nota-post-tools.php';
+
+		$this->settings   = new Nota_Settings();
+		$this->api        = new Nota_Api( $this->settings );
+		$this->wp_rest    = new Nota_WP_Rest( $this->api );
+		$this->post_tools = new Nota_Post_Tools();
+	}
+
+	/**
+	 * Is the site in Nota debug mode?
+	 */
+	public static function is_debug_mode() {
+		return defined( 'WP_NOTA_DEBUG' ) && WP_NOTA_DEBUG;
 	}
 }
 Nota::instance();

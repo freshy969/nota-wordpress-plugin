@@ -1,0 +1,61 @@
+{
+  "extends": [
+    "plugin:@wordpress/eslint-plugin/recommended",
+    "plugin:eslint-comments/recommended"
+  ],
+  "overrides": [
+    {
+      "files": ["*.test.ts", "*.test.tsx", "tests/**/*"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-return": "off"
+      }
+    }
+  ],
+  "root": true,
+  "rules": {
+    "eslint-comments/disable-enable-pair": [
+      "error",
+      { "allowWholeFile": true }
+    ],
+    "eslint-comments/require-description": "error",
+    "import/no-anonymous-default-export": "off",
+    "eslint-comments/no-unused-disable": "error",
+    "eslint-comments/no-restricted-disable": [
+      "error",
+      "no-undef",
+      "no-unsafe-member-access"
+    ],
+    "jsx-a11y/alt-text": [
+      2,
+      {
+        "img": []
+      }
+    ],
+    "no-shadow": "off",
+    "no-unused-vars": "off",
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true
+      }
+    ],
+    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts", ".tsx"],
+        "moduleDirectory": [".", "node_modules"]
+      }
+    }
+  }
+}

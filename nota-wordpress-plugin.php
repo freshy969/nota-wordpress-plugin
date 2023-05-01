@@ -7,20 +7,18 @@
  * Author URI: https://heynota.com
  * License: GPL2
  * Text Domain: nota_plugin
- * Domain Path: /languages/
  * 
- * @package Nota
+ * @package NotaPlugin
  */
 
 defined( 'ABSPATH' ) || exit;
 
 define( 'NOTA_PLUGIN_VERSION', '0.1.0' );
-define( 'NOTA_PLUGIN_TEXT_DOMAIN', 'nota_plugin' );
 
 if ( ! defined( 'NOTA_PLUGIN_FILE' ) ) {
 	define( 'NOTA_PLUGIN_FILE', __FILE__ );
 }
 
 if ( ! class_exists( 'Nota' ) ) {
-	include_once dirname( __FILE__ . '/includes/class-nota.php' );
+	include_once dirname( __FILE__ ) . '/includes/class-nota.php';
 }
