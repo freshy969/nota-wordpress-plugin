@@ -1,10 +1,11 @@
 import { useGetPostSEOData } from 'assets/js/application/useGetPostSEOData'
 import { nlpService } from 'assets/js/services/nlpService/nlpService'
-import { useSelect, useDispatch } from '@wordpress/data'
+import { useSelect } from '@wordpress/data'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from '@wordpress/element'
 import { TextOptionList } from 'assets/js/components/TextOptionList/TextOptionList'
 import { Button } from '@wordpress/components'
+import { useEditPostTitle } from 'assets/js/application/useEditPostTitle'
 
 // Where does WP keep these?
 interface WPDataCoreEditor {
@@ -26,7 +27,7 @@ const PostToolsMetaBoxInner = () => {
   const getPostSeoData = useGetPostSEOData({
     nlpService,
   })
-  const { editPost } = useDispatch('core/editor')
+  const editPostTitle = useEditPostTitle()
 
   return (
     <div>
@@ -75,11 +76,7 @@ const PostToolsMetaBoxInner = () => {
                 isLoading={getPostSeoData.headlines.isLoading}
                 hasError={getPostSeoData.headlines.isError}
                 options={getPostSeoData.headlines.data}
-                onSelect={(headline) => {
-                  editPost({
-                    title: headline,
-                  })
-                }}
+                onSelect={editPostTitle}
                 updateOptions={getPostSeoData.headlines.update}
                 onRefresh={() =>
                   getPostSeoData.headlines.refresh({
