@@ -25,10 +25,13 @@ interface Output {
   }
 }
 
+type ComponentTypes = 'headlines' | 'summary'
+
 interface Args {
   nlpService: Pick<NlpService, 'getHeadlines' | 'getSummary'>
+  components: Record<ComponentTypes, boolean>
 }
-export const useGetPostSEOData = ({ nlpService }: Args): Output => {
+export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
   const [headlines, setHeadlines] = useState<string[]>([])
 
   const { mutate: mutateHeadline, ...headline } = useMutation({
@@ -56,10 +59,16 @@ export const useGetPostSEOData = ({ nlpService }: Args): Output => {
 
   const run = useCallback(
     (args: RunArgs) => {
-      mutateHeadline({ postHTML: args.postHTML })
-      mutateSummary({ postHTML: args.postHTML })
+      const componentMutations: Record<string, () => void> = {
+        headlines: () => mutateHeadline({ postHTML: args.postHTML }),
+        summary: () => mutateSummary({ postHTML: args.postHTML }),
+      }
+      Object.entries(components).forEach(([component, shouldRun]) => {
+        if (!shouldRun) return
+        componentMutations[component]?.()
+      })
     },
-    [mutateHeadline, mutateSummary],
+    [mutateHeadline, mutateSummary, components],
   )
 
   return {

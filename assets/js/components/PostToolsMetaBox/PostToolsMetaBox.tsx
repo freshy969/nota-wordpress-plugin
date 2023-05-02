@@ -17,6 +17,13 @@ enum Screen {
   Results,
 }
 
+// this needs to be declared outside of the component
+// or memoized. Otherwise it'll trigger infinite re-renders within useGetPostSEOData
+const components = {
+  headlines: true,
+  summary: true,
+}
+
 const PostToolsMetaBoxInner = () => {
   const [screen, setScreen] = useState(Screen.Initial)
   const postHTML = useSelect(
@@ -26,6 +33,7 @@ const PostToolsMetaBoxInner = () => {
   )
   const getPostSeoData = useGetPostSEOData({
     nlpService,
+    components,
   })
   const editPostTitle = useEditPostTitle()
 
