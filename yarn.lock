@@ -1951,6 +1951,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/escape-html@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/escape-html/-/escape-html-1.0.2.tgz#072b7b13784fb3cee9c2450c22f36405983f5e3c"
+  integrity sha512-gaBLT8pdcexFztLSPRtriHeXY/Kn4907uOCZ4Q3lncFBkheAWOuNt53ypsF8szgxbEJ513UeBzcf4utN0EzEwA==
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.4.tgz#37fc1223f0786c39627068a12e94d6e6fc61de16"
@@ -2493,6 +2498,15 @@
     "@babel/runtime" "^7.16.0"
     "@wordpress/i18n" "^4.31.0"
     "@wordpress/url" "^3.32.0"
+
+"@wordpress/api-fetch@^6.29.0":
+  version "6.29.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/api-fetch/-/api-fetch-6.29.0.tgz#2140e9f719a30db45740f70180cc708567439222"
+  integrity sha512-6qtKZbS6mQl0PQhTB6BX9f9n3ika+R2RH+AqIQHiQH2yMulWlcaW6s/aOMLhEdXKPgG7geDqTdcASDJluV1yhQ==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+    "@wordpress/i18n" "^4.32.0"
+    "@wordpress/url" "^3.33.0"
 
 "@wordpress/autop@^3.31.0":
   version "3.31.0"
@@ -3322,6 +3336,14 @@
   version "3.32.0"
   resolved "https://registry.yarnpkg.com/@wordpress/url/-/url-3.32.0.tgz#cfa3af44d5eb7d6f30a0194de3eba52ee203aa6d"
   integrity sha512-dbz4KjcwYxkd2GsJwNVXD6Do39W13jlGmsLgWkSe/4dEw4SnaJQVYJv3yBpykmYqbfwilPrSM/KmpybKeghPFA==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+    remove-accents "^0.4.2"
+
+"@wordpress/url@^3.33.0":
+  version "3.33.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/url/-/url-3.33.0.tgz#b65486d8b55f808777dadf250be9f49d00fcaade"
+  integrity sha512-J9VPIK72NOYE4xpvd+HT8KLLDh37Ao8Y+f02eqa4DHW79BsRHjZ1pXKiK7KKVPXA6MkP44gXF8OliKbWBphsUg==
   dependencies:
     "@babel/runtime" "^7.16.0"
     remove-accents "^0.4.2"
@@ -5080,7 +5102,7 @@ escalade@^3.1.1:
   resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
   integrity sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==
 
-escape-html@~1.0.3:
+escape-html@^1.0.3, escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
   integrity sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==
