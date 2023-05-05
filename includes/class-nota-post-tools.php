@@ -23,7 +23,7 @@ class Nota_Post_Tools {
 	 * Returns a list of supported post types to display the tools on
 	 */
 	public function get_tools_supported_post_types() {
-		$post_types = apply_filters( 'nota_tools_supported_post_types', [ 'post', 'page' ] );
+		$post_types = apply_filters( 'nota_tools_supported_post_types', [ 'post' ] );
 		return $post_types;
 	}
 
@@ -36,14 +36,19 @@ class Nota_Post_Tools {
 		global $post;
 		if ( 'post-new.php' === $hook || 'post.php' === $hook ) {
 			if ( in_array( $post->post_type, $this->get_tools_supported_post_types() ) ) {
+				$taxonomies       = get_post_taxonomies();
 				$tool_script_args = include NOTA_PLUGIN_ABSPATH . 'dist/postTools.asset.php';
 				wp_register_script( 'nota-post-tools', NOTA_PLUGIN_URL . 'dist/postTools.js', $tool_script_args['dependencies'], $tool_script_args['version'], true );
 				wp_localize_script(
 					'nota-post-tools',
 					'notaTools',
 					[
-						'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-						'nonce'   => wp_create_nonce( NOTA_PLUGIN_NONCE ),
+						'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
+						'nonce'      => wp_create_nonce( NOTA_PLUGIN_NONCE ),
+						'components' => [
+							'categories' => in_array( 'category', $taxonomies ),
+							'tags'       => in_array( 'post_tag', $taxonomies ),
+						],
 					]
 				);
 				wp_enqueue_script( 'nota-post-tools' );
