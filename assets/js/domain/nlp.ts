@@ -19,3 +19,13 @@ export interface HeadlinesRequest {
   postHTML: string
   regenerate?: boolean
 }
+
+export interface Keywords {
+  keywords: string[]
+}
+
+export interface KeywordsRequest {
+  count?: number
+  postHTML: string
+  regenerate?: boolean
+}
