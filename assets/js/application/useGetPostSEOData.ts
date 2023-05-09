@@ -17,6 +17,8 @@ interface OutputSection<TData> {
 
 interface Output {
   headlines: OutputSection<string[]>
+  metaDescriptions: OutputSection<string[]>
+  metaTitles: OutputSection<string[]>
   tags: OutputSection<string[]>
   run: (args: RunArgs) => void
   summary: {
@@ -26,10 +28,22 @@ interface Output {
   }
 }
 
-type ComponentTypes = 'headlines' | 'summary' | 'tags'
+type ComponentTypes =
+  | 'headlines'
+  | 'summary'
+  | 'tags'
+  | 'metaDescription'
+  | 'metaTitle'
 
 interface Args {
-  notaService: Pick<NotaService, 'getHeadlines' | 'getSummary' | 'getKeywords'>
+  notaService: Pick<
+    NotaService,
+    | 'getHeadlines'
+    | 'getSummary'
+    | 'getKeywords'
+    | 'getMetaDescriptions'
+    | 'getMetaTitles'
+  >
   components: Record<ComponentTypes, boolean>
 }
 export const useGetPostSEOData = ({
@@ -38,6 +52,8 @@ export const useGetPostSEOData = ({
 }: Args): Output => {
   const [headlines, setHeadlines] = useState<string[]>([])
   const [tags, setTags] = useState<string[]>([])
+  const [metaDescriptions, setMetaDescriptions] = useState<string[]>([])
+  const [metaTitles, setMetaTitles] = useState<string[]>([])
 
   const { mutate: mutateHeadline, ...headline } = useMutation({
     mutationFn: ({
@@ -67,6 +83,43 @@ export const useGetPostSEOData = ({
       setTags(data.keywords)
     },
   })
+  const { mutate: mutateMetaDescriptions, ...metaDescriptionsMutation } =
+    useMutation({
+      mutationFn: ({
+        postHTML,
+        regenerate,
+      }: {
+        postHTML: string
+        regenerate?: boolean
+      }) => {
+        return notaService.getMetaDescriptions({
+          postHTML,
+          count: 5,
+          regenerate,
+        })
+      },
+      onSuccess: (data) => {
+        setMetaDescriptions(data.metaDescriptions)
+      },
+    })
+  const { mutate: mutateMetaTitles, ...metaTitlesMutation } = useMutation({
+    mutationFn: ({
+      postHTML,
+      regenerate,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+    }) => {
+      return notaService.getMetaTitles({
+        postHTML,
+        count: 5,
+        regenerate,
+      })
+    },
+    onSuccess: (data) => {
+      setMetaTitles(data.metaTitles)
+    },
+  })
   const { mutate: mutateSummary, ...summary } = useMutation({
     mutationFn: ({ postHTML }: { postHTML: string }) => {
       return notaService.getSummary({
@@ -82,13 +135,23 @@ export const useGetPostSEOData = ({
         headlines: () => mutateHeadline({ postHTML: args.postHTML }),
         summary: () => mutateSummary({ postHTML: args.postHTML }),
         tags: () => mutateTags({ postHTML: args.postHTML }),
+        metaDescription: () =>
+          mutateMetaDescriptions({ postHTML: args.postHTML }),
+        metaTitle: () => mutateMetaTitles({ postHTML: args.postHTML }),
       }
       Object.entries(components).forEach(([component, shouldRun]) => {
         if (!shouldRun) return
         componentMutations[component]?.()
       })
     },
-    [mutateHeadline, mutateSummary, mutateTags, components],
+    [
+      mutateHeadline,
+      mutateSummary,
+      mutateTags,
+      mutateMetaDescriptions,
+      mutateMetaTitles,
+      components,
+    ],
   )
 
   return {
@@ -99,6 +162,24 @@ export const useGetPostSEOData = ({
       update: setHeadlines,
       refresh: (args: RunArgs) => {
         mutateHeadline({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    metaDescriptions: {
+      isError: metaDescriptionsMutation.isError,
+      isLoading: metaDescriptionsMutation.isLoading,
+      data: metaDescriptions,
+      update: setMetaDescriptions,
+      refresh: (args: RunArgs) => {
+        mutateMetaDescriptions({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    metaTitles: {
+      isError: metaTitlesMutation.isError,
+      isLoading: metaTitlesMutation.isLoading,
+      data: metaTitles,
+      update: setMetaTitles,
+      refresh: (args: RunArgs) => {
+        mutateMetaTitles({ postHTML: args.postHTML, regenerate: true })
       },
     },
     run,

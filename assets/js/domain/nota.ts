@@ -29,3 +29,23 @@ export interface KeywordsRequest {
   postHTML: string
   regenerate?: boolean
 }
+
+export interface MetaDescriptions {
+  metaDescriptions: string[]
+}
+
+export interface MetaDescriptionsRequest {
+  count?: number
+  postHTML: string
+  regenerate?: boolean
+}
+
+export interface MetaTitles {
+  metaTitles: string[]
+}
+
+export interface MetaTitlesRequest {
+  count?: number
+  postHTML: string
+  regenerate?: boolean
+}

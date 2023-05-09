@@ -8,6 +8,7 @@ import { Button } from '@wordpress/components'
 import { useEditPostTitle } from 'assets/js/application/useEditPostTitle'
 import { useAddTaxonomy } from 'assets/js/application/useAddTaxonomy'
 import { wordPressService } from 'assets/js/services/wordPressService/wordPressService'
+import { useEditMetadata } from 'assets/js/application/useEditMetadata'
 
 enum Screen {
   Initial,
@@ -19,6 +20,8 @@ const useWpSelect = useSelect as WordPress.useSelect
 // or memoized. Otherwise it'll trigger infinite re-renders within useGetPostSEOData
 const components = {
   headlines: true,
+  metaDescription: window.notaTools.components.meta_description,
+  metaTitle: window.notaTools.components.meta_title,
   summary: false,
   tags: window.notaTools.components.tags,
 }
@@ -38,6 +41,7 @@ const PostToolsMetaBoxInner = () => {
     taxonomy: 'post_tag',
     wpService: wordPressService,
   })
+  const { editMetaDescription, editMetaTitle } = useEditMetadata()
 
   return (
     <div>
@@ -112,6 +116,38 @@ const PostToolsMetaBoxInner = () => {
                 }
               />
             )}
+
+            <TextOptionList
+              title="Meta Description"
+              isLoading={getPostSeoData.metaDescriptions.isLoading}
+              hasError={getPostSeoData.metaDescriptions.isError}
+              options={getPostSeoData.metaDescriptions.data}
+              onSelect={editMetaDescription}
+              updateOptions={getPostSeoData.metaDescriptions.update}
+              onRefresh={() =>
+                getPostSeoData.metaDescriptions.refresh({
+                  postHTML,
+                })
+              }
+              disabled={!components.metaDescription}
+              disabledMessage="Enabled Yoast to get meta description recommendations."
+            />
+
+            <TextOptionList
+              title="Meta Title"
+              isLoading={getPostSeoData.metaTitles.isLoading}
+              hasError={getPostSeoData.metaTitles.isError}
+              options={getPostSeoData.metaTitles.data}
+              onSelect={editMetaTitle}
+              updateOptions={getPostSeoData.metaTitles.update}
+              onRefresh={() =>
+                getPostSeoData.metaTitles.refresh({
+                  postHTML,
+                })
+              }
+              disabled={!components.metaTitle}
+              disabledMessage="Enabled Yoast to get meta title recommendations."
+            />
           </div>
         </div>
       )}

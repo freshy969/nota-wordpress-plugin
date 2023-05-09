@@ -142,4 +142,46 @@ class Nota_Api {
 			)
 		);
 	}
+
+	/**
+	 * Gets the meta description from the text
+	 * 
+	 * @param string $text Text to get description from.
+	 * @param int    $count Number of descriptions to get.
+	 * @param float  $variability How much the descriptions should vary.
+	 */
+	public function get_text_meta_descriptions( $text, $count, $variability ) {
+		return $this->make_request(
+			'POST',
+			'notasum/v1/meta/descriptions',
+			array(
+				'body' => array(
+					'text'        => $text,
+					'count'       => $count,
+					'variability' => $variability,
+				),
+			)
+		);
+	}
+
+	/**
+	 * Gets the meta title from the text
+	 * 
+	 * @param string $text Text to get title from.
+	 * @param int    $count Number of titles to get.
+	 * @param float  $variability How much the titles should vary.
+	 */
+	public function get_text_meta_titles( $text, $count, $variability ) {
+		return $this->make_request(
+			'POST',
+			'notasum/v1/meta/titles',
+			array(
+				'body' => array(
+					'text'        => $text,
+					'count'       => $count,
+					'variability' => $variability,
+				),
+			)
+		);
+	}
 }

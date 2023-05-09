@@ -46,9 +46,11 @@ class Nota_WP_Rest {
 		$payload = $_REQUEST['nota'];
 
 		$actions = array(
-			'get_text_summary'   => array( $this, 'get_text_summary' ),
-			'get_text_headlines' => array( $this, 'get_text_headlines' ),
-			'get_text_keywords'  => array( $this, 'get_text_keywords' ),
+			'get_text_summary'           => array( $this, 'get_text_summary' ),
+			'get_text_headlines'         => array( $this, 'get_text_headlines' ),
+			'get_text_keywords'          => array( $this, 'get_text_keywords' ),
+			'get_text_meta_descriptions' => array( $this, 'get_text_meta_descriptions' ),
+			'get_text_meta_titles'       => array( $this, 'get_text_meta_titles' ),
 		);
 		if ( ! isset( $payload['nota_action'] ) || ! isset( $actions[ $payload['nota_action'] ] ) ) {
 			wp_send_json_error( array( 'message' => 'invalid action' ), 400 );
@@ -117,5 +119,45 @@ class Nota_WP_Rest {
 		$variability = 0.3;
 
 		return $this->api->get_text_keywords( $text, $count, $variability );
+	}
+
+	/**
+	 *  Gets meta descriptions
+	 *
+	 * @param array $data Data sent with the request.
+	 */
+	private function get_text_meta_descriptions( $data ) {
+		if ( ! isset( $data['postHTML'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text  = wp_strip_all_tags( $data['postHTML'] );
+		$count = isset( $data['count'] ) ? (int) $data['count'] : 10;
+		// maybe we'll expose this as a setting at some point.
+		$variability = 0.3;
+
+		return $this->api->get_text_meta_descriptions( $text, $count, $variability );
+	}
+
+	/**
+	 *  Gets meta titles
+	 *
+	 * @param array $data Data sent with the request.
+	 */
+	private function get_text_meta_titles( $data ) {
+		if ( ! isset( $data['postHTML'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text  = wp_strip_all_tags( $data['postHTML'] );
+		$count = isset( $data['count'] ) ? (int) $data['count'] : 10;
+		// maybe we'll expose this as a setting at some point.
+		$variability = 0.3;
+
+		return $this->api->get_text_meta_titles( $text, $count, $variability );
 	}
 }

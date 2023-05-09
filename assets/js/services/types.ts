@@ -3,6 +3,10 @@ import {
   HeadlinesRequest,
   Keywords,
   KeywordsRequest,
+  MetaDescriptions,
+  MetaDescriptionsRequest,
+  MetaTitles,
+  MetaTitlesRequest,
   Summary,
   SummaryRequest,
 } from 'assets/js/domain/nota'
@@ -10,6 +14,8 @@ import {
 export interface NotaService {
   getHeadlines(args: HeadlinesRequest): Promise<Headlines>
   getKeywords(args: KeywordsRequest): Promise<Keywords>
+  getMetaDescriptions(args: MetaDescriptionsRequest): Promise<MetaDescriptions>
+  getMetaTitles(args: MetaTitlesRequest): Promise<MetaTitles>
   getSummary(args: SummaryRequest): Promise<Summary>
 }
 
