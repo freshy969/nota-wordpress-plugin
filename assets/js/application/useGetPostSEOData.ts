@@ -1,18 +1,22 @@
 import { useMutation } from '@tanstack/react-query'
-import { useCallback } from '@wordpress/element'
-import { NlpService } from 'assets/js/application/ports'
-import { Headlines, Summary } from 'assets/js/domain/nlp'
+import { useCallback, useState } from '@wordpress/element'
+import { NlpService } from 'assets/js/services/types'
+import { Summary } from 'assets/js/domain/nlp'
 
 interface RunArgs {
   postHTML: string
 }
 
+interface OutputSection<TData> {
+  isError: boolean
+  isLoading: boolean
+  data?: TData
+  update: (data: TData) => void
+  refresh: (args: RunArgs) => void
+}
+
 interface Output {
-  headlines: {
-    isError: boolean
-    isLoading: boolean
-    data?: Headlines
-  }
+  headlines: OutputSection<string[]>
   run: (args: RunArgs) => void
   summary: {
     isError: boolean
@@ -21,13 +25,27 @@ interface Output {
   }
 }
 
+type ComponentTypes = 'headlines' | 'summary'
+
 interface Args {
   nlpService: Pick<NlpService, 'getHeadlines' | 'getSummary'>
+  components: Record<ComponentTypes, boolean>
 }
-export const useGetPostSEOData = ({ nlpService }: Args): Output => {
+export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
+  const [headlines, setHeadlines] = useState<string[]>([])
+
   const { mutate: mutateHeadline, ...headline } = useMutation({
-    mutationFn: ({ postHTML }: { postHTML: string }) => {
-      return nlpService.getHeadlines({ postHTML, count: 3 })
+    mutationFn: ({
+      postHTML,
+      regenerate,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+    }) => {
+      return nlpService.getHeadlines({ postHTML, count: 3, regenerate })
+    },
+    onSuccess: (data) => {
+      setHeadlines(data.headlines)
     },
   })
   const { mutate: mutateSummary, ...summary } = useMutation({
@@ -41,17 +59,27 @@ export const useGetPostSEOData = ({ nlpService }: Args): Output => {
 
   const run = useCallback(
     (args: RunArgs) => {
-      mutateHeadline({ postHTML: args.postHTML })
-      mutateSummary({ postHTML: args.postHTML })
+      const componentMutations: Record<string, () => void> = {
+        headlines: () => mutateHeadline({ postHTML: args.postHTML }),
+        summary: () => mutateSummary({ postHTML: args.postHTML }),
+      }
+      Object.entries(components).forEach(([component, shouldRun]) => {
+        if (!shouldRun) return
+        componentMutations[component]?.()
+      })
     },
-    [mutateHeadline, mutateSummary],
+    [mutateHeadline, mutateSummary, components],
   )
 
   return {
     headlines: {
       isError: headline.isError,
       isLoading: headline.isLoading,
-      data: headline.data,
+      data: headlines,
+      update: setHeadlines,
+      refresh: (args: RunArgs) => {
+        mutateHeadline({ postHTML: args.postHTML, regenerate: true })
+      },
     },
     run,
     summary: {
