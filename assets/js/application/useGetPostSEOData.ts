@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useCallback, useState } from '@wordpress/element'
-import { NlpService } from 'assets/js/services/types'
-import { Summary } from 'assets/js/domain/nlp'
+import { NotaService } from 'assets/js/services/types'
+import { Summary } from 'assets/js/domain/nota'
 
 interface RunArgs {
   postHTML: string
@@ -29,10 +29,13 @@ interface Output {
 type ComponentTypes = 'headlines' | 'summary' | 'tags'
 
 interface Args {
-  nlpService: Pick<NlpService, 'getHeadlines' | 'getSummary' | 'getKeywords'>
+  notaService: Pick<NotaService, 'getHeadlines' | 'getSummary' | 'getKeywords'>
   components: Record<ComponentTypes, boolean>
 }
-export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
+export const useGetPostSEOData = ({
+  notaService,
+  components,
+}: Args): Output => {
   const [headlines, setHeadlines] = useState<string[]>([])
   const [tags, setTags] = useState<string[]>([])
 
@@ -44,7 +47,7 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
       postHTML: string
       regenerate?: boolean
     }) => {
-      return nlpService.getHeadlines({ postHTML, count: 3, regenerate })
+      return notaService.getHeadlines({ postHTML, count: 3, regenerate })
     },
     onSuccess: (data) => {
       setHeadlines(data.headlines)
@@ -58,7 +61,7 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
       postHTML: string
       regenerate?: boolean
     }) => {
-      return nlpService.getKeywords({ postHTML, count: 10, regenerate })
+      return notaService.getKeywords({ postHTML, count: 10, regenerate })
     },
     onSuccess: (data) => {
       setTags(data.keywords)
@@ -66,7 +69,7 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
   })
   const { mutate: mutateSummary, ...summary } = useMutation({
     mutationFn: ({ postHTML }: { postHTML: string }) => {
-      return nlpService.getSummary({
+      return notaService.getSummary({
         postHTML,
         lengthOption: '1-sentence',
       })
