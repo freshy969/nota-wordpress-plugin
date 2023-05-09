@@ -117,37 +117,37 @@ const PostToolsMetaBoxInner = () => {
               />
             )}
 
-            {components.metaDescription && (
-              <TextOptionList
-                title="Meta Description"
-                isLoading={getPostSeoData.metaDescriptions.isLoading}
-                hasError={getPostSeoData.metaDescriptions.isError}
-                options={getPostSeoData.metaDescriptions.data}
-                onSelect={editMetaDescription}
-                updateOptions={getPostSeoData.metaDescriptions.update}
-                onRefresh={() =>
-                  getPostSeoData.metaDescriptions.refresh({
-                    postHTML,
-                  })
-                }
-              />
-            )}
+            <TextOptionList
+              title="Meta Description"
+              isLoading={getPostSeoData.metaDescriptions.isLoading}
+              hasError={getPostSeoData.metaDescriptions.isError}
+              options={getPostSeoData.metaDescriptions.data}
+              onSelect={editMetaDescription}
+              updateOptions={getPostSeoData.metaDescriptions.update}
+              onRefresh={() =>
+                getPostSeoData.metaDescriptions.refresh({
+                  postHTML,
+                })
+              }
+              disabled={!components.metaDescription}
+              disabledMessage="Enabled Yoast to get meta description recommendations."
+            />
 
-            {components.metaTitle && (
-              <TextOptionList
-                title="Meta Title"
-                isLoading={getPostSeoData.metaTitles.isLoading}
-                hasError={getPostSeoData.metaTitles.isError}
-                options={getPostSeoData.metaTitles.data}
-                onSelect={editMetaTitle}
-                updateOptions={getPostSeoData.metaTitles.update}
-                onRefresh={() =>
-                  getPostSeoData.metaTitles.refresh({
-                    postHTML,
-                  })
-                }
-              />
-            )}
+            <TextOptionList
+              title="Meta Title"
+              isLoading={getPostSeoData.metaTitles.isLoading}
+              hasError={getPostSeoData.metaTitles.isError}
+              options={getPostSeoData.metaTitles.data}
+              onSelect={editMetaTitle}
+              updateOptions={getPostSeoData.metaTitles.update}
+              onRefresh={() =>
+                getPostSeoData.metaTitles.refresh({
+                  postHTML,
+                })
+              }
+              disabled={!components.metaTitle}
+              disabledMessage="Enabled Yoast to get meta title recommendations."
+            />
           </div>
         </div>
       )}
