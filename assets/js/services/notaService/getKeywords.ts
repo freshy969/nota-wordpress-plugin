@@ -1,18 +1,18 @@
-import { NlpService } from 'assets/js/services/types'
+import { NotaService } from 'assets/js/services/types'
 import fetch from 'assets/js/utils/fetch/fetch'
 import qs from 'qs'
 
-export const getHeadlines: NlpService['getHeadlines'] = ({
+export const getKeywords: NotaService['getKeywords'] = ({
   postHTML,
   count,
 }) => {
   return fetch
-    .post<{ result: { headlines: string[] } }>(window.notaTools.ajaxUrl, {
+    .post<{ result: { keywords: string[] } }>(window.notaTools.ajaxUrl, {
       data: qs.stringify({
         action: 'nota_action',
         nonce: window.notaTools.nonce,
         nota: {
-          nota_action: 'get_text_headlines',
+          nota_action: 'get_text_keywords',
           postHTML,
           count,
         },

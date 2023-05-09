@@ -121,4 +121,25 @@ class Nota_Api {
 		);
 	}
 
+
+	/**
+	 * Gets the keywords from the text
+	 * 
+	 * @param string $text Text to get keywords from.
+	 * @param int    $count Number of keywords to get.
+	 * @param float  $variability How much the keywords should vary.
+	 */
+	public function get_text_keywords( $text, $count, $variability ) {
+		return $this->make_request(
+			'POST',
+			'notasum/v1/keywords',
+			array(
+				'body' => array(
+					'text'        => $text,
+					'count'       => $count,
+					'variability' => $variability,
+				),
+			)
+		);
+	}
 }

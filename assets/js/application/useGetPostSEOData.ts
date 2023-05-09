@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useCallback, useState } from '@wordpress/element'
-import { NlpService } from 'assets/js/services/types'
-import { Summary } from 'assets/js/domain/nlp'
+import { NotaService } from 'assets/js/services/types'
+import { Summary } from 'assets/js/domain/nota'
 
 interface RunArgs {
   postHTML: string
@@ -17,6 +17,7 @@ interface OutputSection<TData> {
 
 interface Output {
   headlines: OutputSection<string[]>
+  tags: OutputSection<string[]>
   run: (args: RunArgs) => void
   summary: {
     isError: boolean
@@ -25,14 +26,18 @@ interface Output {
   }
 }
 
-type ComponentTypes = 'headlines' | 'summary'
+type ComponentTypes = 'headlines' | 'summary' | 'tags'
 
 interface Args {
-  nlpService: Pick<NlpService, 'getHeadlines' | 'getSummary'>
+  notaService: Pick<NotaService, 'getHeadlines' | 'getSummary' | 'getKeywords'>
   components: Record<ComponentTypes, boolean>
 }
-export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
+export const useGetPostSEOData = ({
+  notaService,
+  components,
+}: Args): Output => {
   const [headlines, setHeadlines] = useState<string[]>([])
+  const [tags, setTags] = useState<string[]>([])
 
   const { mutate: mutateHeadline, ...headline } = useMutation({
     mutationFn: ({
@@ -42,15 +47,29 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
       postHTML: string
       regenerate?: boolean
     }) => {
-      return nlpService.getHeadlines({ postHTML, count: 3, regenerate })
+      return notaService.getHeadlines({ postHTML, count: 3, regenerate })
     },
     onSuccess: (data) => {
       setHeadlines(data.headlines)
     },
   })
+  const { mutate: mutateTags, ...tagsMutation } = useMutation({
+    mutationFn: ({
+      postHTML,
+      regenerate,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+    }) => {
+      return notaService.getKeywords({ postHTML, count: 10, regenerate })
+    },
+    onSuccess: (data) => {
+      setTags(data.keywords)
+    },
+  })
   const { mutate: mutateSummary, ...summary } = useMutation({
     mutationFn: ({ postHTML }: { postHTML: string }) => {
-      return nlpService.getSummary({
+      return notaService.getSummary({
         postHTML,
         lengthOption: '1-sentence',
       })
@@ -62,13 +81,14 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
       const componentMutations: Record<string, () => void> = {
         headlines: () => mutateHeadline({ postHTML: args.postHTML }),
         summary: () => mutateSummary({ postHTML: args.postHTML }),
+        tags: () => mutateTags({ postHTML: args.postHTML }),
       }
       Object.entries(components).forEach(([component, shouldRun]) => {
         if (!shouldRun) return
         componentMutations[component]?.()
       })
     },
-    [mutateHeadline, mutateSummary, components],
+    [mutateHeadline, mutateSummary, mutateTags, components],
   )
 
   return {
@@ -86,6 +106,15 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
       isError: summary.isError,
       isLoading: summary.isLoading,
       data: summary.data,
+    },
+    tags: {
+      isError: tagsMutation.isError,
+      isLoading: tagsMutation.isLoading,
+      data: tags,
+      update: setTags,
+      refresh: (args: RunArgs) => {
+        mutateTags({ postHTML: args.postHTML, regenerate: true })
+      },
     },
   }
 }
