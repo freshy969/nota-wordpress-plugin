@@ -34,8 +34,12 @@ class Nota_Post_Tools {
 	 */
 	public function admin_enqueue_scripts( $hook ) {
 		global $post;
-		if ( 'post-new.php' === $hook || 'post.php' === $hook ) {
-			if ( in_array( $post->post_type, $this->get_tools_supported_post_types() ) ) {
+		$screen = get_current_screen();
+		if (
+			( 'post-new.php' === $hook || 'post.php' === $hook ) &&
+			$screen->is_block_editor() &&
+			in_array( $post->post_type, $this->get_tools_supported_post_types() )
+		   ) {
 				$yoast_post_types = class_exists( 'WPSEO_Post_Type' ) ? WPSEO_Post_Type::get_accessible_post_types() : [];
 				$yoast_enabled    = in_array( $post->post_type, $yoast_post_types );
 				$taxonomies       = get_post_taxonomies();
@@ -57,7 +61,6 @@ class Nota_Post_Tools {
 				);
 				wp_enqueue_script( 'nota-post-tools' );
 				wp_enqueue_style( 'nota-post-tools-style', NOTA_PLUGIN_URL . 'dist/postTools.css', [], $tool_script_args['version'] );
-			}
 		}
 	}
 
@@ -81,5 +84,13 @@ class Nota_Post_Tools {
 	 */
 	public function render_post_tools() {
 		include_once NOTA_PLUGIN_ABSPATH . 'templates/admin/post-tools-meta-box.php';
+	}
+	
+	/**
+	 * Determines whether Gutenberg is enabled
+	 */
+	public function is_gutenberg_enabled() {
+		$current_screen = get_current_screen();
+		return $current_screen->is_block_editor();
 	}
 }
