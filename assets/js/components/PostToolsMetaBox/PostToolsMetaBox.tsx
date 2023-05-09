@@ -21,6 +21,7 @@ const useWpSelect = useSelect as WordPress.useSelect
 const components = {
   headlines: true,
   metaDescription: window.notaTools.components.meta_description,
+  metaTitle: window.notaTools.components.meta_title,
   summary: false,
   tags: window.notaTools.components.tags,
 }
@@ -40,7 +41,7 @@ const PostToolsMetaBoxInner = () => {
     taxonomy: 'post_tag',
     wpService: wordPressService,
   })
-  const { editMetaDescription } = useEditMetadata()
+  const { editMetaDescription, editMetaTitle } = useEditMetadata()
 
   return (
     <div>
@@ -126,6 +127,22 @@ const PostToolsMetaBoxInner = () => {
                 updateOptions={getPostSeoData.metaDescriptions.update}
                 onRefresh={() =>
                   getPostSeoData.metaDescriptions.refresh({
+                    postHTML,
+                  })
+                }
+              />
+            )}
+
+            {components.metaTitle && (
+              <TextOptionList
+                title="Meta Title"
+                isLoading={getPostSeoData.metaTitles.isLoading}
+                hasError={getPostSeoData.metaTitles.isError}
+                options={getPostSeoData.metaTitles.data}
+                onSelect={editMetaTitle}
+                updateOptions={getPostSeoData.metaTitles.update}
+                onRefresh={() =>
+                  getPostSeoData.metaTitles.refresh({
                     postHTML,
                   })
                 }

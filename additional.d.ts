@@ -5,6 +5,7 @@ interface Window {
     components: {
       categories: boolean
       meta_description: boolean
+      meta_title: boolean
       tags: boolean
     }
   }
@@ -28,8 +29,15 @@ namespace WordPress {
     getEditedPostAttribute: <T>(attribute: string) => T
   }
 
+  interface YoastEditorStoreSelectors {
+    getSeoTitleTemplate: () => string
+  }
+
   function WpDataSelectFn(store: 'core'): CoreStoreSelectors
   function WpDataSelectFn(store: 'core/editor'): CoreEditorStoreSelectors
+  function WpDataSelectFn(
+    store: 'yoast-seo/editor',
+  ): YoastEditorStoreSelectors | null
 
   export type useSelect = <T>(
     selector: (s: typeof WpDataSelectFn) => T,

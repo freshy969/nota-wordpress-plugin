@@ -50,6 +50,7 @@ class Nota_Post_Tools {
 						'components' => [
 							'categories'       => in_array( 'category', $taxonomies ),
 							'meta_description' => $yoast_enabled,
+							'meta_title'       => $yoast_enabled,
 							'tags'             => in_array( 'post_tag', $taxonomies ),
 						],
 					]

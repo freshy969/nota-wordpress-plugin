@@ -18,6 +18,7 @@ interface OutputSection<TData> {
 interface Output {
   headlines: OutputSection<string[]>
   metaDescriptions: OutputSection<string[]>
+  metaTitles: OutputSection<string[]>
   tags: OutputSection<string[]>
   run: (args: RunArgs) => void
   summary: {
@@ -27,12 +28,21 @@ interface Output {
   }
 }
 
-type ComponentTypes = 'headlines' | 'summary' | 'tags' | 'metaDescription'
+type ComponentTypes =
+  | 'headlines'
+  | 'summary'
+  | 'tags'
+  | 'metaDescription'
+  | 'metaTitle'
 
 interface Args {
   nlpService: Pick<
     NlpService,
-    'getHeadlines' | 'getSummary' | 'getKeywords' | 'getMetaDescriptions'
+    | 'getHeadlines'
+    | 'getSummary'
+    | 'getKeywords'
+    | 'getMetaDescriptions'
+    | 'getMetaTitles'
   >
   components: Record<ComponentTypes, boolean>
 }
@@ -40,6 +50,7 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
   const [headlines, setHeadlines] = useState<string[]>([])
   const [tags, setTags] = useState<string[]>([])
   const [metaDescriptions, setMetaDescriptions] = useState<string[]>([])
+  const [metaTitles, setMetaTitles] = useState<string[]>([])
 
   const { mutate: mutateHeadline, ...headline } = useMutation({
     mutationFn: ({
@@ -88,6 +99,24 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
         setMetaDescriptions(data.metaDescriptions)
       },
     })
+  const { mutate: mutateMetaTitles, ...metaTitlesMutation } = useMutation({
+    mutationFn: ({
+      postHTML,
+      regenerate,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+    }) => {
+      return nlpService.getMetaTitles({
+        postHTML,
+        count: 5,
+        regenerate,
+      })
+    },
+    onSuccess: (data) => {
+      setMetaTitles(data.metaTitles)
+    },
+  })
   const { mutate: mutateSummary, ...summary } = useMutation({
     mutationFn: ({ postHTML }: { postHTML: string }) => {
       return nlpService.getSummary({
@@ -105,6 +134,7 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
         tags: () => mutateTags({ postHTML: args.postHTML }),
         metaDescription: () =>
           mutateMetaDescriptions({ postHTML: args.postHTML }),
+        metaTitle: () => mutateMetaTitles({ postHTML: args.postHTML }),
       }
       Object.entries(components).forEach(([component, shouldRun]) => {
         if (!shouldRun) return
@@ -116,6 +146,7 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
       mutateSummary,
       mutateTags,
       mutateMetaDescriptions,
+      mutateMetaTitles,
       components,
     ],
   )
@@ -137,6 +168,15 @@ export const useGetPostSEOData = ({ nlpService, components }: Args): Output => {
       update: setMetaDescriptions,
       refresh: (args: RunArgs) => {
         mutateMetaDescriptions({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    metaTitles: {
+      isError: metaTitlesMutation.isError,
+      isLoading: metaTitlesMutation.isLoading,
+      data: metaTitles,
+      update: setMetaTitles,
+      refresh: (args: RunArgs) => {
+        mutateMetaTitles({ postHTML: args.postHTML, regenerate: true })
       },
     },
     run,
