@@ -1,8 +1,8 @@
-import { NlpService } from 'assets/js/services/types'
+import { NotaService } from 'assets/js/services/types'
 import fetch from 'assets/js/utils/fetch/fetch'
 import qs from 'qs'
 
-export const getMetaDescriptions: NlpService['getMetaDescriptions'] = ({
+export const getMetaDescriptions: NotaService['getMetaDescriptions'] = ({
   postHTML,
   count,
 }) => {

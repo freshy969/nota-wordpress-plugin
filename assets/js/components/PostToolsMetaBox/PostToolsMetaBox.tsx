@@ -1,5 +1,5 @@
 import { useGetPostSEOData } from 'assets/js/application/useGetPostSEOData'
-import { nlpService } from 'assets/js/services/nlpService/nlpService'
+import { notaService } from 'assets/js/services/notaService/notaService'
 import { useSelect } from '@wordpress/data'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from '@wordpress/element'
@@ -33,7 +33,7 @@ const PostToolsMetaBoxInner = () => {
     [],
   )
   const getPostSeoData = useGetPostSEOData({
-    nlpService,
+    notaService,
     components,
   })
   const editPostTitle = useEditPostTitle()

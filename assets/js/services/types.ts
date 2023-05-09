@@ -9,9 +9,9 @@ import {
   MetaTitlesRequest,
   Summary,
   SummaryRequest,
-} from 'assets/js/domain/nlp'
+} from 'assets/js/domain/nota'
 
-export interface NlpService {
+export interface NotaService {
   getHeadlines(args: HeadlinesRequest): Promise<Headlines>
   getKeywords(args: KeywordsRequest): Promise<Keywords>
   getMetaDescriptions(args: MetaDescriptionsRequest): Promise<MetaDescriptions>
