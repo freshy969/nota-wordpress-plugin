@@ -36,6 +36,8 @@ class Nota_Post_Tools {
 		global $post;
 		if ( 'post-new.php' === $hook || 'post.php' === $hook ) {
 			if ( in_array( $post->post_type, $this->get_tools_supported_post_types() ) ) {
+				$yoast_post_types = class_exists( 'WPSEO_Post_Type' ) ? WPSEO_Post_Type::get_accessible_post_types() : [];
+				$yoast_enabled    = in_array( $post->post_type, $yoast_post_types );
 				$taxonomies       = get_post_taxonomies();
 				$tool_script_args = include NOTA_PLUGIN_ABSPATH . 'dist/postTools.asset.php';
 				wp_register_script( 'nota-post-tools', NOTA_PLUGIN_URL . 'dist/postTools.js', $tool_script_args['dependencies'], $tool_script_args['version'], true );
@@ -46,8 +48,9 @@ class Nota_Post_Tools {
 						'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
 						'nonce'      => wp_create_nonce( NOTA_PLUGIN_NONCE ),
 						'components' => [
-							'categories' => in_array( 'category', $taxonomies ),
-							'tags'       => in_array( 'post_tag', $taxonomies ),
+							'categories'       => in_array( 'category', $taxonomies ),
+							'meta_description' => $yoast_enabled,
+							'tags'             => in_array( 'post_tag', $taxonomies ),
 						],
 					]
 				);

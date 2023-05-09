@@ -8,6 +8,7 @@ import { Button } from '@wordpress/components'
 import { useEditPostTitle } from 'assets/js/application/useEditPostTitle'
 import { useAddTaxonomy } from 'assets/js/application/useAddTaxonomy'
 import { wordPressService } from 'assets/js/services/wordPressService/wordPressService'
+import { useEditMetadata } from 'assets/js/application/useEditMetadata'
 
 enum Screen {
   Initial,
@@ -19,6 +20,7 @@ const useWpSelect = useSelect as WordPress.useSelect
 // or memoized. Otherwise it'll trigger infinite re-renders within useGetPostSEOData
 const components = {
   headlines: true,
+  metaDescription: window.notaTools.components.meta_description,
   summary: false,
   tags: window.notaTools.components.tags,
 }
@@ -38,6 +40,7 @@ const PostToolsMetaBoxInner = () => {
     taxonomy: 'post_tag',
     wpService: wordPressService,
   })
+  const { editMetaDescription } = useEditMetadata()
 
   return (
     <div>
@@ -107,6 +110,22 @@ const PostToolsMetaBoxInner = () => {
                 updateOptions={getPostSeoData.tags.update}
                 onRefresh={() =>
                   getPostSeoData.tags.refresh({
+                    postHTML,
+                  })
+                }
+              />
+            )}
+
+            {components.metaDescription && (
+              <TextOptionList
+                title="Meta Description"
+                isLoading={getPostSeoData.metaDescriptions.isLoading}
+                hasError={getPostSeoData.metaDescriptions.isError}
+                options={getPostSeoData.metaDescriptions.data}
+                onSelect={editMetaDescription}
+                updateOptions={getPostSeoData.metaDescriptions.update}
+                onRefresh={() =>
+                  getPostSeoData.metaDescriptions.refresh({
                     postHTML,
                   })
                 }

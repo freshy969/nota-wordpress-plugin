@@ -4,6 +4,7 @@ interface Window {
     nonce: string
     components: {
       categories: boolean
+      meta_description: boolean
       tags: boolean
     }
   }
