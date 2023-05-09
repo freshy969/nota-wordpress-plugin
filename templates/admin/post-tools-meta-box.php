@@ -12,5 +12,5 @@ $screen = get_current_screen();
 <?php if ( $screen->is_block_editor() ) : ?>
 <div id="nota-post-tools-meta-box-root"></div>
 <?php else : ?>
-<p>Nota currently only supports the block editor.</p>
+<p>Enable the block editor to use Nota tools.</p>
 <?php endif; ?>
