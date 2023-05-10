@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# handles any JS / TS assets staged
+yarn lint-staged

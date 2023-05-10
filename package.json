@@ -22,6 +22,7 @@
   },
   "scripts": {
     "build": "wp-scripts build",
+    "prepare": "husky install",
     "start": "wp-scripts start"
   },
   "dependencies": {
