@@ -31,6 +31,18 @@ class Nota_WP_Rest {
 	}
 
 	/**
+	 * Converts HTML to text and trims to acceptable length
+	 * 
+	 * @param $html string HTML to trim
+	 */
+	private function trim_html( $html) {
+		// strip HTML tags from text.
+		$text = wp_strip_all_tags( $html );
+		$text = substr($text, 0, 12000);
+		return $text;
+	}
+
+	/**
 	 * Handles actions
 	 */
 	public function handle_action() {
@@ -77,7 +89,7 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text          = wp_strip_all_tags( $data['postHTML'] );
+		$text          = $this->trim_html( $data['postHTML'] );
 		$length_option = (string) isset( $data['length_option'] ) ? $data['length_option'] : '1-sentence';
 
 		return $this->api->get_text_summary( $text, $length_option );
@@ -95,7 +107,7 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = wp_strip_all_tags( $data['postHTML'] );
+		$text  = $this->trim_html( $data['postHTML'] );
 		$count = isset( $data['count'] ) ? (int) $data['count'] : 3;
 
 		return $this->api->get_text_headlines( $text, $count );
@@ -113,7 +125,7 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = wp_strip_all_tags( $data['postHTML'] );
+		$text  = $this->trim_html( $data['postHTML'] );
 		$count = isset( $data['count'] ) ? (int) $data['count'] : 10;
 		// maybe we'll expose this as a setting at some point.
 		$variability = 0.3;
@@ -133,7 +145,7 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = wp_strip_all_tags( $data['postHTML'] );
+		$text  = $this->trim_html( $data['postHTML'] );
 		$count = isset( $data['count'] ) ? (int) $data['count'] : 10;
 		// maybe we'll expose this as a setting at some point.
 		$variability = 0.3;
@@ -153,7 +165,7 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = wp_strip_all_tags( $data['postHTML'] );
+		$text  = $this->trim_html( $data['postHTML'] );
 		$count = isset( $data['count'] ) ? (int) $data['count'] : 10;
 		// maybe we'll expose this as a setting at some point.
 		$variability = 0.3;
