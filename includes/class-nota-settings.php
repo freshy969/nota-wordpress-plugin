@@ -58,6 +58,22 @@ class Nota_Settings {
 			array( $this, 'render_text_input' ),
 			$this->general_settings_section_key
 		);
+
+		$this->add_setting_field(
+			'debug',
+			__( 'Debug', 'nota' ),
+			array( $this, 'render_checkbox_input' ),
+			$this->general_settings_section_key
+		);
+
+		if ( $this->get_option('debug') ) {
+			$this->add_setting_field(
+				'api_url',
+				__( 'API URL', 'nota' ),
+				array( $this, 'render_text_input' ),
+				$this->general_settings_section_key
+			);
+		}
 	}
 
 	/**
@@ -125,7 +141,7 @@ class Nota_Settings {
 	}
 
 	/**
-	 * Renders the API key field
+	 * Renders a text input field
 	 * 
 	 * @param mixed $args Any args sent by the registering function.
 	 */
@@ -134,6 +150,19 @@ class Nota_Settings {
 		$field_name = $this->get_option_name( $args['name'] );
 		?>
 		<input id='<?php echo esc_attr( $args['input_id'] ); ?>' name='<?php echo esc_attr( $field_name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
+		<?php
+	}
+
+	/**
+	 * Renders a checkbox field
+	 * 
+	 * @param mixed $args Any args sent by the registering function.
+	 */
+	public function render_checkbox_input( $args ) {
+		$checked      = $this->get_option( $args['name'] ) ? 'checked' : '';
+		$field_name = $this->get_option_name( $args['name'] );
+		?>
+		<input id='<?php echo esc_attr( $args['input_id'] ); ?>' name='<?php echo esc_attr( $field_name ); ?>' value='1' type="checkbox" <?php echo esc_attr( $checked ); ?> />
 		<?php
 	}
 
