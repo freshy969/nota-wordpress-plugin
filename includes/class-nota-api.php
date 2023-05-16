@@ -50,7 +50,7 @@ class Nota_Api {
 
 		// add in our authorization headers, these are always required.
 		$default_headers = array(
-			'Authorization' => 'Bearer ' . $this->settings->get_option( 'api_key' ),
+			'nota-subscription-key' => $this->settings->get_option( 'api_key' ),
 		);
 
 		$request_args = array_merge(
@@ -92,7 +92,7 @@ class Nota_Api {
 	public function get_text_summary( $text, $length_option ) {
 		return $this->make_request(
 			'POST',
-			'notasum/v1/summary',
+			'sum/v1/summary',
 			array(
 				'body' => array(
 					'text'         => $text,
@@ -111,7 +111,7 @@ class Nota_Api {
 	public function get_text_headlines( $text, $count ) {
 		return $this->make_request(
 			'POST',
-			'notasum/v1/headlines',
+			'sum/v1/headlines',
 			array(
 				'body' => array(
 					'text'  => $text,
@@ -132,7 +132,7 @@ class Nota_Api {
 	public function get_text_keywords( $text, $count, $variability ) {
 		return $this->make_request(
 			'POST',
-			'notasum/v1/keywords',
+			'sum/v1/keywords',
 			array(
 				'body' => array(
 					'text'        => $text,
@@ -153,7 +153,7 @@ class Nota_Api {
 	public function get_text_meta_descriptions( $text, $count, $variability ) {
 		return $this->make_request(
 			'POST',
-			'notasum/v1/meta/descriptions',
+			'sum/v1/meta/descriptions',
 			array(
 				'body' => array(
 					'text'        => $text,
@@ -174,7 +174,7 @@ class Nota_Api {
 	public function get_text_meta_titles( $text, $count, $variability ) {
 		return $this->make_request(
 			'POST',
-			'notasum/v1/meta/titles',
+			'sum/v1/meta/titles',
 			array(
 				'body' => array(
 					'text'        => $text,
