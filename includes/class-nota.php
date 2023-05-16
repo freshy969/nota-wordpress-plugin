@@ -96,7 +96,7 @@ class Nota {
 	 * Is the site in Nota debug mode?
 	 */
 	public static function is_debug_mode() {
-		return defined( 'WP_NOTA_DEBUG' ) && WP_NOTA_DEBUG;
+		return get_option( 'nota_debug', false );
 	}
 }
 Nota::instance();

@@ -31,8 +31,8 @@ class Nota_Api {
 	 * Returns the API url
 	 */
 	private function get_api_url() {
-		if ( Nota::is_debug_mode() && defined( 'WP_NOTA_API_URL' ) ) {
-			return trailingslashit( WP_NOTA_API_URL ); 
+		if ( Nota::is_debug_mode() && $this->settings->get_option( 'api_url' ) ) {
+			return trailingslashit( $this->settings->get_option( 'api_url' ) ); 
 		}
 		return 'https://api.heynota.com/';
 	}
