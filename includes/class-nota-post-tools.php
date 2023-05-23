@@ -68,8 +68,8 @@ class Nota_Post_Tools {
 						'nonce'             => wp_create_nonce( NOTA_PLUGIN_NONCE ),
 						'components'        => [
 							'categories'       => in_array( 'category', $taxonomies ),
-							'meta_description' => $yoast_enabled,
-							'meta_title'       => $yoast_enabled,
+							'meta_description' => true,
+							'meta_title'       => true,
 							'tags'             => in_array( 'post_tag', $taxonomies ),
 						],
 						'meta_keys'         => [
@@ -77,7 +77,7 @@ class Nota_Post_Tools {
 							'seo_desc'  => self::$seo_desc_meta_key,
 						],
 						'register_controls' => [
-							'seo' => true,
+							'seo' => ! $yoast_enabled,
 						],
 					]
 				);
