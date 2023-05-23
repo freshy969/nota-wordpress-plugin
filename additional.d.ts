@@ -8,10 +8,10 @@ interface Window {
       meta_title: boolean
       tags: boolean
     }
+    meta_keys: Record<string, string>
     register_controls: {
       seo: boolean
     }
-    meta_keys: Record<string, string>
   }
 }
 

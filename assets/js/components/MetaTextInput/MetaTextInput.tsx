@@ -20,7 +20,7 @@ export function MetaTextInput({ metaKey, label }: Props) {
     [metaKey],
   )
 
-  const { editPost } = useDispatch()
+  const { editPost } = useDispatch('core/editor')
 
   return (
     <TextControl
