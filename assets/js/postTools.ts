@@ -1,6 +1,8 @@
 import 'assets/css/styles.css'
 import { createRoot, render, createElement } from '@wordpress/element'
 import { PostToolsMetaBox } from 'assets/js/components/PostToolsMetaBox/PostToolsMetaBox'
+import { registerPlugin } from '@wordpress/plugins'
+import { SEOToolsMetaBox } from 'assets/js/components/SEOToolsMetaBox/SEOToolsMetaBox'
 
 const init = () => {
   const domElement = document.getElementById('nota-post-tools-meta-box-root')
@@ -19,3 +21,7 @@ const init = () => {
   }
 }
 init()
+
+if (window.notaTools.register_controls.seo) {
+  registerPlugin('nota-seo-tools', { render: SEOToolsMetaBox })
+}
