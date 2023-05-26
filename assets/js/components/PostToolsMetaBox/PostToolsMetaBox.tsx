@@ -23,7 +23,7 @@ const components = {
 }
 
 const PostToolsMetaBoxInner = () => {
-  const [screen, setScreen] = useState(Screen.Results)
+  const [screen, setScreen] = useState(Screen.Initial)
   const postHTML = useWpSelect(
     (select) => select('core/editor').getEditedPostContent(),
     [],

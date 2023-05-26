@@ -1,6 +1,7 @@
 import { TextOptionListItem } from 'assets/js/components/TextOptionList/TextOptionListItem'
 import { AsyncStateManager } from 'assets/js/components/AsyncStateManager/AsyncStateManager'
 import { SectionHeading } from 'assets/js/components/SectionHeading/SectionHeading'
+import { History } from 'assets/js/application/useHistoryList'
 
 interface Props {
   options?: string[]
@@ -13,6 +14,7 @@ interface Props {
   hasError: boolean
   disabled?: boolean
   disabledMessage?: string
+  history?: History
 }
 export function TextOptionList({
   options,
@@ -25,6 +27,7 @@ export function TextOptionList({
   hasError,
   disabled,
   disabledMessage,
+  history,
 }: Props) {
   return (
     <div>
@@ -33,6 +36,7 @@ export function TextOptionList({
         subtitle={subtitle}
         className="ntw-mb-24px"
         onRefresh={onRefresh}
+        history={history}
       />
 
       {disabled ? (

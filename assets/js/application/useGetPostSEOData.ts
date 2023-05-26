@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
-import { useCallback, useState } from '@wordpress/element'
+import { useCallback } from '@wordpress/element'
 import { NotaService } from 'assets/js/services/types'
 import { Summary } from 'assets/js/domain/nota'
+import { History, useHistoryList } from 'assets/js/application/useHistoryList'
 
 interface RunArgs {
   postHTML: string
@@ -11,6 +12,7 @@ interface OutputSection<TData> {
   isError: boolean
   isLoading: boolean
   data?: TData
+  history: History
   update: (data: TData) => void
   refresh: (args: RunArgs) => void
 }
@@ -50,10 +52,10 @@ export const useGetPostSEOData = ({
   notaService,
   components,
 }: Args): Output => {
-  const [headlines, setHeadlines] = useState<string[]>([])
-  const [tags, setTags] = useState<string[]>([])
-  const [metaDescriptions, setMetaDescriptions] = useState<string[]>([])
-  const [metaTitles, setMetaTitles] = useState<string[]>([])
+  const headlines = useHistoryList<string[]>()
+  const tags = useHistoryList<string[]>()
+  const metaDescriptions = useHistoryList<string[]>()
+  const metaTitles = useHistoryList<string[]>()
 
   const { mutate: mutateHeadline, ...headline } = useMutation({
     mutationFn: ({
@@ -66,7 +68,7 @@ export const useGetPostSEOData = ({
       return notaService.getHeadlines({ postHTML, count: 3, regenerate })
     },
     onSuccess: (data) => {
-      setHeadlines(data.headlines)
+      headlines.addHistoryItem(data.headlines)
     },
   })
   const { mutate: mutateTags, ...tagsMutation } = useMutation({
@@ -80,7 +82,7 @@ export const useGetPostSEOData = ({
       return notaService.getKeywords({ postHTML, count: 10, regenerate })
     },
     onSuccess: (data) => {
-      setTags(data.keywords)
+      tags.addHistoryItem(data.keywords)
     },
   })
   const { mutate: mutateMetaDescriptions, ...metaDescriptionsMutation } =
@@ -99,7 +101,7 @@ export const useGetPostSEOData = ({
         })
       },
       onSuccess: (data) => {
-        setMetaDescriptions(data.metaDescriptions)
+        metaDescriptions.addHistoryItem(data.metaDescriptions)
       },
     })
   const { mutate: mutateMetaTitles, ...metaTitlesMutation } = useMutation({
@@ -117,7 +119,7 @@ export const useGetPostSEOData = ({
       })
     },
     onSuccess: (data) => {
-      setMetaTitles(data.metaTitles)
+      metaTitles.addHistoryItem(data.metaTitles)
     },
   })
   const { mutate: mutateSummary, ...summary } = useMutation({
@@ -158,8 +160,7 @@ export const useGetPostSEOData = ({
     headlines: {
       isError: headline.isError,
       isLoading: headline.isLoading,
-      data: headlines,
-      update: setHeadlines,
+      ...headlines,
       refresh: (args: RunArgs) => {
         mutateHeadline({ postHTML: args.postHTML, regenerate: true })
       },
@@ -167,8 +168,7 @@ export const useGetPostSEOData = ({
     metaDescriptions: {
       isError: metaDescriptionsMutation.isError,
       isLoading: metaDescriptionsMutation.isLoading,
-      data: metaDescriptions,
-      update: setMetaDescriptions,
+      ...metaDescriptions,
       refresh: (args: RunArgs) => {
         mutateMetaDescriptions({ postHTML: args.postHTML, regenerate: true })
       },
@@ -176,8 +176,7 @@ export const useGetPostSEOData = ({
     metaTitles: {
       isError: metaTitlesMutation.isError,
       isLoading: metaTitlesMutation.isLoading,
-      data: metaTitles,
-      update: setMetaTitles,
+      ...metaTitles,
       refresh: (args: RunArgs) => {
         mutateMetaTitles({ postHTML: args.postHTML, regenerate: true })
       },
@@ -191,8 +190,7 @@ export const useGetPostSEOData = ({
     tags: {
       isError: tagsMutation.isError,
       isLoading: tagsMutation.isLoading,
-      data: tags,
-      update: setTags,
+      ...tags,
       refresh: (args: RunArgs) => {
         mutateTags({ postHTML: args.postHTML, regenerate: true })
       },

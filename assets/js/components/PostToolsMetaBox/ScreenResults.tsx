@@ -92,6 +92,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                       postHTML,
                     })
                   }
+                  history={seoData.headlines.history}
                 />
 
                 {components.summary && (
@@ -148,6 +149,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                       postHTML,
                     })
                   }
+                  history={seoData.metaTitles.history}
                   disabled={!components.metaTitle}
                   disabledMessage="Enabled Yoast to get meta title recommendations."
                 />
@@ -164,6 +166,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                       postHTML,
                     })
                   }
+                  history={seoData.metaDescriptions.history}
                   disabled={!components.metaDescription}
                   disabledMessage="Enabled Yoast to get meta description recommendations."
                 />
