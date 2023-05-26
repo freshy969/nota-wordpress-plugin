@@ -54,7 +54,7 @@ module.exports = {
           },
         ],
       },
-      sizes: {
+      spacing: {
         '8px': toRem(8),
         '16px': toRem(16),
         '24px': toRem(24),

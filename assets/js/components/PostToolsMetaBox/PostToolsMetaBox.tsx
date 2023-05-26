@@ -9,6 +9,7 @@ import { useEditPostTitle } from 'assets/js/application/useEditPostTitle'
 import { useAddTaxonomy } from 'assets/js/application/useAddTaxonomy'
 import { wordPressService } from 'assets/js/services/wordPressService/wordPressService'
 import { useEditMetadata } from 'assets/js/application/useEditMetadata'
+import { ScreenInitial } from 'assets/js/components/PostToolsMetaBox/ScreenInitial'
 
 enum Screen {
   Initial,
@@ -46,17 +47,14 @@ const PostToolsMetaBoxInner = () => {
   return (
     <div>
       {screen === Screen.Initial && (
-        <Button
-          onClick={() => {
+        <ScreenInitial
+          onSubmit={() => {
             setScreen(Screen.Results)
             getPostSeoData.run({
               postHTML,
             })
           }}
-          variant="primary"
-        >
-          Optimise with Nota
-        </Button>
+        />
       )}
       {screen === Screen.Results && (
         <div>
