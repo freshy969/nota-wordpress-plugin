@@ -1,6 +1,4 @@
 import { TextOptionListItem } from 'assets/js/components/TextOptionList/TextOptionListItem'
-import { useState } from '@wordpress/element'
-import { Button } from '@wordpress/components'
 import { AsyncStateManager } from 'assets/js/components/AsyncStateManager/AsyncStateManager'
 import { SectionHeading } from 'assets/js/components/SectionHeading/SectionHeading'
 
@@ -34,7 +32,9 @@ export function TextOptionList({
         title={title}
         subtitle={subtitle}
         className="ntw-mb-24px"
+        onRefresh={onRefresh}
       />
+
       {disabled ? (
         <div>{disabledMessage || 'Currently unavailable.'}</div>
       ) : (
@@ -43,13 +43,6 @@ export function TextOptionList({
           hasError={hasError}
           retry={onRefresh}
         >
-          <div className="ntw-mb-4">
-            <div className="ntw-space-x-2">
-              <Button variant="tertiary" onClick={onRefresh}>
-                Refresh suggestions
-              </Button>
-            </div>
-          </div>
           <div className="ntw-space-y-16px">
             {options?.map((option, idx) => (
               <div key={idx}>
