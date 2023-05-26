@@ -28,9 +28,6 @@ export function TextOptionList({
   disabled,
   disabledMessage,
 }: Props) {
-  const [edit, setEdit] = useState(false)
-  const [edits, setEdits] = useState(options || [])
-  const displayedOptions = edit ? edits : options
   return (
     <div>
       <SectionHeading
@@ -47,57 +44,24 @@ export function TextOptionList({
           retry={onRefresh}
         >
           <div className="ntw-mb-4">
-            {edit ? (
-              <div className="ntw-space-x-2">
-                <Button
-                  variant="secondary"
-                  isDestructive
-                  onClick={() => setEdit(false)}
-                >
-                  Cancel changes
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    updateOptions(edits)
-                    setEdit(false)
-                  }}
-                >
-                  Update
-                </Button>
-              </div>
-            ) : (
-              <div className="ntw-space-x-2">
-                <Button
-                  variant="tertiary"
-                  onClick={() => {
-                    setEdits(options || [])
-                    setEdit(true)
-                  }}
-                >
-                  Edit suggestions
-                </Button>
-                <Button variant="tertiary" onClick={onRefresh}>
-                  Refresh suggestions
-                </Button>
-              </div>
-            )}
+            <div className="ntw-space-x-2">
+              <Button variant="tertiary" onClick={onRefresh}>
+                Refresh suggestions
+              </Button>
+            </div>
           </div>
-          <div className="ntw-divide-gray-200 ntw-bg-white ntw-ring-gray-300 ntw-divide-x-0 ntw-divide-y ntw-divide-solid ntw-shadow-sm ntw-ring-1">
-            {displayedOptions?.map((option, idx) => (
-              <div
-                key={`${idx}-${options?.[idx]}`}
-                className="ntw-px-6 ntw-py-5"
-              >
+          <div className="ntw-space-y-16px">
+            {options?.map((option, idx) => (
+              <div key={idx}>
                 <TextOptionListItem
                   value={option}
                   onChange={(nextEdit) => {
-                    const nextEdits = [...edits]
+                    if (!options) return
+                    const nextEdits = [...options]
                     nextEdits[idx] = nextEdit
-                    setEdits(nextEdits)
+                    updateOptions(nextEdits)
                   }}
                   onSelect={() => onSelect(option)}
-                  edit={edit}
                 />
               </div>
             ))}

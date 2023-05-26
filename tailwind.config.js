@@ -69,6 +69,9 @@ module.exports = {
         destructive: '#D83E35',
         'destructive-hover': '#BC342C',
       },
+      gray: {
+        100: '#E9E9E9',
+      },
       typography: {
         dark: '#050E21',
         medium: '#5E6064',
