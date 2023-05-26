@@ -5,9 +5,15 @@ const toRem = (px) => {
 }
 
 module.exports = {
+  // this nests all tailwind rules under .nota to increase specificity
+  // and allows us to reset styles in styles.css without overriding tailwind styles
+  important: '.nota',
   content: ['./assets/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      boxShadow: {
+        DEFAULT: '0px 0px 4px rgba(0, 0, 0, 0.16)',
+      },
       fontFamily: {
         sans: ['Manrope', ...defaultTheme.fontFamily.sans],
       },
@@ -51,6 +57,7 @@ module.exports = {
       sizes: {
         '8px': toRem(8),
         '16px': toRem(16),
+        '24px': toRem(24),
       },
     },
     colors: {
