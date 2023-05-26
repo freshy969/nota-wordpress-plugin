@@ -16,7 +16,7 @@ const variantMap: Record<Variants, string[]> = {
   ],
   secondary: [
     'ntw-ring-button-default ntw-text-button-default ntw-ring-1',
-    'hover:ntw-ring-button-hover',
+    'hover:ntw-ring-button-hover hover:ntw-text-button-hover',
   ],
 }
 

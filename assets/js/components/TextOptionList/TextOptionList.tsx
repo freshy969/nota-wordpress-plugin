@@ -2,6 +2,7 @@ import { TextOptionListItem } from 'assets/js/components/TextOptionList/TextOpti
 import { useState } from '@wordpress/element'
 import { Button } from '@wordpress/components'
 import { AsyncStateManager } from 'assets/js/components/AsyncStateManager/AsyncStateManager'
+import { SectionHeading } from 'assets/js/components/SectionHeading/SectionHeading'
 
 interface Props {
   options?: string[]
@@ -9,6 +10,7 @@ interface Props {
   onSelect: (option: string) => void
   onRefresh: () => void
   title: string
+  subtitle: string
   isLoading: boolean
   hasError: boolean
   disabled?: boolean
@@ -20,6 +22,7 @@ export function TextOptionList({
   onSelect,
   onRefresh,
   title,
+  subtitle,
   isLoading,
   hasError,
   disabled,
@@ -30,7 +33,11 @@ export function TextOptionList({
   const displayedOptions = edit ? edits : options
   return (
     <div>
-      <h3 className="ntw-mb-2 ntw-mt-0 ntw-text-lg ntw-font-bold">{title}</h3>
+      <SectionHeading
+        title={title}
+        subtitle={subtitle}
+        className="ntw-mb-24px"
+      />
       {disabled ? (
         <div>{disabledMessage || 'Currently unavailable.'}</div>
       ) : (
@@ -76,7 +83,7 @@ export function TextOptionList({
               </div>
             )}
           </div>
-          <div className="ntw-divide-x-0 ntw-divide-y ntw-divide-solid ntw-divide-gray-200 ntw-bg-white ntw-shadow-sm ntw-ring-1 ntw-ring-gray-300">
+          <div className="ntw-divide-gray-200 ntw-bg-white ntw-ring-gray-300 ntw-divide-x-0 ntw-divide-y ntw-divide-solid ntw-shadow-sm ntw-ring-1">
             {displayedOptions?.map((option, idx) => (
               <div
                 key={`${idx}-${options?.[idx]}`}

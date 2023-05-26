@@ -55,9 +55,11 @@ module.exports = {
         ],
       },
       spacing: {
+        '2px': toRem(2),
         '8px': toRem(8),
         '16px': toRem(16),
         '24px': toRem(24),
+        '32px': toRem(32),
       },
     },
     colors: {

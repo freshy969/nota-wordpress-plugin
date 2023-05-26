@@ -28,7 +28,7 @@ interface Output {
   }
 }
 
-type ComponentTypes =
+export type ComponentTypes =
   | 'headlines'
   | 'summary'
   | 'tags'

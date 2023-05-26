@@ -26,6 +26,7 @@
     "start": "wp-scripts start"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
     "@phosphor-icons/react": "^2.0.8",
     "@tanstack/react-query": "^4.29.3",
     "@wordpress/api-fetch": "^6.29.0",
