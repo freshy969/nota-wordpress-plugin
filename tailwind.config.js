@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 const toRem = (px) => {
   return `${px / 16}rem`
 }
@@ -6,6 +8,9 @@ module.exports = {
   content: ['./assets/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Manrope', ...defaultTheme.fontFamily.sans],
+      },
       fontSize: {
         'h-900': [
           toRem(28),

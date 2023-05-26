@@ -85,6 +85,7 @@ class Nota_Post_Tools {
 				);
 				wp_enqueue_script( 'nota-post-tools' );
 				wp_enqueue_style( 'nota-post-tools-style', NOTA_PLUGIN_URL . 'dist/postTools.css', [], $tool_script_args['version'] );
+				wp_enqueue_style( 'nota-font-manrope', 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap', [], '1.0.0' );
 		}
 	}
 
