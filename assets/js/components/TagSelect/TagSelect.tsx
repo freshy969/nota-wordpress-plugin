@@ -3,11 +3,8 @@ import { SectionHeading } from 'assets/js/components/SectionHeading/SectionHeadi
 import { History } from 'assets/js/application/useHistoryList'
 import { useAddTaxonomy } from 'assets/js/application/useAddTaxonomy'
 import { wordPressService } from 'assets/js/services/wordPressService/wordPressService'
-import { useSelect } from '@wordpress/data'
 import { Tag } from 'assets/js/components/TagSelect/Tag'
-import { useEffect, useState } from '@wordpress/element'
 
-const useWpSelect = useSelect as WordPress.useSelect
 const taxonomy = 'post_tag'
 
 interface Props {
@@ -28,53 +25,10 @@ export function TagSelect({
   onRefresh,
   tags,
 }: Props) {
-  const { addTag, removeTag } = useAddTaxonomy({
+  const { addTag, removeTag, existingTerms } = useAddTaxonomy({
     taxonomy,
     wpService: wordPressService,
   })
-  const [existingTerms, setExistingTerms] = useState<
-    { name: string; id: number }[]
-  >([])
-
-  const { resolvingExistingTerms, hasResolvedTerms } = useWpSelect((select) => {
-    const { getEditedPostAttribute } = select('core/editor')
-    const { getEntityRecords, getTaxonomy, hasFinishedResolution } =
-      select('core')
-    const _taxonomy = getTaxonomy('post_tag')
-    const _termIds = _taxonomy
-      ? getEditedPostAttribute<number[]>(_taxonomy.rest_base)
-      : []
-
-    const query = {
-      _fields: 'id,name',
-      context: 'view',
-      include: _termIds.join(','),
-      per_page: -1,
-    }
-
-    return {
-      resolvingExistingTerms: _termIds.length
-        ? getEntityRecords<{ id: number; name: string }[]>(
-            'taxonomy',
-            taxonomy,
-            query,
-          )
-        : [],
-      hasResolvedTerms: hasFinishedResolution('getEntityRecords', [
-        'taxonomy',
-        taxonomy,
-        query,
-      ]),
-    }
-  }, [])
-
-  // we do this to stop the terms disappearing / appearing while WP
-  // makes REST API requests
-  useEffect(() => {
-    if (hasResolvedTerms) {
-      setExistingTerms(resolvingExistingTerms || [])
-    }
-  }, [resolvingExistingTerms, hasResolvedTerms])
 
   const tagsAddedFromSuggestions = existingTerms.filter(({ name }) =>
     tags?.includes(name),

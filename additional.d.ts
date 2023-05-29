@@ -19,6 +19,12 @@ interface Window {
 // and for some reason redeclaring the @wordpress/data module doesn't augment
 // it only overwrites it. The easiest way is to just namespace these separately
 namespace WordPress {
+  interface WordPressSite {
+    date_format: string
+    title: string
+    url: string
+  }
+
   interface CoreStoreSelectors {
     getTaxonomy: (taxonomy: string) =>
       | {
@@ -27,15 +33,23 @@ namespace WordPress {
         }
       | undefined
     getEntityRecords: <T>(type: string, slug: string, query: any) => T | null
+    getSite: () => WordPressSite | null
     hasFinishedResolution: (type: string, q: [string, string, any]) => boolean
   }
 
   interface CoreEditorStoreSelectors {
     getEditedPostContent: () => string
     getEditedPostAttribute: <T>(attribute: string) => T
+    getPermalinkParts: () => {
+      prefix: string
+      postName: string
+      suffix: string
+    } | null
   }
 
   interface YoastEditorStoreSelectors {
+    getDescription: () => string
+    getSeoTitle: () => string
     getSeoTitleTemplate: () => string
   }
 

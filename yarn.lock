@@ -3354,6 +3354,16 @@
     moment "^2.29.4"
     moment-timezone "^0.5.40"
 
+"@wordpress/date@^4.34.0":
+  version "4.34.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/date/-/date-4.34.0.tgz#a005ad9e6c49eb450f9374895eac1e85823803d4"
+  integrity sha512-e6hA8QUpRXbPCoHfBcHRa+g7kvrG5yvV7vDb10N+KivfIwpsiBk/VIXMq3tl345s3Fl+STnJHJiIQ1EEHusVvg==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+    "@wordpress/deprecated" "^3.34.0"
+    moment "^2.29.4"
+    moment-timezone "^0.5.40"
+
 "@wordpress/dependency-extraction-webpack-plugin@^4.14.0":
   version "4.14.0"
   resolved "https://registry.yarnpkg.com/@wordpress/dependency-extraction-webpack-plugin/-/dependency-extraction-webpack-plugin-4.14.0.tgz#5cf643c4566c2bd0c49ed10743f5ccd32d7a4bd3"
@@ -3385,6 +3395,14 @@
   dependencies:
     "@babel/runtime" "^7.16.0"
     "@wordpress/hooks" "^3.33.0"
+
+"@wordpress/deprecated@^3.34.0":
+  version "3.34.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/deprecated/-/deprecated-3.34.0.tgz#0957c99c62283c7522b4d7ab4ae4a4a2c6fb2b85"
+  integrity sha512-erd4Clun4IeluiFDcppg6Nnf77eP2lXGWihjJsKRmppt96bW5XRFSw4peaeXhwiNQ+4rBid2Khchw8xlizQxTQ==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+    "@wordpress/hooks" "^3.34.0"
 
 "@wordpress/dom-ready@^3.31.0":
   version "3.31.0"
@@ -3616,6 +3634,13 @@
   version "3.33.0"
   resolved "https://registry.yarnpkg.com/@wordpress/hooks/-/hooks-3.33.0.tgz#fa2612b24915e93a13665d605810b71b9048654e"
   integrity sha512-Fwp67gbEeSTYx/eLHiLl3tKO1SCjBISRvEJn0LEbgTuz0l92TEb46jCymUOzaHAZOxeJLH9LoM6HJA5Tvg1L2Q==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+
+"@wordpress/hooks@^3.34.0":
+  version "3.34.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/hooks/-/hooks-3.34.0.tgz#0e24408988c47335145ac5b80db7a04bb4bc3cae"
+  integrity sha512-qVBtsA8bjACRTL5tkeGkg9jb5O66JmLJY3zSFnQ4v97CTXdtNAFXSCVEIbwDsZSsXOu/ybX06teKsvS9v3tnXg==
   dependencies:
     "@babel/runtime" "^7.16.0"
 

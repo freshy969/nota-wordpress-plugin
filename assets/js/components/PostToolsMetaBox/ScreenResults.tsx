@@ -10,6 +10,8 @@ import { useEditPostTitle } from 'assets/js/application/useEditPostTitle'
 import { useEditMetadata } from 'assets/js/application/useEditMetadata'
 import { Button } from 'assets/js/components/Button/Button'
 import { TagSelect } from 'assets/js/components/TagSelect/TagSelect'
+import { SectionHeading } from 'assets/js/components/SectionHeading/SectionHeading'
+import { Preview } from 'assets/js/components/PostToolsMetaBox/Preview'
 
 interface TabLabelProps {
   children: React.ReactNode
@@ -168,6 +170,14 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
+      </div>
+      <div className="ntw-mt-24px ntw-rounded-2xl ntw-p-24px ntw-shadow">
+        <SectionHeading
+          title="Preview"
+          subtitle="See below a preview of your page settings"
+          className="ntw-mb-32px"
+        />
+        <Preview />
       </div>
     </div>
   )
