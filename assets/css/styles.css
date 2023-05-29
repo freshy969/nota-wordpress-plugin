@@ -168,5 +168,5 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 @tailwind utilities;
 
 .nota {
-  @apply ntw-font-sans ntw-text-typography-dark;
+  @apply ntw-font-sans ntw-text-paragraph-base ntw-text-typography-dark;
 }

@@ -8,9 +8,8 @@ import { Fragment } from '@wordpress/element'
 import { TextOptionList } from 'assets/js/components/TextOptionList/TextOptionList'
 import { useEditPostTitle } from 'assets/js/application/useEditPostTitle'
 import { useEditMetadata } from 'assets/js/application/useEditMetadata'
-import { useAddTaxonomy } from 'assets/js/application/useAddTaxonomy'
-import { wordPressService } from 'assets/js/services/wordPressService/wordPressService'
 import { Button } from 'assets/js/components/Button/Button'
+import { TagSelect } from 'assets/js/components/TagSelect/TagSelect'
 
 interface TabLabelProps {
   children: React.ReactNode
@@ -29,7 +28,7 @@ function TabLabel({ children }: TabLabelProps) {
           {children}
           <span
             className={clsx(
-              'ntw-absolute ntw-top-full ntw-block ntw-h-2px ntw-w-full ntw-bg-button-default',
+              'ntw-absolute -ntw-bottom-2px ntw-block ntw-h-2px ntw-w-full ntw-bg-button-default',
               {
                 'ntw-opacity-0': !selected,
               },
@@ -50,10 +49,6 @@ interface Props {
 export function ScreenResults({ seoData, components, postHTML }: Props) {
   const editPostTitle = useEditPostTitle()
   const { editMetaDescription, editMetaTitle } = useEditMetadata()
-  const addTag = useAddTaxonomy({
-    taxonomy: 'post_tag',
-    wpService: wordPressService,
-  })
   return (
     <div>
       <div className="ntw-mb-24px ntw-flex ntw-items-center ntw-justify-between">
@@ -117,14 +112,13 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                 )}
 
                 {components.tags && (
-                  <TextOptionList
+                  <TagSelect
                     title="Tags"
                     subtitle="Select the tags you want to use on this page"
+                    history={seoData.tags.history}
                     isLoading={seoData.tags.isLoading}
                     hasError={seoData.tags.isError}
-                    options={seoData.tags.data}
-                    onSelect={addTag}
-                    updateOptions={seoData.tags.update}
+                    tags={seoData.tags.data}
                     onRefresh={() =>
                       seoData.tags.refresh({
                         postHTML,

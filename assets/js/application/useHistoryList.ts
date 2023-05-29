@@ -11,7 +11,7 @@ export interface History {
 
 export const useHistoryList = <T>(initialItems?: T) => {
   const [items, setItems] = useState<T[]>(initialItems ? [initialItems] : [])
-  const [historyIndex, setHistoryIndex] = useState(0)
+  const [historyIndex, setHistoryIndex] = useState(initialItems ? 0 : -1)
 
   const totalHistoryItems = items.length
   const hasNext = historyIndex < totalHistoryItems - 1

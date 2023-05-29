@@ -26,6 +26,8 @@ namespace WordPress {
           rest_namespace?: string
         }
       | undefined
+    getEntityRecords: <T>(type: string, slug: string, query: any) => T | null
+    hasFinishedResolution: (type: string, q: [string, string, any]) => boolean
   }
 
   interface CoreEditorStoreSelectors {

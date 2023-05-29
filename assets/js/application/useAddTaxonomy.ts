@@ -29,7 +29,7 @@ export const useAddTaxonomy = ({ taxonomy, wpService }: Args) => {
   )
 
   const namespace = taxonomyDetail?.rest_namespace ?? 'wp/v2'
-  return (term: string) => {
+  const addTag = (term: string) => {
     if (!taxonomyDetail?.rest_base) throw Error('Missing rest_base')
     wpService
       .findOrCreateTerm({
@@ -41,4 +41,19 @@ export const useAddTaxonomy = ({ taxonomy, wpService }: Args) => {
         editPost({ [taxonomyDetail.rest_base]: [...termIds, nextTerm.id] })
       })
   }
+
+  const removeTag = (termId: number) => {
+    if (!taxonomyDetail?.rest_base) throw Error('Missing rest_base')
+    // get the tag ID by the name
+    const termIdIdx = termIds.indexOf(termId)
+    if (termIdIdx < 0) return
+    editPost({
+      [taxonomyDetail.rest_base]: [
+        ...termIds.slice(0, termIdIdx),
+        ...termIds.slice(termIdIdx + 1),
+      ],
+    })
+  }
+
+  return { addTag, removeTag }
 }
