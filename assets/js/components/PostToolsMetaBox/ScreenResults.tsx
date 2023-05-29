@@ -51,18 +51,25 @@ interface Props {
 export function ScreenResults({ seoData, components, postHTML }: Props) {
   const editPostTitle = useEditPostTitle()
   const { editMetaDescription, editMetaTitle } = useEditMetadata()
+  const refreshAll = () => {
+    const itemsToRefresh = [
+      seoData.headlines,
+      seoData.tags,
+      seoData.metaDescriptions,
+      seoData.metaTitles,
+    ]
+    itemsToRefresh.forEach((d) => {
+      d.refresh({
+        postHTML,
+      })
+    })
+  }
   return (
     <div>
       <div className="ntw-mb-24px ntw-flex ntw-items-center ntw-justify-between">
         <div className="ntw-text-h-900">Welcome to Nota</div>
         <div className="ntw-flex-shrink-0">
-          <Button
-            variant="secondary"
-            size={300}
-            onClick={() => {
-              // run re-analysis
-            }}
-          >
+          <Button variant="secondary" size={300} onClick={refreshAll}>
             Reanalyze page
           </Button>
         </div>
