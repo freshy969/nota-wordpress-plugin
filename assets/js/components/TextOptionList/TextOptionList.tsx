@@ -1,7 +1,7 @@
 import { TextOptionListItem } from 'assets/js/components/TextOptionList/TextOptionListItem'
-import { useState } from '@wordpress/element'
-import { Button } from '@wordpress/components'
 import { AsyncStateManager } from 'assets/js/components/AsyncStateManager/AsyncStateManager'
+import { SectionHeading } from 'assets/js/components/SectionHeading/SectionHeading'
+import { History } from 'assets/js/application/useHistoryList'
 
 interface Props {
   options?: string[]
@@ -9,10 +9,12 @@ interface Props {
   onSelect: (option: string) => void
   onRefresh: () => void
   title: string
+  subtitle: string
   isLoading: boolean
   hasError: boolean
   disabled?: boolean
   disabledMessage?: string
+  history?: History
 }
 export function TextOptionList({
   options,
@@ -20,17 +22,23 @@ export function TextOptionList({
   onSelect,
   onRefresh,
   title,
+  subtitle,
   isLoading,
   hasError,
   disabled,
   disabledMessage,
+  history,
 }: Props) {
-  const [edit, setEdit] = useState(false)
-  const [edits, setEdits] = useState(options || [])
-  const displayedOptions = edit ? edits : options
   return (
     <div>
-      <h3 className="ntw-mb-2 ntw-mt-0 ntw-text-lg ntw-font-bold">{title}</h3>
+      <SectionHeading
+        title={title}
+        subtitle={subtitle}
+        className="ntw-mb-24px"
+        onRefresh={onRefresh}
+        history={history}
+      />
+
       {disabled ? (
         <div>{disabledMessage || 'Currently unavailable.'}</div>
       ) : (
@@ -39,58 +47,18 @@ export function TextOptionList({
           hasError={hasError}
           retry={onRefresh}
         >
-          <div className="ntw-mb-4">
-            {edit ? (
-              <div className="ntw-space-x-2">
-                <Button
-                  variant="secondary"
-                  isDestructive
-                  onClick={() => setEdit(false)}
-                >
-                  Cancel changes
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    updateOptions(edits)
-                    setEdit(false)
-                  }}
-                >
-                  Update
-                </Button>
-              </div>
-            ) : (
-              <div className="ntw-space-x-2">
-                <Button
-                  variant="tertiary"
-                  onClick={() => {
-                    setEdits(options || [])
-                    setEdit(true)
-                  }}
-                >
-                  Edit suggestions
-                </Button>
-                <Button variant="tertiary" onClick={onRefresh}>
-                  Refresh suggestions
-                </Button>
-              </div>
-            )}
-          </div>
-          <div className="ntw-divide-x-0 ntw-divide-y ntw-divide-solid ntw-divide-gray-200 ntw-bg-white ntw-shadow-sm ntw-ring-1 ntw-ring-gray-300">
-            {displayedOptions?.map((option, idx) => (
-              <div
-                key={`${idx}-${options?.[idx]}`}
-                className="ntw-px-6 ntw-py-5"
-              >
+          <div className="ntw-space-y-16px">
+            {options?.map((option, idx) => (
+              <div key={idx}>
                 <TextOptionListItem
                   value={option}
                   onChange={(nextEdit) => {
-                    const nextEdits = [...edits]
+                    if (!options) return
+                    const nextEdits = [...options]
                     nextEdits[idx] = nextEdit
-                    setEdits(nextEdits)
+                    updateOptions(nextEdits)
                   }}
                   onSelect={() => onSelect(option)}
-                  edit={edit}
                 />
               </div>
             ))}

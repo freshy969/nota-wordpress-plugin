@@ -9,10 +9,19 @@ export const useEditMetadata = () => {
   // or the user may not have Yoast enabled
   // we always update our meta tags as a fallback
   const yoastEditor = useDispatch('yoast-seo/editor')
-  const yoastData = useWpSelect((select) => {
+  const seoData = useWpSelect((select) => {
     const _yoast = select('yoast-seo/editor')
+    const coreEditor = select('core/editor')
+    const postMeta =
+      coreEditor.getEditedPostAttribute<Record<string, string>>('meta')
     return {
+      metaDescription:
+        _yoast?.getDescription() ||
+        postMeta?.[window.notaTools.meta_keys.seo_desc],
       seoTitleTemplate: _yoast?.getSeoTitleTemplate(),
+      seoTitleFormatted:
+        _yoast?.getSeoTitle() ||
+        postMeta?.[window.notaTools.meta_keys.seo_title],
     }
   }, [])
   const coreEditor = useDispatch('core/editor')
@@ -42,8 +51,8 @@ export const useEditMetadata = () => {
     // otherwise use the default
     // https://yoast.com/help/list-available-snippet-variables-yoast-seo/
     const defaultSeoTitleTemplate = '%%title%% %%page%% %%sep%% %%sitename%%'
-    const template = yoastData?.seoTitleTemplate?.includes('%%title%%')
-      ? yoastData?.seoTitleTemplate
+    const template = seoData?.seoTitleTemplate?.includes('%%title%%')
+      ? seoData?.seoTitleTemplate
       : defaultSeoTitleTemplate
     const nextTitle = template.replace('%%title%%', title)
     yoastEditor
@@ -52,5 +61,10 @@ export const useEditMetadata = () => {
       })
       .catch(logger.error)
   }
-  return { editMetaDescription, editMetaTitle }
+  return {
+    editMetaDescription,
+    editMetaTitle,
+    metaDescription: seoData.metaDescription,
+    metaTitleFormatted: seoData.seoTitleFormatted,
+  }
 }
