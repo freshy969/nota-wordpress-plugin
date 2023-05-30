@@ -1,11 +1,18 @@
 import { useDispatch } from '@wordpress/data'
 
-export const useEditPostTitle = () => {
+export const useEditPostData = () => {
   const { editPost } = useDispatch('core/editor')
 
-  return (title: string) => {
-    editPost({
-      title,
-    })
+  return {
+    editPostTitle: (title: string) => {
+      editPost({
+        title,
+      })
+    },
+    editPostExcerpt: (excerpt: string) => {
+      editPost({
+        excerpt,
+      })
+    },
   }
 }
