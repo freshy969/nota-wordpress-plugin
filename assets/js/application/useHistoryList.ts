@@ -30,7 +30,9 @@ export const useHistoryList = <T>(initialItems?: T) => {
   const updateHistoryItem = useCallback(
     (nextItems: T) => {
       setItems((current) => {
-        return current.splice(historyIndex, 1, nextItems)
+        const updated = [...current]
+        updated.splice(historyIndex, 1, nextItems)
+        return updated
       })
     },
     [historyIndex, setItems],
