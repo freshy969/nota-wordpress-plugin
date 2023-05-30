@@ -49,8 +49,9 @@ interface Props {
 }
 
 export function ScreenResults({ seoData, components, postHTML }: Props) {
-  const editPostTitle = useEditPostTitle()
-  const { editMetaDescription, editMetaTitle } = useEditMetadata()
+  const { editPostTitle, postTitle } = useEditPostTitle()
+  const { editMetaDescription, editMetaTitle, metaDescription } =
+    useEditMetadata()
   const refreshAll = () => {
     const itemsToRefresh = [
       seoData.headlines,
@@ -97,6 +98,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     })
                   }
                   history={seoData.headlines.history}
+                  currentValue={postTitle}
                 />
 
                 {components.summary && (
@@ -172,6 +174,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   history={seoData.metaDescriptions.history}
                   disabled={!components.metaDescription}
                   disabledMessage="Enabled Yoast to get meta description recommendations."
+                  currentValue={metaDescription}
                 />
               </div>
             </Tab.Panel>
