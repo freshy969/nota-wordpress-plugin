@@ -49,8 +49,14 @@ interface Props {
 }
 
 export function ScreenResults({ seoData, components, postHTML }: Props) {
-  const { editPostTitle, editPostExcerpt, postTitle, revertTitle } =
-    useEditPostData()
+  const {
+    editPostTitle,
+    editPostExcerpt,
+    postTitle,
+    revertTitle,
+    revertExcerpt,
+    postExcerpt,
+  } = useEditPostData()
   const {
     editMetaDescription,
     editMetaTitle,
@@ -122,6 +128,8 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     })
                   }
                   history={seoData.excerpt.history}
+                  currentValue={postExcerpt}
+                  onRevert={revertExcerpt}
                 />
 
                 {components.tags && (
