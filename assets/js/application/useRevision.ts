@@ -22,7 +22,7 @@ export const useRevision = <T>({ trackValue, revertFn }: Args<T>) => {
     const lastNonNotaValue = history.find(
       (historyItem) => !notaHistory.includes(historyItem),
     )
-    if (lastNonNotaValue) {
+    if (typeof lastNonNotaValue !== 'undefined') {
       revertFn(lastNonNotaValue)
     }
   }
