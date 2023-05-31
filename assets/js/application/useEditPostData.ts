@@ -3,7 +3,7 @@ import { useRevision } from 'assets/js/application/useRevision'
 
 const useWpSelect = useSelect as WordPress.useSelect
 
-export const useEditPostTitle = () => {
+export const useEditPostData = () => {
   const { editPost } = useDispatch('core/editor')
   const { postTitle } = useWpSelect((select) => {
     const coreEditor = select('core/editor')
@@ -23,6 +23,11 @@ export const useEditPostTitle = () => {
       titleHistory.update(title)
       editPost({
         title,
+      })
+    },
+    editPostExcerpt: (excerpt: string) => {
+      editPost({
+        excerpt,
       })
     },
     postTitle,

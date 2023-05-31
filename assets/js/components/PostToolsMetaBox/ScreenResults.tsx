@@ -6,7 +6,7 @@ import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
 import { Fragment } from '@wordpress/element'
 import { TextOptionList } from 'assets/js/components/TextOptionList/TextOptionList'
-import { useEditPostTitle } from 'assets/js/application/useEditPostTitle'
+import { useEditPostData } from 'assets/js/application/useEditPostData'
 import { useEditMetadata } from 'assets/js/application/useEditMetadata'
 import { Button } from 'assets/js/components/Button/Button'
 import { TagSelect } from 'assets/js/components/TagSelect/TagSelect'
@@ -49,7 +49,8 @@ interface Props {
 }
 
 export function ScreenResults({ seoData, components, postHTML }: Props) {
-  const { editPostTitle, postTitle, revertTitle } = useEditPostTitle()
+  const { editPostTitle, editPostExcerpt, postTitle, revertTitle } =
+    useEditPostData()
   const {
     editMetaDescription,
     editMetaTitle,
@@ -107,26 +108,21 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   onRevert={revertTitle}
                 />
 
-                {components.summary && (
-                  <div>
-                    <h3 className="ntw-mb-2 ntw-mt-0 ntw-text-lg ntw-font-bold">
-                      Summary
-                    </h3>
-                    {seoData.summary.isLoading ? (
-                      'Loading...'
-                    ) : (
-                      <div>
-                        {seoData.summary.isError ? (
-                          <div>There was an error</div>
-                        ) : (
-                          <div>
-                            {seoData.summary.data?.summary || 'No summary'}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
+                <TextOptionList
+                  title="Excerpt"
+                  subtitle="Select an excerpt to use on the page"
+                  isLoading={seoData.excerpt.isLoading}
+                  hasError={seoData.excerpt.isError}
+                  options={seoData.excerpt.data}
+                  onSelect={editPostExcerpt}
+                  updateOptions={seoData.excerpt.update}
+                  onRefresh={() =>
+                    seoData.excerpt.refresh({
+                      postHTML,
+                    })
+                  }
+                  history={seoData.excerpt.history}
+                />
 
                 {components.tags && (
                   <TagSelect

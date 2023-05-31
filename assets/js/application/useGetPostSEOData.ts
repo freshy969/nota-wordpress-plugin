@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useCallback } from '@wordpress/element'
 import { NotaService } from 'assets/js/services/types'
-import { Summary } from 'assets/js/domain/nota'
 import { History, useHistoryList } from 'assets/js/application/useHistoryList'
 
 interface RunArgs {
@@ -18,16 +17,12 @@ interface OutputSection<TData> {
 }
 
 interface Output {
+  excerpt: OutputSection<string[]>
   headlines: OutputSection<string[]>
   metaDescriptions: OutputSection<string[]>
   metaTitles: OutputSection<string[]>
   tags: OutputSection<string[]>
   run: (args: RunArgs) => void
-  summary: {
-    isError: boolean
-    isLoading: boolean
-    data?: Summary
-  }
 }
 
 export type ComponentTypes =
@@ -56,6 +51,7 @@ export const useGetPostSEOData = ({
   const tags = useHistoryList<string[]>()
   const metaDescriptions = useHistoryList<string[]>()
   const metaTitles = useHistoryList<string[]>()
+  const excerpts = useHistoryList<string[]>()
 
   const { mutate: mutateHeadline, ...headline } = useMutation({
     mutationFn: ({
@@ -123,11 +119,21 @@ export const useGetPostSEOData = ({
     },
   })
   const { mutate: mutateSummary, ...summary } = useMutation({
-    mutationFn: ({ postHTML }: { postHTML: string }) => {
+    mutationFn: ({
+      postHTML,
+      regenerate,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+    }) => {
       return notaService.getSummary({
         postHTML,
         lengthOption: '1-sentence',
+        regenerate,
       })
+    },
+    onSuccess: (data) => {
+      excerpts.addHistoryItem([data.summary])
     },
   })
 
@@ -182,10 +188,13 @@ export const useGetPostSEOData = ({
       },
     },
     run,
-    summary: {
+    excerpt: {
       isError: summary.isError,
       isLoading: summary.isLoading,
-      data: summary.data,
+      ...excerpts,
+      refresh: (args: RunArgs) => {
+        mutateSummary({ postHTML: args.postHTML, regenerate: true })
+      },
     },
     tags: {
       isError: tagsMutation.isError,
