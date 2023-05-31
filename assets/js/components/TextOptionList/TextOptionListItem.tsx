@@ -1,16 +1,21 @@
 import { useEffect, useRef } from '@wordpress/element'
 import { Button } from 'assets/js/components/Button/Button'
+import clsx from 'clsx'
 
 interface Props {
   value: string
   onChange: (value: string) => void
   onSelect: () => void
+  selected?: boolean
+  onRevert: () => void
 }
 
 export function TextOptionListItem({
   value,
   onChange,
   onSelect,
+  selected,
+  onRevert,
 }: Props): React.ReactElement {
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -27,7 +32,14 @@ export function TextOptionListItem({
   }, [textAreaRef, value])
 
   return (
-    <div className="ntw-flex ntw-items-center ntw-justify-between ntw-rounded-lg ntw-border ntw-border-gray-100 ntw-p-16px">
+    <div
+      className={clsx(
+        'ntw-group ntw-flex ntw-items-center ntw-justify-between ntw-rounded-lg ntw-border ntw-border-gray-100 ntw-p-16px',
+        {
+          'ntw-bg-gamma-ray-200': selected,
+        },
+      )}
+    >
       <div className="ntw-flex-1">
         <textarea
           ref={textAreaRef}
@@ -35,13 +47,24 @@ export function TextOptionListItem({
           onChange={(e) => onChange(e.target.value)}
           rows={1}
           style={{ minHeight: '1.5rem' }}
-          className="ntw-w-full ntw-resize-none ntw-border-none ntw-text-paragraph-base ntw-shadow-none ntw-outline-none"
+          className="ntw-w-full ntw-resize-none ntw-border-none ntw-bg-transparent ntw-text-paragraph-base ntw-shadow-none ntw-outline-none"
+          disabled={selected}
         />
       </div>
-      <div className="ntw-ml-16px">
-        <Button onClick={onSelect} variant="secondary" size={300}>
-          Use suggestion
-        </Button>
+      <div
+        className={clsx('ntw-ml-16px', {
+          'ntw-opacity-0 group-hover:ntw-opacity-100': !selected,
+        })}
+      >
+        {selected ? (
+          <Button onClick={onRevert} size={300}>
+            Revert
+          </Button>
+        ) : (
+          <Button onClick={onSelect} variant="secondary" size={300}>
+            Select
+          </Button>
+        )}
       </div>
     </div>
   )

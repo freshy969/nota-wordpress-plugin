@@ -4,6 +4,8 @@ import { History } from 'assets/js/application/useHistoryList'
 import { useAddTaxonomy } from 'assets/js/application/useAddTaxonomy'
 import { wordPressService } from 'assets/js/services/wordPressService/wordPressService'
 import { Tag } from 'assets/js/components/TagSelect/Tag'
+import { Button } from 'assets/js/components/Button/Button'
+import { useState } from '@wordpress/element'
 
 const taxonomy = 'post_tag'
 
@@ -25,19 +27,38 @@ export function TagSelect({
   onRefresh,
   tags,
 }: Props) {
-  const { addTag, removeTag, existingTerms } = useAddTaxonomy({
+  // sometimes we may suggest a tag that already exists on the post
+  // or that the user has added manually themselves
+  // in this case we don't display it in the "generated tags" section
+  // but we also don't want to show it as a "selected tag" as it makes it look
+  // like it's something they or we have done through the tool
+  const [manuallyAddedTagNames, setManuallyAddedTagNames] = useState<string[]>(
+    [],
+  )
+  const { addTag, removeTag, existingTerms, revert } = useAddTaxonomy({
     taxonomy,
     wpService: wordPressService,
   })
 
-  const tagsAddedFromSuggestions = existingTerms.filter(({ name }) =>
-    tags?.includes(name),
-  )
+  const handleAddTag = (tagName: string) => {
+    setManuallyAddedTagNames([...manuallyAddedTagNames, tagName])
+    addTag(tagName)
+  }
+
+  // not that this differs from manuallyAddedTagNames
+  // because these are only the tags in the current history block that have been added
+  // whereas manuallyAddedTagNames is anything that's been added
+  const tagsAddedFromSuggestions = existingTerms.filter(({ name }) => {
+    return tags?.includes(name) && manuallyAddedTagNames.includes(name)
+  })
   const tagsAddedFromSuggestionsNames = tagsAddedFromSuggestions?.map(
     ({ name }) => name,
   )
-  const otherTags = tags?.filter(
-    (tag) => !tagsAddedFromSuggestionsNames?.includes(tag),
+  const existingTagNames = existingTerms.map(({ name }) => name)
+  const generatedTags = tags?.filter(
+    (tag) =>
+      !tagsAddedFromSuggestionsNames?.includes(tag) &&
+      !existingTagNames.includes(tag),
   )
 
   return (
@@ -54,19 +75,19 @@ export function TagSelect({
         hasError={hasError}
         retry={onRefresh}
       >
-        {!!otherTags?.length && (
+        {!!generatedTags?.length && (
           <div>
             <div className="ntw-mb-24px">
               <div className="ntw-mb-16px ntw-text-typography-medium">
                 Generated tags:
               </div>
               <div className="ntw-flex ntw-flex-wrap ntw-gap-16px">
-                {otherTags?.map((tag) => (
+                {generatedTags?.map((tag) => (
                   <Tag
                     key={tag}
                     tag={tag}
                     tags={tags || []}
-                    onClick={() => addTag(tag)}
+                    onClick={() => handleAddTag(tag)}
                   />
                 ))}
               </div>
@@ -85,6 +106,13 @@ export function TagSelect({
                   />
                 ))}
               </div>
+              {!!tagsAddedFromSuggestions.length && (
+                <div className="ntw-mt-8px">
+                  <Button onClick={revert} size={300}>
+                    Revert
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         )}

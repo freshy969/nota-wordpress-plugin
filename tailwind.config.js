@@ -80,6 +80,7 @@ module.exports = {
       },
     },
     colors: {
+      transparent: 'transparent',
       button: {
         default: '#3A7DFF',
         hover: '#2267EC',

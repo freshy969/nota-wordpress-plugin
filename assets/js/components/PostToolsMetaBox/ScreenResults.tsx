@@ -49,8 +49,21 @@ interface Props {
 }
 
 export function ScreenResults({ seoData, components, postHTML }: Props) {
-  const { editPostTitle, editPostExcerpt } = useEditPostData()
-  const { editMetaDescription, editMetaTitle } = useEditMetadata()
+  const {
+    editPostTitle,
+    editPostExcerpt,
+    postTitle,
+    revertTitle,
+    revertExcerpt,
+    postExcerpt,
+  } = useEditPostData()
+  const {
+    editMetaDescription,
+    editMetaTitle,
+    metaDescription,
+    revertMetaDescription,
+    revertMetaTitle,
+  } = useEditMetadata()
   const refreshAll = () => {
     const itemsToRefresh = [
       seoData.headlines,
@@ -97,6 +110,8 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     })
                   }
                   history={seoData.headlines.history}
+                  currentValue={postTitle}
+                  onRevert={revertTitle}
                 />
 
                 <TextOptionList
@@ -113,6 +128,8 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     })
                   }
                   history={seoData.excerpt.history}
+                  currentValue={postExcerpt}
+                  onRevert={revertExcerpt}
                 />
 
                 {components.tags && (
@@ -150,6 +167,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   history={seoData.metaTitles.history}
                   disabled={!components.metaTitle}
                   disabledMessage="Enabled Yoast to get meta title recommendations."
+                  onRevert={revertMetaTitle}
                 />
                 <TextOptionList
                   title="Meta Description"
@@ -167,6 +185,8 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   history={seoData.metaDescriptions.history}
                   disabled={!components.metaDescription}
                   disabledMessage="Enabled Yoast to get meta description recommendations."
+                  currentValue={metaDescription}
+                  onRevert={revertMetaDescription}
                 />
               </div>
             </Tab.Panel>

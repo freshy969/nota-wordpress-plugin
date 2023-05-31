@@ -25,6 +25,12 @@ namespace WordPress {
     url: string
   }
 
+  interface WordPressPost {
+    meta: Record<string, string>
+    tags: number[]
+    title: string
+  }
+
   interface CoreStoreSelectors {
     getTaxonomy: (taxonomy: string) =>
       | {
@@ -38,6 +44,7 @@ namespace WordPress {
   }
 
   interface CoreEditorStoreSelectors {
+    getCurrentPost: () => WordPressPost
     getEditedPostContent: () => string
     getEditedPostAttribute: <T>(attribute: string) => T
     getPermalinkParts: () => {
@@ -51,6 +58,10 @@ namespace WordPress {
     getDescription: () => string
     getSeoTitle: () => string
     getSeoTitleTemplate: () => string
+    getSnippetEditorData: () => {
+      title: string
+      description: string
+    }
   }
 
   function WpDataSelectFn(store: 'core'): CoreStoreSelectors

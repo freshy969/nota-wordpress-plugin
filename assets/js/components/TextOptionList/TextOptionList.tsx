@@ -15,6 +15,8 @@ interface Props {
   disabled?: boolean
   disabledMessage?: string
   history?: History
+  currentValue?: string
+  onRevert: () => void
 }
 export function TextOptionList({
   options,
@@ -28,6 +30,8 @@ export function TextOptionList({
   disabled,
   disabledMessage,
   history,
+  currentValue,
+  onRevert,
 }: Props) {
   return (
     <div>
@@ -59,6 +63,8 @@ export function TextOptionList({
                     updateOptions(nextEdits)
                   }}
                   onSelect={() => onSelect(option)}
+                  selected={currentValue === option}
+                  onRevert={onRevert}
                 />
               </div>
             ))}
