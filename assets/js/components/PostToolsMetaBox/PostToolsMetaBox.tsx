@@ -18,7 +18,7 @@ const components = {
   headlines: true,
   metaDescription: window.notaTools.components.meta_description,
   metaTitle: window.notaTools.components.meta_title,
-  summary: false,
+  summary: true,
   tags: window.notaTools.components.tags,
 }
 
