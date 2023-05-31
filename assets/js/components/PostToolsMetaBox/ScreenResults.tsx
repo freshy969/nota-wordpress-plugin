@@ -49,9 +49,14 @@ interface Props {
 }
 
 export function ScreenResults({ seoData, components, postHTML }: Props) {
-  const { editPostTitle, postTitle } = useEditPostTitle()
-  const { editMetaDescription, editMetaTitle, metaDescription } =
-    useEditMetadata()
+  const { editPostTitle, postTitle, revertTitle } = useEditPostTitle()
+  const {
+    editMetaDescription,
+    editMetaTitle,
+    metaDescription,
+    revertMetaDescription,
+    revertMetaTitle,
+  } = useEditMetadata()
   const refreshAll = () => {
     const itemsToRefresh = [
       seoData.headlines,
@@ -99,6 +104,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   }
                   history={seoData.headlines.history}
                   currentValue={postTitle}
+                  onRevert={revertTitle}
                 />
 
                 {components.summary && (
@@ -157,6 +163,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   history={seoData.metaTitles.history}
                   disabled={!components.metaTitle}
                   disabledMessage="Enabled Yoast to get meta title recommendations."
+                  onRevert={revertMetaTitle}
                 />
                 <TextOptionList
                   title="Meta Description"
@@ -175,6 +182,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   disabled={!components.metaDescription}
                   disabledMessage="Enabled Yoast to get meta description recommendations."
                   currentValue={metaDescription}
+                  onRevert={revertMetaDescription}
                 />
               </div>
             </Tab.Panel>

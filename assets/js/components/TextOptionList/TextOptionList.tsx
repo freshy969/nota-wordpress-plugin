@@ -16,6 +16,7 @@ interface Props {
   disabledMessage?: string
   history?: History
   currentValue?: string
+  onRevert: () => void
 }
 export function TextOptionList({
   options,
@@ -30,6 +31,7 @@ export function TextOptionList({
   disabledMessage,
   history,
   currentValue,
+  onRevert,
 }: Props) {
   return (
     <div>
@@ -62,6 +64,7 @@ export function TextOptionList({
                   }}
                   onSelect={() => onSelect(option)}
                   selected={currentValue === option}
+                  onRevert={onRevert}
                 />
               </div>
             ))}

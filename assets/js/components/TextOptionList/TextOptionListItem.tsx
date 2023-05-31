@@ -7,6 +7,7 @@ interface Props {
   onChange: (value: string) => void
   onSelect: () => void
   selected?: boolean
+  onRevert: () => void
 }
 
 export function TextOptionListItem({
@@ -14,6 +15,7 @@ export function TextOptionListItem({
   onChange,
   onSelect,
   selected,
+  onRevert,
 }: Props): React.ReactElement {
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -55,12 +57,7 @@ export function TextOptionListItem({
         })}
       >
         {selected ? (
-          <Button
-            onClick={() => {
-              // revert here
-            }}
-            size={300}
-          >
+          <Button onClick={onRevert} size={300}>
             Revert
           </Button>
         ) : (

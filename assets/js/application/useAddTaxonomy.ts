@@ -1,5 +1,6 @@
 import { useSelect, useDispatch } from '@wordpress/data'
 import { useState, useEffect } from '@wordpress/element'
+import { useRevision } from 'assets/js/application/useRevision'
 import { WordPressService } from 'assets/js/services/types'
 
 const useWpSelect = useSelect as WordPress.useSelect
@@ -54,6 +55,14 @@ export const useAddTaxonomy = ({ taxonomy, wpService }: Args) => {
       [taxonomy],
     )
 
+  const termRevision = useRevision({
+    trackValue: termIds,
+    revertFn: (lastTerms) => {
+      if (!taxonomyDetail?.rest_base) return
+      editPost({ [taxonomyDetail.rest_base]: lastTerms })
+    },
+  })
+
   // we do this to stop the terms disappearing / appearing while WP
   // makes REST API requests
   useEffect(() => {
@@ -72,7 +81,9 @@ export const useAddTaxonomy = ({ taxonomy, wpService }: Args) => {
         namespace,
       })
       .then((nextTerm) => {
-        editPost({ [taxonomyDetail.rest_base]: [...termIds, nextTerm.id] })
+        const nextTerms = [...termIds, nextTerm.id]
+        termRevision.update(nextTerms)
+        editPost({ [taxonomyDetail.rest_base]: nextTerms })
       })
   }
 
@@ -81,13 +92,15 @@ export const useAddTaxonomy = ({ taxonomy, wpService }: Args) => {
     // get the tag ID by the name
     const termIdIdx = termIds.indexOf(termId)
     if (termIdIdx < 0) return
+    const nextTerms = [
+      ...termIds.slice(0, termIdIdx),
+      ...termIds.slice(termIdIdx + 1),
+    ]
+    termRevision.update(nextTerms)
     editPost({
-      [taxonomyDetail.rest_base]: [
-        ...termIds.slice(0, termIdIdx),
-        ...termIds.slice(termIdIdx + 1),
-      ],
+      [taxonomyDetail.rest_base]: nextTerms,
     })
   }
 
-  return { addTag, removeTag, existingTerms }
+  return { addTag, removeTag, existingTerms, revert: termRevision.revert }
 }
