@@ -60,6 +60,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
   const {
     editMetaDescription,
     editMetaTitle,
+    metaTitle,
     metaDescription,
     revertMetaDescription,
     revertMetaTitle,
@@ -167,6 +168,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   history={seoData.metaTitles.history}
                   disabled={!components.metaTitle}
                   disabledMessage="Enabled Yoast to get meta title recommendations."
+                  currentValue={metaTitle}
                   onRevert={revertMetaTitle}
                 />
                 <TextOptionList

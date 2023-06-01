@@ -121,7 +121,8 @@ export const useEditMetadata = () => {
   return {
     editMetaDescription,
     editMetaTitle,
-    metaDescription: seoData.metaDescription,
+    metaDescription: seoData.metaValues.description,
+    metaTitle: seoData.metaValues.title,
     metaTitleFormatted: seoData.seoTitleFormatted,
     revertMetaDescription,
     revertMetaTitle,
