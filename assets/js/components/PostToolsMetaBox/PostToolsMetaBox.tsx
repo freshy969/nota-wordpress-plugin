@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from '@wordpress/element'
 import { ScreenInitial } from 'assets/js/components/PostToolsMetaBox/ScreenInitial'
 import { ScreenResults } from 'assets/js/components/PostToolsMetaBox/ScreenResults'
+import { Notice } from '@wordpress/components'
 
 enum Screen {
   Initial,
@@ -32,6 +33,19 @@ const PostToolsMetaBoxInner = () => {
     notaService,
     components,
   })
+
+  if (!window.notaTools.tools_active) {
+    return (
+      <Notice
+        status="error"
+        isDismissible={false}
+        className="ntw-border-l-[4px]"
+      >
+        Please ensure you have set an API key to continue using Nota&apos;s
+        tools.
+      </Notice>
+    )
+  }
 
   return (
     <div>

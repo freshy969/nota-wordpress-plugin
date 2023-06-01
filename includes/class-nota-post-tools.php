@@ -12,6 +12,13 @@ defined( 'ABSPATH' ) || exit;
  */
 class Nota_Post_Tools {
 	/**
+	 * Nota settings class.
+	 * 
+	 * @var Nota_Settings
+	 */
+	private $settings;
+
+	/**
 	 * The meta key used to store the SEO title.
 	 * 
 	 * @var string
@@ -28,7 +35,8 @@ class Nota_Post_Tools {
 	/**
 	 * Post tools constructor
 	 */
-	public function __construct() {
+	public function __construct( $settings ) {
+		$this->settings = $settings;
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'init', array( $this, 'register_seo_meta_fields' ) );
@@ -81,6 +89,7 @@ class Nota_Post_Tools {
 						'register_controls' => [
 							'seo' => ! $yoast_enabled,
 						],
+						'tools_active'      => ! empty( $this->settings->get_option( 'api_key' ) ),
 					]
 				);
 				wp_enqueue_script( 'nota-post-tools' );
