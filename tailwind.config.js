@@ -90,6 +90,12 @@ module.exports = {
       gray: {
         100: '#E9E9E9',
       },
+      status: {
+        error: {
+          10: '#FDEEEA',
+          100: '#D83E35',
+        },
+      },
       typography: {
         dark: '#050E21',
         medium: '#5E6064',
