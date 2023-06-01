@@ -12,6 +12,7 @@ interface Window {
     register_controls: {
       seo: boolean
     }
+    tools_active: boolean
   }
 }
 
