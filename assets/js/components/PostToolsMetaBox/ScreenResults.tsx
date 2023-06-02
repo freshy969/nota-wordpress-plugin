@@ -66,16 +66,9 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
     revertMetaTitle,
   } = useEditMetadata()
   const refreshAll = () => {
-    const itemsToRefresh = [
-      seoData.headlines,
-      seoData.tags,
-      seoData.metaDescriptions,
-      seoData.metaTitles,
-    ]
-    itemsToRefresh.forEach((d) => {
-      d.refresh({
-        postHTML,
-      })
+    const componentKeys = Object.keys(components) as ComponentTypes[]
+    componentKeys.forEach((component) => {
+      seoData[component].refresh({ postHTML })
     })
   }
   return (
