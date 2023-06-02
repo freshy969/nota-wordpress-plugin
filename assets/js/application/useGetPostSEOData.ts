@@ -144,16 +144,17 @@ export const useGetPostSEOData = ({
 
   const run = useCallback(
     (args: RunArgs) => {
-      const componentMutations: Record<string, () => void> = {
+      const componentMutations: Record<ComponentTypes, () => void> = {
         headlines: () => mutateHeadline({ postHTML: args.postHTML }),
-        summary: () => mutateSummary({ postHTML: args.postHTML }),
+        excerpt: () => mutateSummary({ postHTML: args.postHTML }),
         tags: () => mutateTags({ postHTML: args.postHTML }),
-        metaDescription: () =>
+        metaDescriptions: () =>
           mutateMetaDescriptions({ postHTML: args.postHTML }),
-        metaTitle: () => mutateMetaTitles({ postHTML: args.postHTML }),
+        metaTitles: () => mutateMetaTitles({ postHTML: args.postHTML }),
       }
-      Object.entries(components).forEach(([component, shouldRun]) => {
-        if (!shouldRun) return
+      const componentKeys = Object.keys(components) as ComponentTypes[]
+      componentKeys.forEach((component) => {
+        if (!components[component]) return
         componentMutations[component]?.()
       })
     },
