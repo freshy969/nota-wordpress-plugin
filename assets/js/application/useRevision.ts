@@ -1,4 +1,4 @@
-import { useEffect, useState } from '@wordpress/element'
+import { useEffect, useMemo, useState } from '@wordpress/element'
 
 interface Args<T> {
   trackValue: T
@@ -10,6 +10,15 @@ export const useRevision = <T>({ trackValue, revertFn }: Args<T>) => {
   // holds any revisions made by nota
   const [notaHistory, setNotaHistory] = useState<T[]>([])
 
+  // finds the last non-nota update so that users can revert
+  const lastNonNotaValue = useMemo(() => {
+    return history.find((historyItem) => !notaHistory.includes(historyItem))
+  }, [history, notaHistory])
+  // we should only revert to something if the last non-nota value exists
+  // and if the last non-nota value is not the same as the current value
+  const hasRevision =
+    typeof lastNonNotaValue !== 'undefined' && trackValue !== lastNonNotaValue
+
   // whenever the track value changes we add this to the history
   // this allows us to keep track of any outside edits to the value in question
   // e.g. updates to the post title directory
@@ -17,11 +26,7 @@ export const useRevision = <T>({ trackValue, revertFn }: Args<T>) => {
     setHistory((current) => [trackValue, ...current])
   }, [trackValue])
 
-  // finds the last non-nota update and reverts to that
   const revert = () => {
-    const lastNonNotaValue = history.find(
-      (historyItem) => !notaHistory.includes(historyItem),
-    )
     if (typeof lastNonNotaValue !== 'undefined') {
       revertFn(lastNonNotaValue)
     }
@@ -34,6 +39,6 @@ export const useRevision = <T>({ trackValue, revertFn }: Args<T>) => {
 
   return {
     update,
-    revert,
+    revert: hasRevision ? revert : undefined,
   }
 }

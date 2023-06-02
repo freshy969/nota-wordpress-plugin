@@ -7,7 +7,7 @@ interface Props {
   onChange: (value: string) => void
   onSelect: () => void
   selected?: boolean
-  onRevert: () => void
+  onRevert?: () => void
 }
 
 export function TextOptionListItem({
@@ -56,11 +56,12 @@ export function TextOptionListItem({
           'ntw-opacity-0 group-hover:ntw-opacity-100': !selected,
         })}
       >
-        {selected ? (
+        {!!(selected && onRevert) && (
           <Button onClick={onRevert} size={300}>
             Revert
           </Button>
-        ) : (
+        )}
+        {!selected && (
           <Button onClick={onSelect} variant="secondary" size={300}>
             Select
           </Button>
