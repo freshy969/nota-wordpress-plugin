@@ -33,7 +33,8 @@ export const useHistoryList = <T>({ initialItems, key }: Args<T>) => {
   )
 
   useEffect(() => {
-    if (typeof savedHistory === undefined) return
+    // ignore undefined and empty values
+    if (typeof savedHistory === 'undefined' || !savedHistory) return
     try {
       const parsedHistory = JSON.parse(savedHistory)
       setItems(parsedHistory)
