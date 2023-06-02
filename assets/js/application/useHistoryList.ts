@@ -1,4 +1,9 @@
-import { useCallback, useState } from '@wordpress/element'
+import { useSelect } from '@wordpress/data'
+import { useCallback, useEffect, useState } from '@wordpress/element'
+import { wordPressService } from 'assets/js/services/wordPressService/wordPressService'
+import { logger } from 'assets/js/utils/logger/logger'
+
+const useWpSelect = useSelect as WordPress.useSelect
 
 export interface History {
   hasNext: boolean
@@ -9,9 +14,34 @@ export interface History {
   totalHistoryItems: number
 }
 
-export const useHistoryList = <T>(initialItems?: T) => {
+interface Args<T> {
+  initialItems?: T
+  key: string
+}
+export const useHistoryList = <T>({ initialItems, key }: Args<T>) => {
   const [items, setItems] = useState<T[]>(initialItems ? [initialItems] : [])
   const [historyIndex, setHistoryIndex] = useState(initialItems ? 0 : -1)
+  const { postId, savedHistory } = useWpSelect(
+    (select) => {
+      const coreEditor = select('core/editor')
+      return {
+        savedHistory: coreEditor.getCurrentPost()?.meta?.[key],
+        postId: coreEditor.getCurrentPostId(),
+      }
+    },
+    [key],
+  )
+
+  useEffect(() => {
+    if (typeof savedHistory === undefined) return
+    try {
+      const parsedHistory = JSON.parse(savedHistory)
+      setItems(parsedHistory)
+      setHistoryIndex(parsedHistory.length - 1)
+    } catch (e) {
+      logger.error(e)
+    }
+  }, [savedHistory])
 
   const totalHistoryItems = items.length
   const hasNext = historyIndex < totalHistoryItems - 1
@@ -32,18 +62,35 @@ export const useHistoryList = <T>(initialItems?: T) => {
       setItems((current) => {
         const updated = [...current]
         updated.splice(historyIndex, 1, nextItems)
+        wordPressService
+          .editMeta({
+            postId,
+            key,
+            value: JSON.stringify(updated),
+          })
+          .catch(logger.error)
         return updated
       })
     },
-    [historyIndex, setItems],
+    [historyIndex, setItems, key, postId],
   )
 
   const addHistoryItem = useCallback(
     (nextItems: T) => {
-      setItems((current) => [...current, nextItems])
+      setItems((current) => {
+        const next = [...current, nextItems]
+        wordPressService
+          .editMeta({
+            postId,
+            key,
+            value: JSON.stringify(next),
+          })
+          .catch(logger.error)
+        return next
+      })
       setHistoryIndex((n) => n + 1)
     },
-    [setItems],
+    [setItems, key, postId],
   )
 
   return {

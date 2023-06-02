@@ -19,18 +19,19 @@ class Nota_Post_Tools {
 	private $settings;
 
 	/**
-	 * The meta key used to store the SEO title.
+	 * Meta keys used to save WP data
 	 * 
-	 * @var string
+	 * @var array
 	 */
-	public static $seo_title_meta_key = 'nota_seo_page_title';
-
-	/**
-	 * The meta key used to store the SEO description.
-	 * 
-	 * @var string
-	 */
-	private static $seo_desc_meta_key = 'nota_seo_page_description';
+	private static $meta_keys = [
+		'seo_title' => 'nota_seo_page_title',
+		'seo_desc' => 'nota_seo_page_description',
+		'headline_history' => 'nota_headline_history',
+		'excerpt_history' => 'nota_excerpt_history',
+		'tag_history' => 'nota_tag_history',
+		'seo_title_history' => 'nota_seo_title_history',
+		'seo_desc_history' => 'nota_seo_desc_history',
+	];
 
 	/**
 	 * Post tools constructor
@@ -82,10 +83,7 @@ class Nota_Post_Tools {
 							'meta_title'       => true,
 							'tags'             => in_array( 'post_tag', $taxonomies ),
 						],
-						'meta_keys'         => [
-							'seo_title' => self::$seo_title_meta_key,
-							'seo_desc'  => self::$seo_desc_meta_key,
-						],
+						'meta_keys'         => self::$meta_keys,
 						'register_controls' => [
 							'seo' => ! $yoast_enabled,
 						],
@@ -140,17 +138,12 @@ class Nota_Post_Tools {
 				'type'         => 'string',
 			);
 
+			foreach ( self::$meta_keys as $meta_key )
 			register_post_meta(
 				$post_type,
-				self::$seo_title_meta_key,
+				$meta_key,
 				$meta_args
 			);  
-
-			register_post_meta(
-				$post_type,
-				self::$seo_desc_meta_key,
-				$meta_args
-			);
 		}
 	}
 
@@ -177,7 +170,7 @@ class Nota_Post_Tools {
 			return $post_title;
 		}
 
-		$nota_post_title = get_post_meta( $post->ID, self::$seo_title_meta_key, true );
+		$nota_post_title = get_post_meta( $post->ID, self::$meta_keys['seo_title'], true );
 		if ( ! $nota_post_title ) {
 			return $post_title;
 		}
@@ -197,7 +190,7 @@ class Nota_Post_Tools {
 			return;
 		}
 
-		$meta_desc = get_post_meta( $post->ID, self::$seo_desc_meta_key, true );
+		$meta_desc = get_post_meta( $post->ID, self::$meta_keys['seo_desc'], true );
 		if ( ! $meta_desc ) {
 			return;
 		}

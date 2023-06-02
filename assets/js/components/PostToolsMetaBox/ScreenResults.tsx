@@ -166,7 +166,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     })
                   }
                   history={seoData.metaTitles.history}
-                  disabled={!components.metaTitle}
+                  disabled={!components.metaTitles}
                   disabledMessage="Enabled Yoast to get meta title recommendations."
                   currentValue={metaTitle}
                   onRevert={revertMetaTitle}
@@ -185,7 +185,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     })
                   }
                   history={seoData.metaDescriptions.history}
-                  disabled={!components.metaDescription}
+                  disabled={!components.metaDescriptions}
                   disabledMessage="Enabled Yoast to get meta description recommendations."
                   currentValue={metaDescription}
                   onRevert={revertMetaDescription}
