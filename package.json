@@ -22,7 +22,8 @@
   },
   "scripts": {
     "build": "wp-scripts build",
-    "bundle": "yarn build && wp-scripts plugin-zip",
+    "bundle": "yarn build && yarn plugin-zip",
+    "plugin-zip": "wp-scripts plugin-zip",
     "prepare": "husky install",
     "start": "wp-scripts start"
   },
