@@ -89,7 +89,7 @@ class Nota {
 		$this->settings   = new Nota_Settings();
 		$this->api        = new Nota_Api( $this->settings );
 		$this->wp_rest    = new Nota_WP_Rest( $this->api );
-		$this->post_tools = new Nota_Post_Tools();
+		$this->post_tools = new Nota_Post_Tools( $this->settings );
 	}
 
 	/**
