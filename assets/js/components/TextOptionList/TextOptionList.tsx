@@ -16,7 +16,7 @@ interface Props {
   disabledMessage?: string
   history?: History
   currentValue?: string
-  onRevert: () => void
+  onRevert?: () => void
 }
 export function TextOptionList({
   options,

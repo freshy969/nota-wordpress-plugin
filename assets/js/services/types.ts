@@ -24,7 +24,15 @@ interface FindOrCreateTermArgs {
   restBase: string
   namespace: string
 }
+
+interface EditMetaArgs {
+  postId: number
+  key: string
+  value: string
+}
+
 export interface WordPressService {
+  editMeta: (args: EditMetaArgs) => Promise<void>
   findOrCreateTerm: (
     args: FindOrCreateTermArgs,
   ) => Promise<{ id: number; term: string }>

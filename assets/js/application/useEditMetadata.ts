@@ -111,12 +111,12 @@ export const useEditMetadata = () => {
   }
 
   const revertMetaDescription = () => {
-    yoastDescriptionHistory.revert()
-    metaDescHistory.revert()
+    yoastDescriptionHistory.revert?.()
+    metaDescHistory.revert?.()
   }
   const revertMetaTitle = () => {
-    yoastTitleHistory.revert()
-    metaTitleHistory.revert()
+    yoastTitleHistory.revert?.()
+    metaTitleHistory.revert?.()
   }
   return {
     editMetaDescription,
@@ -124,7 +124,9 @@ export const useEditMetadata = () => {
     metaDescription: seoData.metaValues.description,
     metaTitle: seoData.metaValues.title,
     metaTitleFormatted: seoData.seoTitleFormatted,
-    revertMetaDescription,
-    revertMetaTitle,
+    revertMetaDescription: metaDescHistory.revert
+      ? revertMetaDescription
+      : undefined,
+    revertMetaTitle: metaTitleHistory.revert ? revertMetaTitle : undefined,
   }
 }

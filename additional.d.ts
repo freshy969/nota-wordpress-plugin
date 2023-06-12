@@ -1,3 +1,11 @@
+type MetaKeys =
+  | 'seo_title'
+  | 'seo_desc'
+  | 'headline_history'
+  | 'excerpt_history'
+  | 'tag_history'
+  | 'seo_title_history'
+  | 'seo_desc_history'
 interface Window {
   notaTools: {
     ajaxUrl: string
@@ -8,7 +16,7 @@ interface Window {
       meta_title: boolean
       tags: boolean
     }
-    meta_keys: Record<string, string>
+    meta_keys: Record<MetaKeys, string>
     register_controls: {
       seo: boolean
     }
@@ -46,6 +54,7 @@ namespace WordPress {
 
   interface CoreEditorStoreSelectors {
     getCurrentPost: () => WordPressPost
+    getCurrentPostId: () => number
     getEditedPostContent: () => string
     getEditedPostAttribute: <T>(attribute: string) => T
     getPermalinkParts: () => {

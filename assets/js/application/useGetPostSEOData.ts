@@ -27,10 +27,10 @@ interface Output {
 
 export type ComponentTypes =
   | 'headlines'
-  | 'summary'
+  | 'excerpt'
   | 'tags'
-  | 'metaDescription'
-  | 'metaTitle'
+  | 'metaDescriptions'
+  | 'metaTitles'
 
 interface Args {
   notaService: Pick<
@@ -47,11 +47,16 @@ export const useGetPostSEOData = ({
   notaService,
   components,
 }: Args): Output => {
-  const headlines = useHistoryList<string[]>()
-  const tags = useHistoryList<string[]>()
-  const metaDescriptions = useHistoryList<string[]>()
-  const metaTitles = useHistoryList<string[]>()
-  const excerpts = useHistoryList<string[]>()
+  const metaKeys = window.notaTools.meta_keys
+  const headlines = useHistoryList<string[]>({ key: metaKeys.headline_history })
+  const tags = useHistoryList<string[]>({ key: metaKeys.tag_history })
+  const metaDescriptions = useHistoryList<string[]>({
+    key: metaKeys.seo_desc_history,
+  })
+  const metaTitles = useHistoryList<string[]>({
+    key: metaKeys.seo_title_history,
+  })
+  const excerpts = useHistoryList<string[]>({ key: metaKeys.excerpt_history })
 
   const { mutate: mutateHeadline, ...headline } = useMutation({
     mutationFn: ({
@@ -139,16 +144,17 @@ export const useGetPostSEOData = ({
 
   const run = useCallback(
     (args: RunArgs) => {
-      const componentMutations: Record<string, () => void> = {
+      const componentMutations: Record<ComponentTypes, () => void> = {
         headlines: () => mutateHeadline({ postHTML: args.postHTML }),
-        summary: () => mutateSummary({ postHTML: args.postHTML }),
+        excerpt: () => mutateSummary({ postHTML: args.postHTML }),
         tags: () => mutateTags({ postHTML: args.postHTML }),
-        metaDescription: () =>
+        metaDescriptions: () =>
           mutateMetaDescriptions({ postHTML: args.postHTML }),
-        metaTitle: () => mutateMetaTitles({ postHTML: args.postHTML }),
+        metaTitles: () => mutateMetaTitles({ postHTML: args.postHTML }),
       }
-      Object.entries(components).forEach(([component, shouldRun]) => {
-        if (!shouldRun) return
+      const componentKeys = Object.keys(components) as ComponentTypes[]
+      componentKeys.forEach((component) => {
+        if (!components[component]) return
         componentMutations[component]?.()
       })
     },
