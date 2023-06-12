@@ -17,6 +17,7 @@ interface Window {
       tags: boolean
     }
     meta_keys: Record<MetaKeys, string>
+    post_title_suffix: string
     register_controls: {
       seo: boolean
     }

@@ -84,6 +84,7 @@ class Nota_Post_Tools {
 							'tags'             => in_array( 'post_tag', $taxonomies ),
 						],
 						'meta_keys'         => self::$meta_keys,
+						'post_title_suffix' => $this->get_post_title_suffix(),
 						'register_controls' => [
 							'seo' => ! $yoast_enabled,
 						],
@@ -94,6 +95,18 @@ class Nota_Post_Tools {
 				wp_enqueue_style( 'nota-post-tools-style', NOTA_PLUGIN_URL . 'dist/postTools.css', [], $tool_script_args['version'] );
 				wp_enqueue_style( 'nota-font-manrope', 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap', [], '1.0.0' );
 		}
+	}
+
+	/**
+	 * Returns the post title suffix.
+	 * This is normally appended by Yoast, but if not WordPress will add their default.
+	 * We want to display this to users so we'll show them the WordPress default if need be.
+	 */
+	private function get_post_title_suffix() {
+		// extracted from wp_get_document_title
+		$sep = apply_filters( 'document_title_separator', '-' );
+		$site_title = get_bloginfo( 'name', 'display' );
+		return $sep . ' ' . $site_title;
 	}
 
 	/**
