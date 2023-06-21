@@ -17,6 +17,9 @@ export const useEditMetadata = () => {
       coreEditor.getEditedPostAttribute<Record<string, string>>('meta')
     const yoastRawData = _yoast?.getSnippetEditorData()
 
+    const seoTitle =
+      postMeta?.[window.notaTools.meta_keys.seo_title] ||
+      coreEditor.getEditedPostAttribute<string>('title')
     return {
       yoastValues: yoastRawData,
       metaValues: {
@@ -29,7 +32,7 @@ export const useEditMetadata = () => {
       seoTitleTemplate: _yoast?.getSeoTitleTemplate(),
       seoTitleFormatted:
         _yoast?.getSeoTitle() ||
-        postMeta?.[window.notaTools.meta_keys.seo_title],
+        `${seoTitle} ${window.notaTools.post_title_suffix}`,
     }
   }, [])
   const coreEditor = useDispatch('core/editor')
