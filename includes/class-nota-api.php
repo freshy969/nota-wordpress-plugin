@@ -66,12 +66,24 @@ class Nota_Api {
 		$status_code  = (int) wp_remote_retrieve_response_code( $response );
 
 		if ( $status_code < 200 || $status_code > 299 ) {
-			Nota_Logger::debug( wp_remote_retrieve_body( $response ) );
+			$err_body = wp_remote_retrieve_body( $response );
+			Nota_Logger::debug( $err_body );
+			$err_body_json = json_decode( $err_body, false );
+
+			// The Nota API will return human readable errors with the "isNotaError" property.
+			// Let's return these so that we can distingush them on the front-end from other generic errors.
+			if ( ! is_null( $err_body_json ) && isset( $err_body_json->isNotaError ) && $err_body_json->isNotaError && $err_body_json->message ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				return new WP_Error(
+					'nota_error',
+					$err_body_json->message 
+				);
+			}
+
 			return new WP_Error(
 				'nota_api_error',
 				'Non-200 status code returned from Nota API',
 				[
-					'body'        => json_decode( wp_remote_retrieve_body( $response ) ),
+					'body'        => $err_body_json || $err_body,
 					'status_code' => $status_code,
 				]
 			);
