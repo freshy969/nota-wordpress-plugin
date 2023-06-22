@@ -31,10 +31,11 @@ class Nota_Api {
 	 * Returns the API url
 	 */
 	private function get_api_url() {
-		if ( Nota::is_debug_mode() && $this->settings->get_option( 'api_url' ) ) {
-			return trailingslashit( $this->settings->get_option( 'api_url' ) ); 
+		$api_url = $this->settings->get_option( 'api_url' );
+		if ( ! $api_url ) {
+			return new WP_Error( 'nota_api_error', 'Missing API URL' );
 		}
-		return 'https://api.heynota.com/';
+		return trailingslashit( $api_url );
 	}
 
 	/**
@@ -61,8 +62,15 @@ class Nota_Api {
 				'timeout' => MINUTE_IN_SECONDS * 2, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 			)
 		);
-		$url          = $this->get_api_url() . $endpoint;
-		$response     = wp_remote_request( $url, $request_args );
+
+		$url = $this->get_api_url();
+
+		if ( is_wp_error( $url ) ) {
+			return $url;
+		}
+
+		$url      = $url . $endpoint;
+		$response = wp_remote_request( $url, $request_args );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
