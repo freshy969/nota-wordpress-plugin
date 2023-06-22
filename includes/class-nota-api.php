@@ -33,7 +33,7 @@ class Nota_Api {
 	private function get_api_url() {
 		$api_url = $this->settings->get_option( 'api_url' );
 		if ( ! $api_url ) {
-			return new WP_Error( 'nota_api_error', 'Missing API URL' );
+			return new WP_Error( 'nota_error', 'Missing API URL' );
 		}
 		return trailingslashit( $api_url );
 	}
