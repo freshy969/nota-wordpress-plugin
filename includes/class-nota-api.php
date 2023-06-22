@@ -63,7 +63,12 @@ class Nota_Api {
 		);
 		$url          = $this->get_api_url() . $endpoint;
 		$response     = wp_remote_request( $url, $request_args );
-		$status_code  = (int) wp_remote_retrieve_response_code( $response );
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$status_code = (int) wp_remote_retrieve_response_code( $response );
 
 		if ( $status_code < 200 || $status_code > 299 ) {
 			Nota_Logger::debug( wp_remote_retrieve_body( $response ) );
@@ -77,9 +82,6 @@ class Nota_Api {
 			);
 		}
 
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
 		return json_decode( wp_remote_retrieve_body( $response ) );
 	}
 
