@@ -44,7 +44,7 @@ class Nota_Settings {
 	 * Registers menus
 	 */
 	public function register_menu() {
-		add_options_page( __( 'Nota settings', 'nota' ), __( 'Nota', 'nota' ), 'manage_options', $this->setting_page_slug, array( $this, 'render_settings_page' ) );
+		add_options_page( __( 'Nota settings', 'nota' ), __( 'Nota tools', 'nota' ), 'manage_options', $this->setting_page_slug, array( $this, 'render_settings_page' ) );
 	}
 
 	/**
