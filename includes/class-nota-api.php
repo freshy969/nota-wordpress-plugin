@@ -54,14 +54,18 @@ class Nota_Api {
 			'nota-subscription-key' => $this->settings->get_option( 'api_key' ),
 		);
 
-		$request_args = array_merge(
+		$request_args    = array_merge(
 			$args,
 			array(
 				'method'  => $method,
 				'headers' => array_merge( $headers, $default_headers ),
-				'timeout' => MINUTE_IN_SECONDS * 2, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 			)
 		);
+		$request_timeout = (int) $this->settings->get_option( 'request_timeout_seconds' );
+
+		if ( $request_timeout ) {
+			$request_args['timeout'] = $request_timeout;
+		}
 
 		$url = $this->get_api_url();
 
