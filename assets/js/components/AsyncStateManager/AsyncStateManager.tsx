@@ -1,4 +1,4 @@
-import { Button } from '@wordpress/components'
+import { Notice } from 'assets/js/components/Notice/Notice'
 
 const defaultErrorMessage = 'Unknown error occurred.'
 const getErrorMessage = (errors: unknown) => {
@@ -53,12 +53,17 @@ export function AsyncStateManager({
       ) : (
         <div>
           {!!error ? (
-            <div>
-              {getErrorMessage(error)}{' '}
-              <Button variant="link" onClick={retry}>
-                Retry
-              </Button>
-            </div>
+            <Notice level="error">
+              <div className="ntw-flex ntw-justify-between ntw-gap-16px">
+                <div>{getErrorMessage(error)}</div>
+                <button
+                  onClick={retry}
+                  className="ntw-font-bold ntw-uppercase ntw-tracking-wider"
+                >
+                  Retry
+                </button>
+              </div>
+            </Notice>
           ) : (
             children
           )}
