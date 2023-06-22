@@ -69,20 +69,31 @@ class Nota_Api {
 		}
 
 		$status_code = (int) wp_remote_retrieve_response_code( $response );
+		$body        = wp_remote_retrieve_body( $response );
 
 		if ( $status_code < 200 || $status_code > 299 ) {
-			Nota_Logger::debug( wp_remote_retrieve_body( $response ) );
+			Nota_Logger::debug( $body );
 			return new WP_Error(
 				'nota_api_error',
 				'Non-200 status code returned from Nota API',
 				[
-					'body'        => json_decode( wp_remote_retrieve_body( $response ) ),
+					'body'        => json_decode( $body ),
 					'status_code' => $status_code,
 				]
 			);
 		}
 
-		return json_decode( wp_remote_retrieve_body( $response ) );
+		$decoded_body = json_decode( $body );
+		if ( is_null( $decoded_body ) ) {
+			return new WP_Error(
+				'nota_api_error',
+				'Could not parse response body',
+				[
+					'body' => $body,
+				]
+			);
+		}
+		return $decoded_body;
 	}
 
 	/**
