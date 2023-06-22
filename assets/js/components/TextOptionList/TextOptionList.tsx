@@ -11,7 +11,7 @@ interface Props {
   title: string
   subtitle: string
   isLoading: boolean
-  hasError: boolean
+  error?: unknown
   disabled?: boolean
   disabledMessage?: string
   history?: History
@@ -26,7 +26,7 @@ export function TextOptionList({
   title,
   subtitle,
   isLoading,
-  hasError,
+  error,
   disabled,
   disabledMessage,
   history,
@@ -48,7 +48,7 @@ export function TextOptionList({
       ) : (
         <AsyncStateManager
           isLoading={isLoading}
-          hasError={hasError}
+          error={error}
           retry={onRefresh}
         >
           <div className="ntw-space-y-16px">
