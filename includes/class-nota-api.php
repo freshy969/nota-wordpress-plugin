@@ -70,6 +70,14 @@ class Nota_Api {
 			Nota_Logger::debug( $err_body );
 			$err_body_json = json_decode( $err_body, false );
 
+			// if this is an auth error, return a known response.
+			if ( 401 === $status_code ) {
+				return new WP_Error(
+					'nota_error',
+					'Authentication error: Please verify your API key setting.'
+				);
+			}
+
 			// The Nota API will return human readable errors with the "isNotaError" property.
 			// Let's return these so that we can distingush them on the front-end from other generic errors.
 			if ( ! is_null( $err_body_json ) && isset( $err_body_json->isNotaError ) && $err_body_json->isNotaError && $err_body_json->message ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
