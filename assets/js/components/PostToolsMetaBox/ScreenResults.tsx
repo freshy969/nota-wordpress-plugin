@@ -94,7 +94,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   title="Headlines"
                   subtitle="Select a headline to use on the page"
                   isLoading={seoData.headlines.isLoading}
-                  hasError={seoData.headlines.isError}
+                  error={seoData.headlines.error}
                   options={seoData.headlines.data}
                   onSelect={editPostTitle}
                   updateOptions={seoData.headlines.update}
@@ -112,7 +112,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   title="Excerpt"
                   subtitle="Select an excerpt to use on the page"
                   isLoading={seoData.excerpt.isLoading}
-                  hasError={seoData.excerpt.isError}
+                  error={seoData.excerpt.error}
                   options={seoData.excerpt.data}
                   onSelect={editPostExcerpt}
                   updateOptions={seoData.excerpt.update}
@@ -132,7 +132,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     subtitle="Select the tags you want to use on this page"
                     history={seoData.tags.history}
                     isLoading={seoData.tags.isLoading}
-                    hasError={seoData.tags.isError}
+                    error={seoData.tags.error}
                     tags={seoData.tags.data}
                     onRefresh={() =>
                       seoData.tags.refresh({
@@ -149,7 +149,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   title="Page Title"
                   subtitle="Select a page title to use in your page"
                   isLoading={seoData.metaTitles.isLoading}
-                  hasError={seoData.metaTitles.isError}
+                  error={seoData.metaTitles.error}
                   options={seoData.metaTitles.data}
                   onSelect={editMetaTitle}
                   updateOptions={seoData.metaTitles.update}
@@ -168,7 +168,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   title="Meta Description"
                   subtitle="Select a meta description to use in your page"
                   isLoading={seoData.metaDescriptions.isLoading}
-                  hasError={seoData.metaDescriptions.isError}
+                  error={seoData.metaDescriptions.error}
                   options={seoData.metaDescriptions.data}
                   onSelect={editMetaDescription}
                   updateOptions={seoData.metaDescriptions.update}

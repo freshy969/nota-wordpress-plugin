@@ -25,7 +25,7 @@ export function Notice({ level, children }: Props) {
       )}
     >
       <Icon size={24} className="ntw-mr-8px ntw-flex-shrink-0" />
-      <div>{children}</div>
+      <div className="ntw-flex-1">{children}</div>
     </div>
   )
 }

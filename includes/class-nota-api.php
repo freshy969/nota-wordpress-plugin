@@ -82,21 +82,39 @@ class Nota_Api {
 
 		$status_code = (int) wp_remote_retrieve_response_code( $response );
 		$body        = wp_remote_retrieve_body( $response );
+		$body_json   = json_decode( $body, false );
 
 		if ( $status_code < 200 || $status_code > 299 ) {
 			Nota_Logger::debug( $body );
+
+			// if this is an auth error, return a known response.
+			if ( 401 === $status_code ) {
+				return new WP_Error(
+					'nota_error',
+					'Authentication error: Please verify your API key setting.'
+				);
+			}
+
+			// The Nota API will return human readable errors with the "isNotaError" property.
+			// Let's return these so that we can distingush them on the front-end from other generic errors.
+			if ( ! is_null( $body_json ) && isset( $body_json->isNotaError ) && $body_json->isNotaError && $body_json->message ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				return new WP_Error(
+					'nota_error',
+					$body_json->message 
+				);
+			}
+
 			return new WP_Error(
 				'nota_api_error',
 				'Non-200 status code returned from Nota API',
 				[
-					'body'        => json_decode( $body ),
+					'body'        => $body_json || $body,
 					'status_code' => $status_code,
 				]
 			);
 		}
 
-		$decoded_body = json_decode( $body );
-		if ( is_null( $decoded_body ) ) {
+		if ( is_null( $body_json ) ) {
 			return new WP_Error(
 				'nota_api_error',
 				'Could not parse response body',
@@ -105,7 +123,7 @@ class Nota_Api {
 				]
 			);
 		}
-		return $decoded_body;
+		return $body_json;
 	}
 
 	/**

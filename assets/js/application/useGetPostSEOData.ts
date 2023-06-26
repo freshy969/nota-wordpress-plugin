@@ -8,7 +8,7 @@ interface RunArgs {
 }
 
 interface OutputSection<TData> {
-  isError: boolean
+  error: unknown
   isLoading: boolean
   data?: TData
   history: History
@@ -170,7 +170,7 @@ export const useGetPostSEOData = ({
 
   return {
     headlines: {
-      isError: headline.isError,
+      error: headline.error,
       isLoading: headline.isLoading,
       ...headlines,
       refresh: (args: RunArgs) => {
@@ -178,7 +178,7 @@ export const useGetPostSEOData = ({
       },
     },
     metaDescriptions: {
-      isError: metaDescriptionsMutation.isError,
+      error: metaDescriptionsMutation.error,
       isLoading: metaDescriptionsMutation.isLoading,
       ...metaDescriptions,
       refresh: (args: RunArgs) => {
@@ -186,7 +186,7 @@ export const useGetPostSEOData = ({
       },
     },
     metaTitles: {
-      isError: metaTitlesMutation.isError,
+      error: metaTitlesMutation.error,
       isLoading: metaTitlesMutation.isLoading,
       ...metaTitles,
       refresh: (args: RunArgs) => {
@@ -195,7 +195,7 @@ export const useGetPostSEOData = ({
     },
     run,
     excerpt: {
-      isError: summary.isError,
+      error: summary.error,
       isLoading: summary.isLoading,
       ...excerpts,
       refresh: (args: RunArgs) => {
@@ -203,7 +203,7 @@ export const useGetPostSEOData = ({
       },
     },
     tags: {
-      isError: tagsMutation.isError,
+      error: tagsMutation.error,
       isLoading: tagsMutation.isLoading,
       ...tags,
       refresh: (args: RunArgs) => {
