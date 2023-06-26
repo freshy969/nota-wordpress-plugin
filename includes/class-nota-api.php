@@ -31,10 +31,11 @@ class Nota_Api {
 	 * Returns the API url
 	 */
 	private function get_api_url() {
-		if ( Nota::is_debug_mode() && $this->settings->get_option( 'api_url' ) ) {
-			return trailingslashit( $this->settings->get_option( 'api_url' ) ); 
+		$api_url = $this->settings->get_option( 'api_url' );
+		if ( ! $api_url ) {
+			return new WP_Error( 'nota_error', 'Missing API URL' );
 		}
-		return 'https://api.heynota.com/';
+		return trailingslashit( $api_url );
 	}
 
 	/**
@@ -53,22 +54,38 @@ class Nota_Api {
 			'nota-subscription-key' => $this->settings->get_option( 'api_key' ),
 		);
 
-		$request_args = array_merge(
+		$request_args    = array_merge(
 			$args,
 			array(
 				'method'  => $method,
 				'headers' => array_merge( $headers, $default_headers ),
-				'timeout' => MINUTE_IN_SECONDS * 2, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 			)
 		);
-		$url          = $this->get_api_url() . $endpoint;
-		$response     = wp_remote_request( $url, $request_args );
-		$status_code  = (int) wp_remote_retrieve_response_code( $response );
+		$request_timeout = (int) $this->settings->get_option( 'request_timeout_seconds' );
+
+		if ( $request_timeout ) {
+			$request_args['timeout'] = $request_timeout;
+		}
+
+		$url = $this->get_api_url();
+
+		if ( is_wp_error( $url ) ) {
+			return $url;
+		}
+
+		$url      = $url . $endpoint;
+		$response = wp_remote_request( $url, $request_args );
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$status_code = (int) wp_remote_retrieve_response_code( $response );
+		$body        = wp_remote_retrieve_body( $response );
+		$body_json   = json_decode( $body, false );
 
 		if ( $status_code < 200 || $status_code > 299 ) {
-			$err_body = wp_remote_retrieve_body( $response );
-			Nota_Logger::debug( $err_body );
-			$err_body_json = json_decode( $err_body, false );
+			Nota_Logger::debug( $body );
 
 			// if this is an auth error, return a known response.
 			if ( 401 === $status_code ) {
@@ -80,10 +97,10 @@ class Nota_Api {
 
 			// The Nota API will return human readable errors with the "isNotaError" property.
 			// Let's return these so that we can distingush them on the front-end from other generic errors.
-			if ( ! is_null( $err_body_json ) && isset( $err_body_json->isNotaError ) && $err_body_json->isNotaError && $err_body_json->message ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			if ( ! is_null( $body_json ) && isset( $body_json->isNotaError ) && $body_json->isNotaError && $body_json->message ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 				return new WP_Error(
 					'nota_error',
-					$err_body_json->message 
+					$body_json->message 
 				);
 			}
 
@@ -91,16 +108,22 @@ class Nota_Api {
 				'nota_api_error',
 				'Non-200 status code returned from Nota API',
 				[
-					'body'        => $err_body_json || $err_body,
+					'body'        => $body_json || $body,
 					'status_code' => $status_code,
 				]
 			);
 		}
 
-		if ( is_wp_error( $response ) ) {
-			return $response;
+		if ( is_null( $body_json ) ) {
+			return new WP_Error(
+				'nota_api_error',
+				'Could not parse response body',
+				[
+					'body' => $body,
+				]
+			);
 		}
-		return json_decode( wp_remote_retrieve_body( $response ) );
+		return $body_json;
 	}
 
 	/**

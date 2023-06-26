@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Nota SUM
+ * Plugin Name: Nota Tools
  * Description: Nota’s assistive AI tools help publishers create headlines, summaries, SEO keywords and more.
  * Version: 0.1.5
  * Author: Nota
