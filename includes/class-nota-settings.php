@@ -44,7 +44,7 @@ class Nota_Settings {
 	 * Registers menus
 	 */
 	public function register_menu() {
-		add_options_page( __( 'Nota settings', 'nota' ), __( 'Nota', 'nota' ), 'manage_options', $this->setting_page_slug, array( $this, 'render_settings_page' ) );
+		add_options_page( __( 'Nota settings', 'nota' ), __( 'Nota tools', 'nota' ), 'manage_options', $this->setting_page_slug, array( $this, 'render_settings_page' ) );
 	}
 
 	/**
@@ -58,6 +58,31 @@ class Nota_Settings {
 			array( $this, 'render_text_input' ),
 			$this->general_settings_section_key
 		);
+
+			$this->add_setting_field(
+				'api_url',
+				__( 'API URL', 'nota' ),
+				array( $this, 'render_text_input' ),
+				$this->general_settings_section_key
+			);
+
+			$this->add_setting_field(
+				'request_timeout_seconds',
+				__( 'Request timeout in seconds', 'nota' ),
+				array( $this, 'render_text_input' ),
+				$this->general_settings_section_key,
+				array(
+					'description' => __( 'Leave empty to use the WordPress defaults. If you are experiencing timeout errors, try increasing this value.', 'nota' ),
+				)
+			);
+
+		$this->add_setting_field(
+			'debug',
+			__( 'Debug', 'nota' ),
+			array( $this, 'render_checkbox_input' ),
+			$this->general_settings_section_key
+		);
+
 	}
 
 	/**
@@ -125,7 +150,7 @@ class Nota_Settings {
 	}
 
 	/**
-	 * Renders the API key field
+	 * Renders a text input field
 	 * 
 	 * @param mixed $args Any args sent by the registering function.
 	 */
@@ -134,6 +159,22 @@ class Nota_Settings {
 		$field_name = $this->get_option_name( $args['name'] );
 		?>
 		<input id='<?php echo esc_attr( $args['input_id'] ); ?>' name='<?php echo esc_attr( $field_name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
+		<?php
+		if ( array_key_exists( 'description', $args ) && ! empty( $args['description'] ) ) {
+			echo '<p>' . esc_html( $args['description'] ) . '</p>';
+		}
+	}
+
+	/**
+	 * Renders a checkbox field
+	 * 
+	 * @param mixed $args Any args sent by the registering function.
+	 */
+	public function render_checkbox_input( $args ) {
+		$checked    = $this->get_option( $args['name'] ) ? 'checked' : '';
+		$field_name = $this->get_option_name( $args['name'] );
+		?>
+		<input id='<?php echo esc_attr( $args['input_id'] ); ?>' name='<?php echo esc_attr( $field_name ); ?>' value='1' type="checkbox" <?php echo esc_attr( $checked ); ?> />
 		<?php
 	}
 

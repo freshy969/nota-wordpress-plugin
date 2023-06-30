@@ -31,10 +31,11 @@ class Nota_Api {
 	 * Returns the API url
 	 */
 	private function get_api_url() {
-		if ( Nota::is_debug_mode() && defined( 'WP_NOTA_API_URL' ) ) {
-			return trailingslashit( WP_NOTA_API_URL ); 
+		$api_url = $this->settings->get_option( 'api_url' );
+		if ( ! $api_url ) {
+			return new WP_Error( 'nota_error', 'Missing API URL' );
 		}
-		return 'https://api.heynota.com/';
+		return trailingslashit( $api_url );
 	}
 
 	/**
@@ -50,37 +51,79 @@ class Nota_Api {
 
 		// add in our authorization headers, these are always required.
 		$default_headers = array(
-			'Authorization' => 'Bearer ' . $this->settings->get_option( 'api_key' ),
+			'nota-subscription-key' => $this->settings->get_option( 'api_key' ),
 		);
 
-		$request_args = array_merge(
+		$request_args    = array_merge(
 			$args,
 			array(
 				'method'  => $method,
 				'headers' => array_merge( $headers, $default_headers ),
-				'timeout' => MINUTE_IN_SECONDS * 2, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout
 			)
 		);
-		$url          = $this->get_api_url() . $endpoint;
-		$response     = wp_remote_request( $url, $request_args );
-		$status_code  = (int) wp_remote_retrieve_response_code( $response );
+		$request_timeout = (int) $this->settings->get_option( 'request_timeout_seconds' );
+
+		if ( $request_timeout ) {
+			$request_args['timeout'] = $request_timeout;
+		}
+
+		$url = $this->get_api_url();
+
+		if ( is_wp_error( $url ) ) {
+			return $url;
+		}
+
+		$url      = $url . $endpoint;
+		$response = wp_remote_request( $url, $request_args );
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$status_code = (int) wp_remote_retrieve_response_code( $response );
+		$body        = wp_remote_retrieve_body( $response );
+		$body_json   = json_decode( $body, false );
 
 		if ( $status_code < 200 || $status_code > 299 ) {
-			Nota_Logger::debug( wp_remote_retrieve_body( $response ) );
+			Nota_Logger::debug( $body );
+
+			// if this is an auth error, return a known response.
+			if ( 401 === $status_code ) {
+				return new WP_Error(
+					'nota_error',
+					'Authentication error: Please verify your API key setting.'
+				);
+			}
+
+			// The Nota API will return human readable errors with the "isNotaError" property.
+			// Let's return these so that we can distingush them on the front-end from other generic errors.
+			if ( ! is_null( $body_json ) && isset( $body_json->isNotaError ) && $body_json->isNotaError && $body_json->message ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+				return new WP_Error(
+					'nota_error',
+					$body_json->message 
+				);
+			}
+
 			return new WP_Error(
 				'nota_api_error',
 				'Non-200 status code returned from Nota API',
 				[
-					'body'        => json_decode( wp_remote_retrieve_body( $response ) ),
+					'body'        => $body_json || $body,
 					'status_code' => $status_code,
 				]
 			);
 		}
 
-		if ( is_wp_error( $response ) ) {
-			return $response;
+		if ( is_null( $body_json ) ) {
+			return new WP_Error(
+				'nota_api_error',
+				'Could not parse response body',
+				[
+					'body' => $body,
+				]
+			);
 		}
-		return json_decode( wp_remote_retrieve_body( $response ) );
+		return $body_json;
 	}
 
 	/**
@@ -92,7 +135,7 @@ class Nota_Api {
 	public function get_text_summary( $text, $length_option ) {
 		return $this->make_request(
 			'POST',
-			'notasum/v1/summary',
+			'sum/v1/summary',
 			array(
 				'body' => array(
 					'text'         => $text,
@@ -111,7 +154,7 @@ class Nota_Api {
 	public function get_text_headlines( $text, $count ) {
 		return $this->make_request(
 			'POST',
-			'notasum/v1/headlines',
+			'sum/v1/headlines',
 			array(
 				'body' => array(
 					'text'  => $text,
@@ -121,4 +164,67 @@ class Nota_Api {
 		);
 	}
 
+
+	/**
+	 * Gets the keywords from the text
+	 * 
+	 * @param string $text Text to get keywords from.
+	 * @param int    $count Number of keywords to get.
+	 * @param float  $variability How much the keywords should vary.
+	 */
+	public function get_text_keywords( $text, $count, $variability ) {
+		return $this->make_request(
+			'POST',
+			'sum/v1/keywords',
+			array(
+				'body' => array(
+					'text'        => $text,
+					'count'       => $count,
+					'variability' => $variability,
+				),
+			)
+		);
+	}
+
+	/**
+	 * Gets the meta description from the text
+	 * 
+	 * @param string $text Text to get description from.
+	 * @param int    $count Number of descriptions to get.
+	 * @param float  $variability How much the descriptions should vary.
+	 */
+	public function get_text_meta_descriptions( $text, $count, $variability ) {
+		return $this->make_request(
+			'POST',
+			'sum/v1/meta/descriptions',
+			array(
+				'body' => array(
+					'text'        => $text,
+					'count'       => $count,
+					'variability' => $variability,
+				),
+			)
+		);
+	}
+
+	/**
+	 * Gets the meta title from the text
+	 * 
+	 * @param string $text Text to get title from.
+	 * @param int    $count Number of titles to get.
+	 * @param float  $variability How much the titles should vary.
+	 */
+	public function get_text_meta_titles( $text, $count, $variability ) {
+		return $this->make_request(
+			'POST',
+			'sum/v1/meta/titles',
+			array(
+				'body' => array(
+					'text'        => $text,
+					'count'       => $count,
+					'variability' => $variability,
+				),
+			)
+		);
+	}
 }
