@@ -1,6 +1,7 @@
 type MetaKeys =
   | 'seo_title'
   | 'seo_desc'
+  | 'hashtags_history'
   | 'headline_history'
   | 'excerpt_history'
   | 'tag_history'
@@ -12,6 +13,7 @@ interface Window {
     nonce: string
     components: {
       categories: boolean
+      hashtags: boolean
       meta_description: boolean
       meta_title: boolean
       tags: boolean
@@ -44,9 +46,9 @@ namespace WordPress {
   interface CoreStoreSelectors {
     getTaxonomy: (taxonomy: string) =>
       | {
-          rest_base: string
-          rest_namespace?: string
-        }
+        rest_base: string
+        rest_namespace?: string
+      }
       | undefined
     getEntityRecords: <T>(type: string, slug: string, query: any) => T | null
     getSite: () => WordPressSite | null

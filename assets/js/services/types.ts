@@ -1,4 +1,6 @@
 import {
+  Hashtags,
+  HashtagsRequest,
   Headlines,
   HeadlinesRequest,
   Keywords,
@@ -12,6 +14,7 @@ import {
 } from 'assets/js/domain/nota'
 
 export interface NotaService {
+  getHashtags(args: HashtagsRequest): Promise<Hashtags>
   getHeadlines(args: HeadlinesRequest): Promise<Headlines>
   getKeywords(args: KeywordsRequest): Promise<Keywords>
   getMetaDescriptions(args: MetaDescriptionsRequest): Promise<MetaDescriptions>

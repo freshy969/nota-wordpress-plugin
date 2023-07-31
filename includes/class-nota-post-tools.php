@@ -26,6 +26,7 @@ class Nota_Post_Tools {
 	private static $meta_keys = [
 		'seo_title' => 'nota_seo_page_title',
 		'seo_desc' => 'nota_seo_page_description',
+		'hashtags_history' => 'nota_hashtags_history',
 		'headline_history' => 'nota_headline_history',
 		'excerpt_history' => 'nota_excerpt_history',
 		'tag_history' => 'nota_tag_history',
@@ -78,6 +79,7 @@ class Nota_Post_Tools {
 						'ajaxUrl'           => admin_url( 'admin-ajax.php' ),
 						'nonce'             => wp_create_nonce( NOTA_PLUGIN_NONCE ),
 						'components'        => [
+							'hashtags' => true,
 							'categories'       => in_array( 'category', $taxonomies ),
 							'meta_description' => true,
 							'meta_title'       => true,

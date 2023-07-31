@@ -58,6 +58,7 @@ class Nota_WP_Rest {
 		$payload = $_REQUEST['nota'];
 
 		$actions = array(
+			'get_text_hashtags'           => array( $this, 'get_text_hashtags' ),
 			'get_text_summary'           => array( $this, 'get_text_summary' ),
 			'get_text_headlines'         => array( $this, 'get_text_headlines' ),
 			'get_text_keywords'          => array( $this, 'get_text_keywords' ),
@@ -95,6 +96,26 @@ class Nota_WP_Rest {
 		return $this->api->get_text_summary( $text, $length_option );
 	}
 	
+		/**
+	 *  Gets hashtags
+	 *
+	 * @param array $data Data sent with the request.
+	 */
+	private function get_text_hashtags( $data ) {
+		if ( ! isset( $data['postHTML'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text  = $this->trim_html( $data['postHTML'] );
+		$count = isset( $data['count'] ) ? (int) $data['count'] : 10;
+		// maybe we'll expose this as a setting at some point.
+		$variability = 0.3;
+
+		return $this->api->get_text_hashtags( $text, $count, $variability );
+	}
+
 	/**
 	 *  Gets headlines
 	 *

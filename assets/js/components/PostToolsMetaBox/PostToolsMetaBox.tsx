@@ -16,6 +16,7 @@ const useWpSelect = useSelect as WordPress.useSelect
 // this needs to be declared outside of the component
 // or memoized. Otherwise it'll trigger infinite re-renders within useGetPostSEOData
 const components = {
+  hashtags: window.notaTools.components.hashtags,
   headlines: true,
   metaDescriptions: window.notaTools.components.meta_description,
   metaTitles: window.notaTools.components.meta_title,

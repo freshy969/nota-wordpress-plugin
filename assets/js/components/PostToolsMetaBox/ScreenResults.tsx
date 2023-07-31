@@ -84,8 +84,9 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
       <div className="ntw-rounded-2xl ntw-p-24px ntw-shadow">
         <Tab.Group>
           <Tab.List className="ntw-mb-32px ntw-space-x-24px">
-            <TabLabel>Content settings</TabLabel>
-            <TabLabel>SEO settings</TabLabel>
+            <TabLabel>Content</TabLabel>
+            <TabLabel>SEO</TabLabel>
+            <TabLabel>Social</TabLabel>
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
@@ -183,6 +184,25 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   currentValue={metaDescription}
                   onRevert={revertMetaDescription}
                 />
+              </div>
+            </Tab.Panel>
+            <Tab.Panel>
+              <div className="ntw-space-y-32px">
+                {components.hashtags && (
+                  <TagSelect
+                    title="Hashtags"
+                    subtitle="Recommended hashtags for your post"
+                    history={seoData.hashtags.history}
+                    isLoading={seoData.hashtags.isLoading}
+                    error={seoData.hashtags.error}
+                    tags={seoData.hashtags.data}
+                    onRefresh={() =>
+                      seoData.hashtags.refresh({
+                        postHTML,
+                      })
+                    }
+                  />
+                )}
               </div>
             </Tab.Panel>
           </Tab.Panels>

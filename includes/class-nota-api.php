@@ -145,6 +145,27 @@ class Nota_Api {
 		);
 	}
 
+		/**
+	 * Gets the hashtags from the text
+	 * 
+	 * @param string $text Text to get keywords from.
+	 * @param int    $count Number of keywords to get.
+	 * @param float  $variability How much the keywords should vary.
+	 */
+	public function get_text_hashtags( $text, $count, $variability ) {
+		return $this->make_request(
+			'POST',
+			'social/v1/hashtags',
+			array(
+				'body' => array(
+					'text'        => $text,
+					'count'       => $count,
+					'variability' => $variability,
+				),
+			)
+		);
+	}
+
 	/**
 	 * Gets the headline from the text
 	 * 

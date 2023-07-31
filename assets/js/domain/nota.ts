@@ -10,8 +10,18 @@ export interface SummaryRequest {
   regenerate?: boolean
 }
 
+export interface Hashtags {
+  hashTags: string[]
+}
+
 export interface Headlines {
   headlines: string[]
+}
+
+export interface HashtagsRequest {
+  count?: number
+  postHTML: string
+  regenerate?: boolean
 }
 
 export interface HeadlinesRequest {
