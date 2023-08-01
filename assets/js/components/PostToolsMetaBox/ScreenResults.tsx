@@ -195,7 +195,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     isLoading={seoData.socialPostsFacebook.isLoading}
                     error={seoData.socialPostsFacebook.error}
                     options={seoData.socialPostsFacebook.data}
-                    onSelect={() => void (0)}
+                    // onSelect={() => void (0)}
                     updateOptions={seoData.socialPostsFacebook.update}
                     onRefresh={() =>
                       seoData.socialPostsFacebook.refresh({

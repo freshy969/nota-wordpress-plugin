@@ -6,7 +6,7 @@ import { History } from 'assets/js/application/useHistoryList'
 interface Props {
   options?: string[]
   updateOptions: (options: string[]) => void
-  onSelect: (option: string) => void
+  onSelect?: (option: string) => void
   onRefresh: () => void
   title: string
   subtitle: string
@@ -62,7 +62,7 @@ export function TextOptionList({
                     nextEdits[idx] = nextEdit
                     updateOptions(nextEdits)
                   }}
-                  onSelect={() => onSelect(option)}
+                  onSelect={onSelect ? () => onSelect(option) : undefined}
                   selected={currentValue === option}
                   onRevert={onRevert}
                 />
