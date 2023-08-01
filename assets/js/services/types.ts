@@ -16,12 +16,17 @@ import {
 } from 'assets/js/domain/nota'
 
 export interface NotaService {
-  getSocialPostsFacebook(args: SocialPostsRequest): Promise<SocialPosts>
   getHashtags(args: HashtagsRequest): Promise<Hashtags>
   getHeadlines(args: HeadlinesRequest): Promise<Headlines>
   getKeywords(args: KeywordsRequest): Promise<Keywords>
   getMetaDescriptions(args: MetaDescriptionsRequest): Promise<MetaDescriptions>
   getMetaTitles(args: MetaTitlesRequest): Promise<MetaTitles>
+  getSocialPostsFacebook(args: SocialPostsRequest): Promise<SocialPosts>
+  getSocialPostsInstagram(args: SocialPostsRequest): Promise<SocialPosts>
+  getSocialPostsLinkedIn(args: SocialPostsRequest): Promise<SocialPosts>
+  getSocialPostsThreads(args: SocialPostsRequest): Promise<SocialPosts>
+  getSocialPostsTikTok(args: SocialPostsRequest): Promise<SocialPosts>
+  getSocialPostsTwitter(args: SocialPostsRequest): Promise<SocialPosts>
   getSummary(args: SummaryRequest): Promise<Summary>
 }
 
