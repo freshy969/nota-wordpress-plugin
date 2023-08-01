@@ -1,16 +1,11 @@
-import { SocialPosts } from 'assets/js/domain/nota'
+import { SocialPosts, SocialPostsRequest } from 'assets/js/domain/nota'
 import fetch from 'assets/js/utils/fetch/fetch'
 import qs from 'qs'
 
 export const getSocialPosts = ({
   postHTML,
   platform,
-  count,
-}: {
-  postHTML: string
-  platform: string
-  count?: number
-}): Promise<SocialPosts> => {
+}: SocialPostsRequest): Promise<SocialPosts> => {
   return fetch
     .post<{ result: { posts: string[] } }>(window.notaTools.ajaxUrl, {
       data: qs.stringify({
@@ -20,7 +15,7 @@ export const getSocialPosts = ({
           nota_action: 'get_text_social_posts',
           postHTML,
           platform,
-          count,
+          count: 1,
         },
       }),
     })

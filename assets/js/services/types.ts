@@ -21,12 +21,7 @@ export interface NotaService {
   getKeywords(args: KeywordsRequest): Promise<Keywords>
   getMetaDescriptions(args: MetaDescriptionsRequest): Promise<MetaDescriptions>
   getMetaTitles(args: MetaTitlesRequest): Promise<MetaTitles>
-  getSocialPostsFacebook(args: SocialPostsRequest): Promise<SocialPosts>
-  getSocialPostsInstagram(args: SocialPostsRequest): Promise<SocialPosts>
-  getSocialPostsLinkedIn(args: SocialPostsRequest): Promise<SocialPosts>
-  getSocialPostsThreads(args: SocialPostsRequest): Promise<SocialPosts>
-  getSocialPostsTikTok(args: SocialPostsRequest): Promise<SocialPosts>
-  getSocialPostsTwitter(args: SocialPostsRequest): Promise<SocialPosts>
+  getSocialPosts(args: SocialPostsRequest): Promise<SocialPosts>
   getSummary(args: SummaryRequest): Promise<Summary>
 }
 

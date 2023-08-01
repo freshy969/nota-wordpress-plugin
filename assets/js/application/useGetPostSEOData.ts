@@ -23,6 +23,11 @@ interface Output {
   metaDescriptions: OutputSection<string[]>
   metaTitles: OutputSection<string[]>
   socialPostsFacebook: OutputSection<string[]>
+  socialPostsInstagram: OutputSection<string[]>
+  socialPostsLinkedIn: OutputSection<string[]>
+  socialPostsThreads: OutputSection<string[]>
+  socialPostsTikTok: OutputSection<string[]>
+  socialPostsTwitter: OutputSection<string[]>
   tags: OutputSection<string[]>
   run: (args: RunArgs) => void
 }
@@ -35,6 +40,11 @@ export type ComponentTypes =
   | 'metaDescriptions'
   | 'metaTitles'
   | 'socialPostsFacebook'
+  | 'socialPostsInstagram'
+  | 'socialPostsLinkedIn'
+  | 'socialPostsThreads'
+  | 'socialPostsTikTok'
+  | 'socialPostsTwitter'
 
 interface Args {
   notaService: Pick<
@@ -44,7 +54,7 @@ interface Args {
     | 'getKeywords'
     | 'getMetaDescriptions'
     | 'getMetaTitles'
-    | 'getSocialPostsFacebook'
+    | 'getSocialPosts'
     | 'getSummary'
   >
   components: Record<ComponentTypes, boolean>
@@ -54,6 +64,7 @@ export const useGetPostSEOData = ({
   components,
 }: Args): Output => {
   const metaKeys = window.notaTools.meta_keys
+  const excerpts = useHistoryList<string[]>({ key: metaKeys.excerpt_history })
   const hashtags = useHistoryList<string[]>({
     key: metaKeys.social_hashtags_history,
   })
@@ -65,9 +76,23 @@ export const useGetPostSEOData = ({
   const metaTitles = useHistoryList<string[]>({
     key: metaKeys.seo_title_history,
   })
-  const excerpts = useHistoryList<string[]>({ key: metaKeys.excerpt_history })
   const socialPostsFacebook = useHistoryList<string[]>({
     key: metaKeys.social_post_facebook_history,
+  })
+  const socialPostsInstagram = useHistoryList<string[]>({
+    key: metaKeys.social_post_instagram_history,
+  })
+  const socialPostsLinkedIn = useHistoryList<string[]>({
+    key: metaKeys.social_post_linkedin_history,
+  })
+  const socialPostsThreads = useHistoryList<string[]>({
+    key: metaKeys.social_post_threads_history,
+  })
+  const socialPostsTikTok = useHistoryList<string[]>({
+    key: metaKeys.social_post_tiktok_history,
+  })
+  const socialPostsTwitter = useHistoryList<string[]>({
+    key: metaKeys.social_post_twitter_history,
   })
 
   const { mutate: mutateHashtags, ...hashtagsMutation } = useMutation({
@@ -96,20 +121,6 @@ export const useGetPostSEOData = ({
     },
     onSuccess: (data) => {
       headlines.addHistoryItem(data.headlines)
-    },
-  })
-  const { mutate: mutateTags, ...tagsMutation } = useMutation({
-    mutationFn: ({
-      postHTML,
-      regenerate,
-    }: {
-      postHTML: string
-      regenerate?: boolean
-    }) => {
-      return notaService.getKeywords({ postHTML, count: 10, regenerate })
-    },
-    onSuccess: (data) => {
-      tags.addHistoryItem(data.keywords)
     },
   })
   const { mutate: mutateMetaDescriptions, ...metaDescriptionsMutation } =
@@ -149,6 +160,134 @@ export const useGetPostSEOData = ({
       metaTitles.addHistoryItem(data.metaTitles)
     },
   })
+  const { mutate: mutateTags, ...tagsMutation } = useMutation({
+    mutationFn: ({
+      postHTML,
+      regenerate,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+    }) => {
+      return notaService.getKeywords({ postHTML, count: 10, regenerate })
+    },
+    onSuccess: (data) => {
+      tags.addHistoryItem(data.keywords)
+    },
+  })
+  const { mutate: mutateSocialPostsFacebook, ...facebookPostsMutation } =
+    useMutation({
+      mutationFn: ({
+        postHTML,
+        regenerate,
+      }: {
+        postHTML: string
+        regenerate?: boolean
+      }) => {
+        return notaService.getSocialPosts({
+          postHTML,
+          platform: 'facebook',
+          regenerate,
+        })
+      },
+      onSuccess: (data) => {
+        socialPostsFacebook.addHistoryItem(data.posts)
+      },
+    })
+  const { mutate: mutateSocialPostsInstagram, ...instagramPostsMutation } =
+    useMutation({
+      mutationFn: ({
+        postHTML,
+        regenerate,
+      }: {
+        postHTML: string
+        regenerate?: boolean
+      }) => {
+        return notaService.getSocialPosts({
+          postHTML,
+          platform: 'instagram',
+          regenerate,
+        })
+      },
+      onSuccess: (data) => {
+        socialPostsInstagram.addHistoryItem(data.posts)
+      },
+    })
+  const { mutate: mutateSocialPostsLinkedIn, ...linkedInPostsMutation } =
+    useMutation({
+      mutationFn: ({
+        postHTML,
+        regenerate,
+      }: {
+        postHTML: string
+        regenerate?: boolean
+      }) => {
+        return notaService.getSocialPosts({
+          postHTML,
+          platform: 'linkedIn',
+          regenerate,
+        })
+      },
+      onSuccess: (data) => {
+        socialPostsLinkedIn.addHistoryItem(data.posts)
+      },
+    })
+  const { mutate: mutateSocialPostsThreads, ...threadsPostsMutation } =
+    useMutation({
+      mutationFn: ({
+        postHTML,
+        regenerate,
+      }: {
+        postHTML: string
+        regenerate?: boolean
+      }) => {
+        return notaService.getSocialPosts({
+          postHTML,
+          platform: 'threads',
+          regenerate,
+        })
+      },
+      onSuccess: (data) => {
+        socialPostsThreads.addHistoryItem(data.posts)
+      },
+    })
+  const { mutate: mutateSocialPostsTikTok, ...tiktokPostsMutation } =
+    useMutation({
+      mutationFn: ({
+        postHTML,
+        regenerate,
+      }: {
+        postHTML: string
+        regenerate?: boolean
+      }) => {
+        return notaService.getSocialPosts({
+          postHTML,
+          platform: 'tiktok',
+          regenerate,
+        })
+      },
+      onSuccess: (data) => {
+        socialPostsTikTok.addHistoryItem(data.posts)
+      },
+    })
+  const { mutate: mutateSocialPostsTwitter, ...twitterPostsMutation } =
+    useMutation({
+      mutationFn: ({
+        postHTML,
+        regenerate,
+      }: {
+        postHTML: string
+        regenerate?: boolean
+      }) => {
+        return notaService.getSocialPosts({
+          postHTML,
+          platform: 'twitter',
+          regenerate,
+        })
+      },
+      onSuccess: (data) => {
+        socialPostsTwitter.addHistoryItem(data.posts)
+      },
+    })
   const { mutate: mutateSummary, ...summary } = useMutation({
     mutationFn: ({
       postHTML,
@@ -167,24 +306,6 @@ export const useGetPostSEOData = ({
       excerpts.addHistoryItem([data.summary])
     },
   })
-  const { mutate: mutateSocialPostsFacebook, ...facebookPostsMutation } =
-    useMutation({
-      mutationFn: ({
-        postHTML,
-        regenerate,
-      }: {
-        postHTML: string
-        regenerate?: boolean
-      }) => {
-        return notaService.getSocialPostsFacebook({
-          postHTML,
-          regenerate,
-        })
-      },
-      onSuccess: (data) => {
-        socialPostsFacebook.addHistoryItem(data.posts)
-      },
-    })
 
   const run = useCallback(
     (args: RunArgs) => {
@@ -198,6 +319,16 @@ export const useGetPostSEOData = ({
         metaTitles: () => mutateMetaTitles({ postHTML: args.postHTML }),
         socialPostsFacebook: () =>
           mutateSocialPostsFacebook({ postHTML: args.postHTML }),
+        socialPostsInstagram: () =>
+          mutateSocialPostsInstagram({ postHTML: args.postHTML }),
+        socialPostsLinkedIn: () =>
+          mutateSocialPostsLinkedIn({ postHTML: args.postHTML }),
+        socialPostsThreads: () =>
+          mutateSocialPostsThreads({ postHTML: args.postHTML }),
+        socialPostsTikTok: () =>
+          mutateSocialPostsTikTok({ postHTML: args.postHTML }),
+        socialPostsTwitter: () =>
+          mutateSocialPostsTwitter({ postHTML: args.postHTML }),
       }
       const componentKeys = Object.keys(components) as ComponentTypes[]
       componentKeys.forEach((component) => {
@@ -213,6 +344,7 @@ export const useGetPostSEOData = ({
       mutateMetaDescriptions,
       mutateMetaTitles,
       mutateSocialPostsFacebook,
+      mutateSocialPostsInstagram,
       components,
     ],
   )
@@ -273,6 +405,49 @@ export const useGetPostSEOData = ({
       ...socialPostsFacebook,
       refresh: (args: RunArgs) => {
         mutateSocialPostsFacebook({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    socialPostsInstagram: {
+      error: instagramPostsMutation.error,
+      isLoading: instagramPostsMutation.isLoading,
+      ...socialPostsInstagram,
+      refresh: (args: RunArgs) => {
+        mutateSocialPostsInstagram({
+          postHTML: args.postHTML,
+          regenerate: true,
+        })
+      },
+    },
+    socialPostsLinkedIn: {
+      error: linkedInPostsMutation.error,
+      isLoading: linkedInPostsMutation.isLoading,
+      ...socialPostsLinkedIn,
+      refresh: (args: RunArgs) => {
+        mutateSocialPostsLinkedIn({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    socialPostsThreads: {
+      error: threadsPostsMutation.error,
+      isLoading: threadsPostsMutation.isLoading,
+      ...socialPostsThreads,
+      refresh: (args: RunArgs) => {
+        mutateSocialPostsThreads({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    socialPostsTikTok: {
+      error: tiktokPostsMutation.error,
+      isLoading: tiktokPostsMutation.isLoading,
+      ...socialPostsTikTok,
+      refresh: (args: RunArgs) => {
+        mutateSocialPostsTikTok({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    socialPostsTwitter: {
+      error: twitterPostsMutation.error,
+      isLoading: twitterPostsMutation.isLoading,
+      ...socialPostsTwitter,
+      refresh: (args: RunArgs) => {
+        mutateSocialPostsTwitter({ postHTML: args.postHTML, regenerate: true })
       },
     },
   }

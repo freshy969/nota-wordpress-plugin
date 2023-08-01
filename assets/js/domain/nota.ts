@@ -1,3 +1,10 @@
+type SocialPlatform =
+  | 'facebook'
+  | 'instagram'
+  | 'linkedIn'
+  | 'tiktok'
+  | 'threads'
+  | 'twitter'
 type SummaryLengthOptions = '1-sentence' | '2-sentences' | '1-paragraph'
 
 export interface Summary {
@@ -65,7 +72,7 @@ export interface SocialPosts {
 }
 
 export interface SocialPostsRequest {
-  count?: number
   postHTML: string
+  platform: SocialPlatform
   regenerate?: boolean
 }

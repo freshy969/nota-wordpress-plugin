@@ -24,6 +24,11 @@ interface Window {
       meta_title: boolean
       tags: boolean
       social_posts_facebook: boolean
+      social_posts_instagram: boolean
+      social_posts_linkedin: boolean
+      social_posts_threads: boolean
+      social_posts_tiktok: boolean
+      social_posts_twitter: boolean
     }
     meta_keys: Record<MetaKeys, string>
     post_title_suffix: string
@@ -53,9 +58,9 @@ namespace WordPress {
   interface CoreStoreSelectors {
     getTaxonomy: (taxonomy: string) =>
       | {
-        rest_base: string
-        rest_namespace?: string
-      }
+          rest_base: string
+          rest_namespace?: string
+        }
       | undefined
     getEntityRecords: <T>(type: string, slug: string, query: any) => T | null
     getSite: () => WordPressSite | null

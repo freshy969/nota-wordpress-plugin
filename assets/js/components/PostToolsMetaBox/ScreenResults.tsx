@@ -192,7 +192,7 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                 {components.socialPostsFacebook && (
                   <TextOptionList
                     title="Facebook"
-                    subtitle="Recommended Facebook post for your content"
+                    subtitle="Recommended Facebook posts"
                     isLoading={seoData.socialPostsFacebook.isLoading}
                     error={seoData.socialPostsFacebook.error}
                     options={seoData.socialPostsFacebook.data}
@@ -205,11 +205,90 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     history={seoData.socialPostsFacebook.history}
                   />
                 )}
-
+                {components.socialPostsInstagram && (
+                  <TextOptionList
+                    title="Instagram"
+                    subtitle="Recommended Instagram posts"
+                    isLoading={seoData.socialPostsInstagram.isLoading}
+                    error={seoData.socialPostsInstagram.error}
+                    options={seoData.socialPostsInstagram.data}
+                    updateOptions={seoData.socialPostsInstagram.update}
+                    onRefresh={() =>
+                      seoData.socialPostsInstagram.refresh({
+                        postHTML,
+                      })
+                    }
+                    history={seoData.socialPostsInstagram.history}
+                  />
+                )}
+                {components.socialPostsTwitter && (
+                  <TextOptionList
+                    title="Twitter"
+                    subtitle="Recommended Tweets"
+                    isLoading={seoData.socialPostsTwitter.isLoading}
+                    error={seoData.socialPostsTwitter.error}
+                    options={seoData.socialPostsTwitter.data}
+                    updateOptions={seoData.socialPostsTwitter.update}
+                    onRefresh={() =>
+                      seoData.socialPostsTwitter.refresh({
+                        postHTML,
+                      })
+                    }
+                    history={seoData.socialPostsTwitter.history}
+                  />
+                )}
+                {components.socialPostsThreads && (
+                  <TextOptionList
+                    title="Threads"
+                    subtitle="Recommended Threads posts"
+                    isLoading={seoData.socialPostsThreads.isLoading}
+                    error={seoData.socialPostsThreads.error}
+                    options={seoData.socialPostsThreads.data}
+                    updateOptions={seoData.socialPostsThreads.update}
+                    onRefresh={() =>
+                      seoData.socialPostsThreads.refresh({
+                        postHTML,
+                      })
+                    }
+                    history={seoData.socialPostsThreads.history}
+                  />
+                )}
+                {components.socialPostsLinkedIn && (
+                  <TextOptionList
+                    title="LinkedIn"
+                    subtitle="Recommended LinkedIn posts"
+                    isLoading={seoData.socialPostsLinkedIn.isLoading}
+                    error={seoData.socialPostsLinkedIn.error}
+                    options={seoData.socialPostsLinkedIn.data}
+                    updateOptions={seoData.socialPostsLinkedIn.update}
+                    onRefresh={() =>
+                      seoData.socialPostsLinkedIn.refresh({
+                        postHTML,
+                      })
+                    }
+                    history={seoData.socialPostsLinkedIn.history}
+                  />
+                )}
+                {components.socialPostsTikTok && (
+                  <TextOptionList
+                    title="TikTok"
+                    subtitle="Recommended TikTok posts"
+                    isLoading={seoData.socialPostsTikTok.isLoading}
+                    error={seoData.socialPostsTikTok.error}
+                    options={seoData.socialPostsTikTok.data}
+                    updateOptions={seoData.socialPostsTikTok.update}
+                    onRefresh={() =>
+                      seoData.socialPostsTikTok.refresh({
+                        postHTML,
+                      })
+                    }
+                    history={seoData.socialPostsTikTok.history}
+                  />
+                )}
                 {components.hashtags && (
                   <TagCloud
                     title="Hashtags"
-                    subtitle="Recommended hashtags for your content"
+                    subtitle="Recommended hashtags"
                     history={seoData.hashtags.history}
                     isLoading={seoData.hashtags.isLoading}
                     error={seoData.hashtags.error}

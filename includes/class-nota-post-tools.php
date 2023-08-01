@@ -24,19 +24,26 @@ class Nota_Post_Tools {
 	 * @var array
 	 */
 	private static $meta_keys = [
-		'seo_title' => 'nota_seo_page_title',
-		'seo_desc' => 'nota_seo_page_description',
-		'social_hashtags_history' => 'nota_hashtags_history',
-		'headline_history' => 'nota_headline_history',
-		'excerpt_history' => 'nota_excerpt_history',
-		'tag_history' => 'nota_tag_history',
-		'seo_title_history' => 'nota_seo_title_history',
-		'seo_desc_history' => 'nota_seo_desc_history',
-		'social_post_facebook_history' => 'nota_social_post_facebook_history',
+		'seo_title'                     => 'nota_seo_page_title',
+		'seo_desc'                      => 'nota_seo_page_description',
+		'social_hashtags_history'       => 'nota_hashtags_history',
+		'headline_history'              => 'nota_headline_history',
+		'excerpt_history'               => 'nota_excerpt_history',
+		'tag_history'                   => 'nota_tag_history',
+		'seo_title_history'             => 'nota_seo_title_history',
+		'seo_desc_history'              => 'nota_seo_desc_history',
+		'social_post_facebook_history'  => 'nota_social_post_facebook_history',
+		'social_post_linkedin_history'  => 'nota_social_post_linkedin_history',
+		'social_post_instagram_history' => 'nota_social_post_instagram_history',
+		'social_post_threads_history'   => 'nota_social_post_threads_history',
+		'social_post_tiktok_history'    => 'nota_social_post_tiktok_history',
+		'social_post_twitter_history'   => 'nota_social_post_twitter_history',
 	];
 
 	/**
 	 * Post tools constructor
+	 * 
+	 * @param Nota_Settings $settings The settings class.
 	 */
 	public function __construct( $settings ) {
 		$this->settings = $settings;
@@ -80,12 +87,17 @@ class Nota_Post_Tools {
 						'ajaxUrl'           => admin_url( 'admin-ajax.php' ),
 						'nonce'             => wp_create_nonce( NOTA_PLUGIN_NONCE ),
 						'components'        => [
-							'hashtags' => true,
-							'categories'       => in_array( 'category', $taxonomies ),
-							'meta_description' => true,
-							'meta_title'       => true,
-							'tags'             => in_array( 'post_tag', $taxonomies ),
-							'social_posts_facebook' => true,
+							'hashtags'               => true,
+							'categories'             => in_array( 'category', $taxonomies ),
+							'meta_description'       => true,
+							'meta_title'             => true,
+							'tags'                   => in_array( 'post_tag', $taxonomies ),
+							'social_posts_facebook'  => true,
+							'social_posts_instagram' => true,
+							'social_posts_linkedin'  => true,
+							'social_posts_threads'   => true,
+							'social_posts_tiktok'    => true,
+							'social_posts_twitter'   => true,
 						],
 						'meta_keys'         => self::$meta_keys,
 						'post_title_suffix' => $this->get_post_title_suffix(),
@@ -107,8 +119,8 @@ class Nota_Post_Tools {
 	 * We want to display this to users so we'll show them the WordPress default if need be.
 	 */
 	private function get_post_title_suffix() {
-		// extracted from wp_get_document_title
-		$sep = apply_filters( 'document_title_separator', '-' );
+		// extracted from wp_get_document_title.
+		$sep        = apply_filters( 'document_title_separator', '-' );
 		$site_title = get_bloginfo( 'name', 'display' );
 		return $sep . ' ' . $site_title;
 	}
@@ -155,12 +167,13 @@ class Nota_Post_Tools {
 				'type'         => 'string',
 			);
 
-			foreach ( self::$meta_keys as $meta_key )
-			register_post_meta(
-				$post_type,
-				$meta_key,
-				$meta_args
-			);  
+			foreach ( self::$meta_keys as $meta_key ) {
+				register_post_meta(
+					$post_type,
+					$meta_key,
+					$meta_args
+				);
+			}  
 		}
 	}
 
