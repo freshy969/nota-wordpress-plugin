@@ -51,6 +51,11 @@ Then disable the builtin PHP language features:
 - Search for `@builtin php`
 - Disable `PHP Language Features`. Leave `PHP Language Basics` enabled for syntax highlighting.
 
+Update Intelephense Stubs to include `wordpress`:
+
+1. Search settings for "intelephense.stubs"
+2. Add "wordpress" to the list of included stubs.
+
 ## TypeScript & React
 
 Run `yarn` to install all dependencies.
