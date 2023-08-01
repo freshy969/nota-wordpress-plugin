@@ -26,12 +26,13 @@ class Nota_Post_Tools {
 	private static $meta_keys = [
 		'seo_title' => 'nota_seo_page_title',
 		'seo_desc' => 'nota_seo_page_description',
-		'hashtags_history' => 'nota_hashtags_history',
+		'social_hashtags_history' => 'nota_hashtags_history',
 		'headline_history' => 'nota_headline_history',
 		'excerpt_history' => 'nota_excerpt_history',
 		'tag_history' => 'nota_tag_history',
 		'seo_title_history' => 'nota_seo_title_history',
 		'seo_desc_history' => 'nota_seo_desc_history',
+		'social_post_facebook_history' => 'nota_social_post_facebook_history',
 	];
 
 	/**
@@ -84,6 +85,7 @@ class Nota_Post_Tools {
 							'meta_description' => true,
 							'meta_title'       => true,
 							'tags'             => in_array( 'post_tag', $taxonomies ),
+							'social_posts_facebook' => true,
 						],
 						'meta_keys'         => self::$meta_keys,
 						'post_title_suffix' => $this->get_post_title_suffix(),

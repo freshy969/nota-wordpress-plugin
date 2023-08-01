@@ -22,6 +22,7 @@ const components = {
   metaTitles: window.notaTools.components.meta_title,
   tags: window.notaTools.components.tags,
   excerpt: true,
+  socialPostsFacebook: window.notaTools.components.social_posts_facebook,
 }
 
 const PostToolsMetaBoxInner = () => {

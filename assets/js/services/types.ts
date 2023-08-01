@@ -9,11 +9,14 @@ import {
   MetaDescriptionsRequest,
   MetaTitles,
   MetaTitlesRequest,
+  SocialPosts,
+  SocialPostsRequest,
   Summary,
   SummaryRequest,
 } from 'assets/js/domain/nota'
 
 export interface NotaService {
+  getSocialPostsFacebook(args: SocialPostsRequest): Promise<SocialPosts>
   getHashtags(args: HashtagsRequest): Promise<Hashtags>
   getHeadlines(args: HeadlinesRequest): Promise<Headlines>
   getKeywords(args: KeywordsRequest): Promise<Keywords>

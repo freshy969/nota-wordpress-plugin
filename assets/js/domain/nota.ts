@@ -59,3 +59,13 @@ export interface MetaTitlesRequest {
   postHTML: string
   regenerate?: boolean
 }
+
+export interface SocialPosts {
+  posts: string[]
+}
+
+export interface SocialPostsRequest {
+  count?: number
+  postHTML: string
+  regenerate?: boolean
+}

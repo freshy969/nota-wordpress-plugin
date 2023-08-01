@@ -248,4 +248,27 @@ class Nota_Api {
 			)
 		);
 	}
+
+	/**
+	 * Gets the social posts for the text
+	 * 
+	 * @param string $text Text to get title from.
+	 * @param string $platform Platform to get posts for (facebook, twitter, instagram, ...).
+	 * @param int    $count Number of titles to get.
+	 * @param float  $variability How much the titles should vary.
+	 */
+	public function get_text_social_posts( $text, $platform, $count, $variability ) {
+		return $this->make_request(
+			'POST',
+			'social/v1/posts',
+			array(
+				'body' => array(
+					'text'        => $text,
+					'platform'	  => $platform,
+					'count'       => $count,
+					'variability' => $variability,
+				),
+			)
+		);
+	}
 }

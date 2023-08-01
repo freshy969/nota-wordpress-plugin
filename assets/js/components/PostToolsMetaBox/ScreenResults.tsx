@@ -188,10 +188,30 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
             </Tab.Panel>
             <Tab.Panel>
               <div className="ntw-space-y-32px">
+                {components.socialPostsFacebook && (
+                  <TextOptionList
+                    title="Facebook"
+                    subtitle="Recommended Facebook post for your content"
+                    isLoading={seoData.socialPostsFacebook.isLoading}
+                    error={seoData.socialPostsFacebook.error}
+                    options={seoData.socialPostsFacebook.data}
+                    onSelect={() => void (0)}
+                    updateOptions={seoData.socialPostsFacebook.update}
+                    onRefresh={() =>
+                      seoData.socialPostsFacebook.refresh({
+                        postHTML,
+                      })
+                    }
+                    history={seoData.socialPostsFacebook.history}
+                  // currentValue={'bob'}
+                  // onRevert={revertExcerpt}
+                  />
+                )}
+
                 {components.hashtags && (
                   <TagSelect
                     title="Hashtags"
-                    subtitle="Recommended hashtags for your post"
+                    subtitle="Recommended hashtags for your content"
                     history={seoData.hashtags.history}
                     isLoading={seoData.hashtags.isLoading}
                     error={seoData.hashtags.error}
