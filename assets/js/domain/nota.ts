@@ -26,7 +26,6 @@ export interface Headlines {
 }
 
 export interface HashtagsRequest {
-  count?: number
   postHTML: string
   regenerate?: boolean
 }

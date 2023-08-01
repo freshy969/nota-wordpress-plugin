@@ -103,7 +103,7 @@ export const useGetPostSEOData = ({
       postHTML: string
       regenerate?: boolean
     }) => {
-      return notaService.getHashtags({ postHTML, count: 10, regenerate })
+      return notaService.getHashtags({ postHTML, regenerate })
     },
     onSuccess: (data) => {
       hashtags.addHistoryItem(data.hashTags)
