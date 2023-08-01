@@ -44,8 +44,8 @@ interface Args {
     | 'getKeywords'
     | 'getMetaDescriptions'
     | 'getMetaTitles'
-    | 'getSummary'
     | 'getSocialPostsFacebook'
+    | 'getSummary'
   >
   components: Record<ComponentTypes, boolean>
 }
@@ -54,13 +54,21 @@ export const useGetPostSEOData = ({
   components,
 }: Args): Output => {
   const metaKeys = window.notaTools.meta_keys
-  const hashtags = useHistoryList<string[]>({ key: metaKeys.social_hashtags_history })
+  const hashtags = useHistoryList<string[]>({
+    key: metaKeys.social_hashtags_history,
+  })
   const headlines = useHistoryList<string[]>({ key: metaKeys.headline_history })
   const tags = useHistoryList<string[]>({ key: metaKeys.tag_history })
-  const metaDescriptions = useHistoryList<string[]>({ key: metaKeys.seo_desc_history })
-  const metaTitles = useHistoryList<string[]>({ key: metaKeys.seo_title_history })
+  const metaDescriptions = useHistoryList<string[]>({
+    key: metaKeys.seo_desc_history,
+  })
+  const metaTitles = useHistoryList<string[]>({
+    key: metaKeys.seo_title_history,
+  })
   const excerpts = useHistoryList<string[]>({ key: metaKeys.excerpt_history })
-  const socialPostsFacebook = useHistoryList<string[]>({ key: metaKeys.social_post_facebook_history })
+  const socialPostsFacebook = useHistoryList<string[]>({
+    key: metaKeys.social_post_facebook_history,
+  })
 
   const { mutate: mutateHashtags, ...hashtagsMutation } = useMutation({
     mutationFn: ({
@@ -159,23 +167,24 @@ export const useGetPostSEOData = ({
       excerpts.addHistoryItem([data.summary])
     },
   })
-  const { mutate: mutateSocialPostsFacebook, ...facebookPostsMutation } = useMutation({
-    mutationFn: ({
-      postHTML,
-      regenerate,
-    }: {
-      postHTML: string
-      regenerate?: boolean
-    }) => {
-      return notaService.getSocialPostsFacebook({
+  const { mutate: mutateSocialPostsFacebook, ...facebookPostsMutation } =
+    useMutation({
+      mutationFn: ({
         postHTML,
         regenerate,
-      })
-    },
-    onSuccess: (data) => {
-      socialPostsFacebook.addHistoryItem(data.posts)
-    },
-  })
+      }: {
+        postHTML: string
+        regenerate?: boolean
+      }) => {
+        return notaService.getSocialPostsFacebook({
+          postHTML,
+          regenerate,
+        })
+      },
+      onSuccess: (data) => {
+        socialPostsFacebook.addHistoryItem(data.posts)
+      },
+    })
 
   const run = useCallback(
     (args: RunArgs) => {
@@ -187,7 +196,8 @@ export const useGetPostSEOData = ({
         metaDescriptions: () =>
           mutateMetaDescriptions({ postHTML: args.postHTML }),
         metaTitles: () => mutateMetaTitles({ postHTML: args.postHTML }),
-        socialPostsFacebook: () => mutateSocialPostsFacebook({ postHTML: args.postHTML }),
+        socialPostsFacebook: () =>
+          mutateSocialPostsFacebook({ postHTML: args.postHTML }),
       }
       const componentKeys = Object.keys(components) as ComponentTypes[]
       componentKeys.forEach((component) => {
@@ -263,7 +273,7 @@ export const useGetPostSEOData = ({
       ...socialPostsFacebook,
       refresh: (args: RunArgs) => {
         mutateSocialPostsFacebook({ postHTML: args.postHTML, regenerate: true })
-      }
-    }
+      },
+    },
   }
 }
