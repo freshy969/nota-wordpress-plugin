@@ -3,7 +3,7 @@ import { SectionHeading } from 'assets/js/components/SectionHeading/SectionHeadi
 import { History } from 'assets/js/application/useHistoryList'
 import { useAddTaxonomy } from 'assets/js/application/useAddTaxonomy'
 import { wordPressService } from 'assets/js/services/wordPressService/wordPressService'
-import { Tag } from 'assets/js/components/TagSelect/Tag'
+import { Tag } from 'assets/js/components/Tag/Tag'
 
 const taxonomy = 'post_tag'
 

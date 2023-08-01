@@ -9,6 +9,7 @@ import { TextOptionList } from 'assets/js/components/TextOptionList/TextOptionLi
 import { useEditPostData } from 'assets/js/application/useEditPostData'
 import { useEditMetadata } from 'assets/js/application/useEditMetadata'
 import { Button } from 'assets/js/components/Button/Button'
+import { TagCloud } from 'assets/js/components/TagCloud/TagCloud'
 import { TagSelect } from 'assets/js/components/TagSelect/TagSelect'
 import { SectionHeading } from 'assets/js/components/SectionHeading/SectionHeading'
 import { Preview } from 'assets/js/components/PostToolsMetaBox/Preview'
@@ -195,7 +196,6 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                     isLoading={seoData.socialPostsFacebook.isLoading}
                     error={seoData.socialPostsFacebook.error}
                     options={seoData.socialPostsFacebook.data}
-                    // onSelect={() => void (0)}
                     updateOptions={seoData.socialPostsFacebook.update}
                     onRefresh={() =>
                       seoData.socialPostsFacebook.refresh({
@@ -203,13 +203,11 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                       })
                     }
                     history={seoData.socialPostsFacebook.history}
-                  // currentValue={'bob'}
-                  // onRevert={revertExcerpt}
                   />
                 )}
 
                 {components.hashtags && (
-                  <TagSelect
+                  <TagCloud
                     title="Hashtags"
                     subtitle="Recommended hashtags for your content"
                     history={seoData.hashtags.history}
