@@ -1,20 +1,34 @@
 type MetaKeys =
-  | 'seo_title'
-  | 'seo_desc'
-  | 'headline_history'
   | 'excerpt_history'
-  | 'tag_history'
-  | 'seo_title_history'
+  | 'headline_history'
+  | 'seo_desc'
   | 'seo_desc_history'
+  | 'seo_title'
+  | 'seo_title_history'
+  | 'social_hashtags_history'
+  | 'social_post_facebook_history'
+  | 'social_post_instagram_history'
+  | 'social_post_linkedin_history'
+  | 'social_post_threads_history'
+  | 'social_post_tiktok_history'
+  | 'social_post_twitter_history'
+  | 'tag_history'
 interface Window {
   notaTools: {
     ajaxUrl: string
     nonce: string
     components: {
       categories: boolean
+      hashtags: boolean
       meta_description: boolean
       meta_title: boolean
       tags: boolean
+      social_posts_facebook: boolean
+      social_posts_instagram: boolean
+      social_posts_linkedin: boolean
+      social_posts_threads: boolean
+      social_posts_tiktok: boolean
+      social_posts_twitter: boolean
     }
     meta_keys: Record<MetaKeys, string>
     post_title_suffix: string

@@ -3,7 +3,7 @@ import { useMemo } from '@wordpress/element'
 interface Props {
   tag: string
   tags: string[]
-  onClick: () => void
+  onClick?: () => void
 }
 
 export function Tag({ tag, tags, onClick }: Props) {
