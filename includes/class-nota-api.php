@@ -146,12 +146,12 @@ class Nota_Api {
 	}
 
 		/**
-	 * Gets the hashtags from the text
-	 * 
-	 * @param string $text Text to get keywords from.
-	 * @param int    $count Number of keywords to get.
-	 * @param float  $variability How much the keywords should vary.
-	 */
+		 * Gets the hashtags from the text
+		 * 
+		 * @param string $text Text to get keywords from.
+		 * @param int    $count Number of keywords to get.
+		 * @param float  $variability How much the keywords should vary.
+		 */
 	public function get_text_hashtags( $text, $count, $variability ) {
 		return $this->make_request(
 			'POST',
@@ -255,18 +255,16 @@ class Nota_Api {
 	 * @param string $text Text to get title from.
 	 * @param string $platform Platform to get posts for (facebook, twitter, instagram, ...).
 	 * @param int    $count Number of titles to get.
-	 * @param float  $variability How much the titles should vary.
 	 */
-	public function get_text_social_posts( $text, $platform, $count, $variability ) {
+	public function get_text_social_posts( $text, $platform, $count ) {
 		return $this->make_request(
 			'POST',
 			'social/v1/posts',
 			array(
 				'body' => array(
-					'text'        => $text,
-					'platform'	  => $platform,
-					'count'       => $count,
-					'variability' => $variability,
+					'text'     => $text,
+					'platform' => $platform,
+					'count'    => $count,
 				),
 			)
 		);

@@ -33,12 +33,12 @@ class Nota_WP_Rest {
 	/**
 	 * Converts HTML to text and trims to acceptable length
 	 * 
-	 * @param $html string HTML to trim
+	 * @param string $html string HTML to trim.
 	 */
-	private function trim_html( $html) {
+	private function trim_html( $html ) {
 		// strip HTML tags from text.
 		$text = wp_strip_all_tags( $html );
-		$text = substr($text, 0, 12000);
+		$text = substr( $text, 0, 12000 );
 		return $text;
 	}
 
@@ -58,13 +58,13 @@ class Nota_WP_Rest {
 		$payload = $_REQUEST['nota'];
 
 		$actions = array(
-			'get_text_hashtags'           => array( $this, 'get_text_hashtags' ),
+			'get_text_hashtags'          => array( $this, 'get_text_hashtags' ),
 			'get_text_summary'           => array( $this, 'get_text_summary' ),
 			'get_text_headlines'         => array( $this, 'get_text_headlines' ),
 			'get_text_keywords'          => array( $this, 'get_text_keywords' ),
 			'get_text_meta_descriptions' => array( $this, 'get_text_meta_descriptions' ),
 			'get_text_meta_titles'       => array( $this, 'get_text_meta_titles' ),
-			'get_text_social_posts'	=> array( $this, 'get_text_social_posts' ),
+			'get_text_social_posts'      => array( $this, 'get_text_social_posts' ),
 		);
 		if ( ! isset( $payload['nota_action'] ) || ! isset( $actions[ $payload['nota_action'] ] ) ) {
 			wp_send_json_error( array( 'message' => 'invalid action' ), 400 );
@@ -212,12 +212,10 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = $this->trim_html( $data['postHTML'] );
+		$text     = $this->trim_html( $data['postHTML'] );
 		$platform = $data['platform'];
-		$count = isset( $data['count'] ) ? (int) $data['count'] : 10;
-		// maybe we'll expose this as a setting at some point.
-		$variability = 0.3;
+		$count    = isset( $data['count'] ) ? (int) $data['count'] : 10;
 
-		return $this->api->get_text_social_posts( $text, $platform, $count, $variability );
+		return $this->api->get_text_social_posts( $text, $platform, $count );
 	}
 }
