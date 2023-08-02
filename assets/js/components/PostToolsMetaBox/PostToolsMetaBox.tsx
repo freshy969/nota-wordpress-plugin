@@ -1,4 +1,7 @@
-import { useGetPostSEOData } from 'assets/js/application/useGetPostSEOData'
+import {
+  ComponentTypes,
+  useGetPostSEOData,
+} from 'assets/js/application/useGetPostSEOData'
 import { notaService } from 'assets/js/services/notaService/notaService'
 import { useSelect } from '@wordpress/data'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -30,6 +33,20 @@ const components = {
   tags: window.notaTools.components.tags,
 }
 
+const componentMap: Record<string, ComponentTypes[]> = {
+  content: ['excerpt', 'headlines', 'tags'],
+  seo: ['metaDescriptions', 'metaTitles'],
+  social: [
+    'socialPostsFacebook',
+    'socialPostsInstagram',
+    'socialPostsLinkedIn',
+    'socialPostsThreads',
+    'socialPostsTikTok',
+    'socialPostsTwitter',
+    'hashtags',
+  ],
+}
+
 const PostToolsMetaBoxInner = () => {
   const [screen, setScreen] = useState(Screen.Initial)
   const postHTML = useWpSelect(
@@ -40,6 +57,8 @@ const PostToolsMetaBoxInner = () => {
     notaService,
     components,
   })
+  const [tabsToRefresh, setTabsToRefresh] = useState<string[]>([])
+  const [currentTab, setCurrentTab] = useState<string>('')
 
   const componentKeys = Object.keys(components) as (keyof typeof components)[]
   const hasData = componentKeys.some((key) => getPostSeoData[key].data?.length)
@@ -48,6 +67,45 @@ const PostToolsMetaBoxInner = () => {
   useEffect(() => {
     if (hasData) setScreen(Screen.Results)
   }, [hasData])
+
+  // This handles refreshing of tabs.
+  // We only want a tab to refresh when it is active.
+  useEffect(() => {
+    if (!tabsToRefresh.includes(currentTab)) {
+      return
+    }
+    const currentRefreshIndex = tabsToRefresh.indexOf(currentTab)
+    setTabsToRefresh([
+      ...tabsToRefresh.slice(0, currentRefreshIndex),
+      ...tabsToRefresh.slice(currentRefreshIndex + 1),
+    ])
+    if (!componentMap[currentTab]) return
+
+    componentMap[currentTab].forEach((component) =>
+      getPostSeoData[component].refresh({ postHTML }),
+    )
+  }, [tabsToRefresh, currentTab, postHTML, getPostSeoData])
+
+  const onTabChange = (tab: string) => {
+    setCurrentTab(tab)
+    const tabComponents = componentMap[tab]
+    if (!tabComponents) return
+
+    // some tabs may not be highlighted yet
+    // but may have initial, saved data
+    // so even if it runs, only run on new inputs
+    const componentsToRun = tabComponents.filter((component) => {
+      return !getPostSeoData[component].data?.length
+    })
+    getPostSeoData.run({
+      postHTML,
+      components: componentsToRun,
+    })
+  }
+
+  const onReanalyze = () => {
+    setTabsToRefresh(Object.keys(componentMap))
+  }
 
   if (!window.notaTools.tools_active) {
     return (
@@ -64,9 +122,7 @@ const PostToolsMetaBoxInner = () => {
         <ScreenInitial
           onSubmit={() => {
             setScreen(Screen.Results)
-            getPostSeoData.run({
-              postHTML,
-            })
+            onTabChange('content')
           }}
         />
       )}
@@ -76,6 +132,8 @@ const PostToolsMetaBoxInner = () => {
             seoData={getPostSeoData}
             components={components}
             postHTML={postHTML}
+            onTabChange={onTabChange}
+            onReanalyze={onReanalyze}
           />
         </div>
       )}
