@@ -109,12 +109,9 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = $this->trim_html( $data['postHTML'] );
-		$count = isset( $data['count'] ) ? (int) $data['count'] : 10;
-		// maybe we'll expose this as a setting at some point.
-		$variability = 0.3;
+		$text = $this->trim_html( $data['postHTML'] );
 
-		return $this->api->get_text_hashtags( $text, $count, $variability );
+		return $this->api->get_text_hashtags( $text );
 	}
 
 	/**

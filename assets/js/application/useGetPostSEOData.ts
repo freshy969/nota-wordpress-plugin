@@ -345,6 +345,10 @@ export const useGetPostSEOData = ({
       mutateMetaTitles,
       mutateSocialPostsFacebook,
       mutateSocialPostsInstagram,
+      mutateSocialPostsLinkedIn,
+      mutateSocialPostsThreads,
+      mutateSocialPostsTikTok,
+      mutateSocialPostsTwitter,
       components,
     ],
   )

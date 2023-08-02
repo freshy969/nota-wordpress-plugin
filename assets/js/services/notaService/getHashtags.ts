@@ -2,10 +2,7 @@ import { NotaService } from 'assets/js/services/types'
 import fetch from 'assets/js/utils/fetch/fetch'
 import qs from 'qs'
 
-export const getHashtags: NotaService['getHashtags'] = ({
-  postHTML,
-  count,
-}) => {
+export const getHashtags: NotaService['getHashtags'] = ({ postHTML }) => {
   return fetch
     .post<{ result: { hashTags: string[] } }>(window.notaTools.ajaxUrl, {
       data: qs.stringify({
@@ -14,7 +11,6 @@ export const getHashtags: NotaService['getHashtags'] = ({
         nota: {
           nota_action: 'get_text_hashtags',
           postHTML,
-          count,
         },
       }),
     })
