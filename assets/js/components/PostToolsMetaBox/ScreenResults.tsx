@@ -174,6 +174,23 @@ export function ScreenResults({
                   onRevert={revertMetaTitle}
                 />
                 <TextOptionList
+                  title="Slugs"
+                  subtitle="Select a slug to use on the page"
+                  isLoading={seoData.slugs.isLoading}
+                  error={seoData.slugs.error}
+                  options={seoData.slugs.data}
+                  onSelect={editPostTitle}
+                  updateOptions={seoData.slugs.update}
+                  onRefresh={() =>
+                    seoData.slugs.refresh({
+                      postHTML,
+                    })
+                  }
+                  history={seoData.slugs.history}
+                  currentValue={postTitle}
+                  onRevert={revertTitle}
+                />
+                <TextOptionList
                   title="Meta Description"
                   subtitle="Select a meta description to use in your page"
                   isLoading={seoData.metaDescriptions.isLoading}

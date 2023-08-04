@@ -22,6 +22,7 @@ const components = {
   excerpt: true,
   hashtags: window.notaTools.components.hashtags,
   headlines: true,
+  slugs: true,
   metaDescriptions: window.notaTools.components.meta_description,
   metaTitles: window.notaTools.components.meta_title,
   socialPostsFacebook: window.notaTools.components.social_posts_facebook,
@@ -35,7 +36,7 @@ const components = {
 
 const componentMap: Record<string, ComponentTypes[]> = {
   content: ['excerpt', 'headlines', 'tags'],
-  seo: ['metaDescriptions', 'metaTitles'],
+  seo: ['metaDescriptions', 'slugs', 'metaTitles'],
   social: [
     'socialPostsFacebook',
     'socialPostsInstagram',

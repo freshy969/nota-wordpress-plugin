@@ -25,6 +25,7 @@ interface Output {
   excerpt: OutputSection<string[]>
   hashtags: OutputSection<string[]>
   headlines: OutputSection<string[]>
+  slugs: OutputSection<string[]>
   metaDescriptions: OutputSection<string[]>
   metaTitles: OutputSection<string[]>
   socialPostsFacebook: OutputSection<string[]>
@@ -41,6 +42,7 @@ export type ComponentTypes =
   | 'excerpt'
   | 'hashtags'
   | 'headlines'
+  | 'slugs'
   | 'tags'
   | 'metaDescriptions'
   | 'metaTitles'
@@ -56,6 +58,7 @@ interface Args {
     NotaService,
     | 'getHashtags'
     | 'getHeadlines'
+    | 'getSlugs'
     | 'getKeywords'
     | 'getMetaDescriptions'
     | 'getMetaTitles'
@@ -74,6 +77,7 @@ export const useGetPostSEOData = ({
     key: metaKeys.social_hashtags_history,
   })
   const headlines = useHistoryList<string[]>({ key: metaKeys.headline_history })
+  const slugs = useHistoryList<string[]>({ key: metaKeys.slug_history })
   const tags = useHistoryList<string[]>({ key: metaKeys.tag_history })
   const metaDescriptions = useHistoryList<string[]>({
     key: metaKeys.seo_desc_history,
@@ -126,6 +130,20 @@ export const useGetPostSEOData = ({
     },
     onSuccess: (data) => {
       headlines.addHistoryItem(data.headlines)
+    },
+  })
+  const { mutate: mutateSlug, ...slug } = useMutation({
+    mutationFn: ({
+      postHTML,
+      regenerate,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+    }) => {
+      return notaService.getSlugs({ postHTML, count: 3, regenerate })
+    },
+    onSuccess: (data) => {
+      slugs.addHistoryItem(data.slugs)
     },
   })
   const { mutate: mutateMetaDescriptions, ...metaDescriptionsMutation } =
@@ -317,6 +335,7 @@ export const useGetPostSEOData = ({
       const componentMutations: Record<ComponentTypes, () => void> = {
         hashtags: () => mutateHashtags({ postHTML: args.postHTML }),
         headlines: () => mutateHeadline({ postHTML: args.postHTML }),
+        slugs: () => mutateSlug({ postHTML: args.postHTML }),
         excerpt: () => mutateSummary({ postHTML: args.postHTML }),
         tags: () => mutateTags({ postHTML: args.postHTML }),
         metaDescriptions: () =>
@@ -345,6 +364,7 @@ export const useGetPostSEOData = ({
     [
       mutateHashtags,
       mutateHeadline,
+      mutateSlug,
       mutateSummary,
       mutateTags,
       mutateMetaDescriptions,
@@ -374,6 +394,14 @@ export const useGetPostSEOData = ({
       ...headlines,
       refresh: (args: RefreshArgs) => {
         mutateHeadline({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    slugs: {
+      error: slug.error,
+      isLoading: slug.isLoading,
+      ...slugs,
+      refresh: (args: RefreshArgs) => {
+        mutateSlug({ postHTML: args.postHTML, regenerate: true })
       },
     },
     metaDescriptions: {
