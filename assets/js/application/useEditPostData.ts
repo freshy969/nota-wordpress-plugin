@@ -5,11 +5,12 @@ const useWpSelect = useSelect as WordPress.useSelect
 
 export const useEditPostData = () => {
   const { editPost } = useDispatch('core/editor')
-  const { postTitle, postExcerpt } = useWpSelect((select) => {
+  const { postTitle, postExcerpt, postSlug } = useWpSelect((select) => {
     const coreEditor = select('core/editor')
     return {
       postTitle: coreEditor.getEditedPostAttribute<string>('title'),
       postExcerpt: coreEditor.getEditedPostAttribute<string>('excerpt'),
+      postSlug: coreEditor.getEditedPostAttribute<string>('slug'),
     }
   })
   const titleHistory = useRevision({
@@ -22,6 +23,12 @@ export const useEditPostData = () => {
     trackValue: postExcerpt,
     revertFn: (initialTitle) => {
       editPost({ excerpt: initialTitle })
+    },
+  })
+  const slugHistory = useRevision({
+    trackValue: postSlug,
+    revertFn: (initialTitle) => {
+      editPost({ slug: initialTitle })
     },
   })
 
@@ -38,9 +45,17 @@ export const useEditPostData = () => {
         excerpt,
       })
     },
+    editPostSlug: (slug: string) => {
+      slugHistory.update(slug)
+      editPost({
+        slug,
+      })
+    },
     postExcerpt,
     postTitle,
+    postSlug,
     revertExcerpt: excerptHistory.revert,
     revertTitle: titleHistory.revert,
+    revertSlug: slugHistory.revert,
   }
 }

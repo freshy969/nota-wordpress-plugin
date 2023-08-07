@@ -61,10 +61,13 @@ export function ScreenResults({
   const {
     editPostTitle,
     editPostExcerpt,
+    editPostSlug,
     postTitle,
+    postExcerpt,
+    postSlug,
     revertTitle,
     revertExcerpt,
-    postExcerpt,
+    revertSlug,
   } = useEditPostData()
   const {
     editMetaDescription,
@@ -179,7 +182,7 @@ export function ScreenResults({
                   isLoading={seoData.slugs.isLoading}
                   error={seoData.slugs.error}
                   options={seoData.slugs.data}
-                  onSelect={editPostTitle}
+                  onSelect={editPostSlug}
                   updateOptions={seoData.slugs.update}
                   onRefresh={() =>
                     seoData.slugs.refresh({
@@ -187,8 +190,8 @@ export function ScreenResults({
                     })
                   }
                   history={seoData.slugs.history}
-                  currentValue={postTitle}
-                  onRevert={revertTitle}
+                  currentValue={postSlug}
+                  onRevert={revertSlug}
                 />
                 <TextOptionList
                   title="Meta Description"
