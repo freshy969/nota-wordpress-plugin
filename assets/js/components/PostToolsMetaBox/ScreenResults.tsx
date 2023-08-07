@@ -61,10 +61,13 @@ export function ScreenResults({
   const {
     editPostTitle,
     editPostExcerpt,
+    editPostSlug,
     postTitle,
+    postExcerpt,
+    postSlug,
     revertTitle,
     revertExcerpt,
-    postExcerpt,
+    revertSlug,
   } = useEditPostData()
   const {
     editMetaDescription,
@@ -172,6 +175,23 @@ export function ScreenResults({
                   disabledMessage="Enabled Yoast to get meta title recommendations."
                   currentValue={metaTitle}
                   onRevert={revertMetaTitle}
+                />
+                <TextOptionList
+                  title="Slugs"
+                  subtitle="Select a slug to use on the page"
+                  isLoading={seoData.slugs.isLoading}
+                  error={seoData.slugs.error}
+                  options={seoData.slugs.data}
+                  onSelect={editPostSlug}
+                  updateOptions={seoData.slugs.update}
+                  onRefresh={() =>
+                    seoData.slugs.refresh({
+                      postHTML,
+                    })
+                  }
+                  history={seoData.slugs.history}
+                  currentValue={postSlug}
+                  onRevert={revertSlug}
                 />
                 <TextOptionList
                   title="Meta Description"

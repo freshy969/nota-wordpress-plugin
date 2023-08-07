@@ -1,6 +1,7 @@
 type MetaKeys =
   | 'excerpt_history'
   | 'headline_history'
+  | 'slug_history'
   | 'seo_desc'
   | 'seo_desc_history'
   | 'seo_title'

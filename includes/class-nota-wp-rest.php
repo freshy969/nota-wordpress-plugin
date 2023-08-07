@@ -61,6 +61,7 @@ class Nota_WP_Rest {
 			'get_text_hashtags'          => array( $this, 'get_text_hashtags' ),
 			'get_text_summary'           => array( $this, 'get_text_summary' ),
 			'get_text_headlines'         => array( $this, 'get_text_headlines' ),
+			'get_text_slugs'             => array( $this, 'get_text_slugs' ),
 			'get_text_keywords'          => array( $this, 'get_text_keywords' ),
 			'get_text_meta_descriptions' => array( $this, 'get_text_meta_descriptions' ),
 			'get_text_meta_titles'       => array( $this, 'get_text_meta_titles' ),
@@ -130,6 +131,24 @@ class Nota_WP_Rest {
 		$count = isset( $data['count'] ) ? (int) $data['count'] : 3;
 
 		return $this->api->get_text_headlines( $text, $count );
+	}
+
+	/**
+	 *  Gets slugs
+	 *
+	 * @param array $data Data sent with the request.
+	 */
+	private function get_text_slugs( $data ) {
+		if ( ! isset( $data['postHTML'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text  = $this->trim_html( $data['postHTML'] );
+		$count = isset( $data['count'] ) ? (int) $data['count'] : 3;
+
+		return $this->api->get_text_slugs( $text, $count );
 	}
 
 	/**
