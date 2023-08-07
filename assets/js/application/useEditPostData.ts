@@ -27,8 +27,8 @@ export const useEditPostData = () => {
   })
   const slugHistory = useRevision({
     trackValue: postSlug,
-    revertFn: (initialTitle) => {
-      editPost({ slug: initialTitle })
+    revertFn: (initialSlug) => {
+      editPost({ slug: initialSlug })
     },
   })
 
