@@ -153,7 +153,7 @@ class Nota_WP_Rest {
 		}
 
 		$text  = $data['postText'];
-		$count = ! is_null( $data['count'] ) ? (int) $data['count'] : 3;
+		$count = ! is_null( $data['count'] ) ? $data['count'] : 3;
 
 		return $this->api->get_text_headlines( $text, $count );
 	}
@@ -170,8 +170,8 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = $this->trim_html( $data['postHTML'] );
-		$count = isset( $data['count'] ) ? (int) $data['count'] : 3;
+		$text  = $data['postText'];
+		$count = isset( $data['count'] ) ? $data['count'] : 3;
 
 		return $this->api->get_text_slugs( $text, $count );
 	}
