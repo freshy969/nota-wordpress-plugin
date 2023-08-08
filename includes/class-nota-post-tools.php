@@ -28,6 +28,7 @@ class Nota_Post_Tools {
 		'seo_desc'                      => 'nota_seo_page_description',
 		'social_hashtags_history'       => 'nota_hashtags_history',
 		'headline_history'              => 'nota_headline_history',
+		'slug_history'                  => 'nota_slug_history',
 		'excerpt_history'               => 'nota_excerpt_history',
 		'tag_history'                   => 'nota_tag_history',
 		'seo_title_history'             => 'nota_seo_title_history',

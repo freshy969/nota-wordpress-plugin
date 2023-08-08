@@ -5,6 +5,11 @@ import { History, useHistoryList } from 'assets/js/application/useHistoryList'
 
 interface RunArgs {
   postHTML: string
+  components?: ComponentTypes[]
+}
+
+interface RefreshArgs {
+  postHTML: string
 }
 
 interface OutputSection<TData> {
@@ -20,6 +25,7 @@ interface Output {
   excerpt: OutputSection<string[]>
   hashtags: OutputSection<string[]>
   headlines: OutputSection<string[]>
+  slugs: OutputSection<string[]>
   metaDescriptions: OutputSection<string[]>
   metaTitles: OutputSection<string[]>
   socialPostsFacebook: OutputSection<string[]>
@@ -36,6 +42,7 @@ export type ComponentTypes =
   | 'excerpt'
   | 'hashtags'
   | 'headlines'
+  | 'slugs'
   | 'tags'
   | 'metaDescriptions'
   | 'metaTitles'
@@ -51,6 +58,7 @@ interface Args {
     NotaService,
     | 'getHashtags'
     | 'getHeadlines'
+    | 'getSlugs'
     | 'getKeywords'
     | 'getMetaDescriptions'
     | 'getMetaTitles'
@@ -69,6 +77,7 @@ export const useGetPostSEOData = ({
     key: metaKeys.social_hashtags_history,
   })
   const headlines = useHistoryList<string[]>({ key: metaKeys.headline_history })
+  const slugs = useHistoryList<string[]>({ key: metaKeys.slug_history })
   const tags = useHistoryList<string[]>({ key: metaKeys.tag_history })
   const metaDescriptions = useHistoryList<string[]>({
     key: metaKeys.seo_desc_history,
@@ -121,6 +130,20 @@ export const useGetPostSEOData = ({
     },
     onSuccess: (data) => {
       headlines.addHistoryItem(data.headlines)
+    },
+  })
+  const { mutate: mutateSlug, ...slug } = useMutation({
+    mutationFn: ({
+      postHTML,
+      regenerate,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+    }) => {
+      return notaService.getSlugs({ postHTML, count: 3, regenerate })
+    },
+    onSuccess: (data) => {
+      slugs.addHistoryItem(data.slugs)
     },
   })
   const { mutate: mutateMetaDescriptions, ...metaDescriptionsMutation } =
@@ -312,6 +335,7 @@ export const useGetPostSEOData = ({
       const componentMutations: Record<ComponentTypes, () => void> = {
         hashtags: () => mutateHashtags({ postHTML: args.postHTML }),
         headlines: () => mutateHeadline({ postHTML: args.postHTML }),
+        slugs: () => mutateSlug({ postHTML: args.postHTML }),
         excerpt: () => mutateSummary({ postHTML: args.postHTML }),
         tags: () => mutateTags({ postHTML: args.postHTML }),
         metaDescriptions: () =>
@@ -331,7 +355,8 @@ export const useGetPostSEOData = ({
           mutateSocialPostsTwitter({ postHTML: args.postHTML }),
       }
       const componentKeys = Object.keys(components) as ComponentTypes[]
-      componentKeys.forEach((component) => {
+      const componentsToRun = args.components || componentKeys
+      componentsToRun.forEach((component) => {
         if (!components[component]) return
         componentMutations[component]?.()
       })
@@ -339,6 +364,7 @@ export const useGetPostSEOData = ({
     [
       mutateHashtags,
       mutateHeadline,
+      mutateSlug,
       mutateSummary,
       mutateTags,
       mutateMetaDescriptions,
@@ -358,7 +384,7 @@ export const useGetPostSEOData = ({
       error: hashtagsMutation.error,
       isLoading: hashtagsMutation.isLoading,
       ...hashtags,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateHashtags({ postHTML: args.postHTML, regenerate: true })
       },
     },
@@ -366,15 +392,23 @@ export const useGetPostSEOData = ({
       error: headline.error,
       isLoading: headline.isLoading,
       ...headlines,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateHeadline({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    slugs: {
+      error: slug.error,
+      isLoading: slug.isLoading,
+      ...slugs,
+      refresh: (args: RefreshArgs) => {
+        mutateSlug({ postHTML: args.postHTML, regenerate: true })
       },
     },
     metaDescriptions: {
       error: metaDescriptionsMutation.error,
       isLoading: metaDescriptionsMutation.isLoading,
       ...metaDescriptions,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateMetaDescriptions({ postHTML: args.postHTML, regenerate: true })
       },
     },
@@ -382,7 +416,7 @@ export const useGetPostSEOData = ({
       error: metaTitlesMutation.error,
       isLoading: metaTitlesMutation.isLoading,
       ...metaTitles,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateMetaTitles({ postHTML: args.postHTML, regenerate: true })
       },
     },
@@ -391,7 +425,7 @@ export const useGetPostSEOData = ({
       error: summary.error,
       isLoading: summary.isLoading,
       ...excerpts,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateSummary({ postHTML: args.postHTML, regenerate: true })
       },
     },
@@ -399,7 +433,7 @@ export const useGetPostSEOData = ({
       error: tagsMutation.error,
       isLoading: tagsMutation.isLoading,
       ...tags,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateTags({ postHTML: args.postHTML, regenerate: true })
       },
     },
@@ -407,7 +441,7 @@ export const useGetPostSEOData = ({
       error: facebookPostsMutation.error,
       isLoading: facebookPostsMutation.isLoading,
       ...socialPostsFacebook,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateSocialPostsFacebook({ postHTML: args.postHTML, regenerate: true })
       },
     },
@@ -415,7 +449,7 @@ export const useGetPostSEOData = ({
       error: instagramPostsMutation.error,
       isLoading: instagramPostsMutation.isLoading,
       ...socialPostsInstagram,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateSocialPostsInstagram({
           postHTML: args.postHTML,
           regenerate: true,
@@ -426,7 +460,7 @@ export const useGetPostSEOData = ({
       error: linkedInPostsMutation.error,
       isLoading: linkedInPostsMutation.isLoading,
       ...socialPostsLinkedIn,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateSocialPostsLinkedIn({ postHTML: args.postHTML, regenerate: true })
       },
     },
@@ -434,7 +468,7 @@ export const useGetPostSEOData = ({
       error: threadsPostsMutation.error,
       isLoading: threadsPostsMutation.isLoading,
       ...socialPostsThreads,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateSocialPostsThreads({ postHTML: args.postHTML, regenerate: true })
       },
     },
@@ -442,7 +476,7 @@ export const useGetPostSEOData = ({
       error: tiktokPostsMutation.error,
       isLoading: tiktokPostsMutation.isLoading,
       ...socialPostsTikTok,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateSocialPostsTikTok({ postHTML: args.postHTML, regenerate: true })
       },
     },
@@ -450,7 +484,7 @@ export const useGetPostSEOData = ({
       error: twitterPostsMutation.error,
       isLoading: twitterPostsMutation.isLoading,
       ...socialPostsTwitter,
-      refresh: (args: RunArgs) => {
+      refresh: (args: RefreshArgs) => {
         mutateSocialPostsTwitter({ postHTML: args.postHTML, regenerate: true })
       },
     },

@@ -25,6 +25,10 @@ export interface Headlines {
   headlines: string[]
 }
 
+export interface Slugs {
+  slugs: string[]
+}
+
 export interface HashtagsRequest {
   postHTML: string
   regenerate?: boolean
@@ -36,6 +40,11 @@ export interface HeadlinesRequest {
   regenerate?: boolean
 }
 
+export interface SlugsRequest {
+  count?: number
+  postHTML: string
+  regenerate?: boolean
+}
 export interface Keywords {
   keywords: string[]
 }

@@ -3,6 +3,8 @@ import {
   HashtagsRequest,
   Headlines,
   HeadlinesRequest,
+  Slugs,
+  SlugsRequest,
   Keywords,
   KeywordsRequest,
   MetaDescriptions,
@@ -18,6 +20,7 @@ import {
 export interface NotaService {
   getHashtags(args: HashtagsRequest): Promise<Hashtags>
   getHeadlines(args: HeadlinesRequest): Promise<Headlines>
+  getSlugs(args: SlugsRequest): Promise<Slugs>
   getKeywords(args: KeywordsRequest): Promise<Keywords>
   getMetaDescriptions(args: MetaDescriptionsRequest): Promise<MetaDescriptions>
   getMetaTitles(args: MetaTitlesRequest): Promise<MetaTitles>

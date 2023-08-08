@@ -181,6 +181,24 @@ class Nota_Api {
 		);
 	}
 
+	/**
+	 * Gets the slug from the text
+	 * 
+	 * @param string $text Text to get slugs from.
+	 * @param int    $count Number of slugs to get.
+	 */
+	public function get_text_slugs( $text, $count ) {
+		return $this->make_request(
+			'POST',
+			'sum/v1/slugs',
+			array(
+				'body' => array(
+					'text'  => $text,
+					'count' => $count,
+				),
+			)
+		);
+	}
 
 	/**
 	 * Gets the keywords from the text

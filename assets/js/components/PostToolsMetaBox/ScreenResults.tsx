@@ -47,16 +47,27 @@ interface Props {
   seoData: ReturnType<typeof useGetPostSEOData>
   components: Record<ComponentTypes, boolean>
   postHTML: string
+  onTabChange: (tab: string) => void
+  onReanalyze: () => void
 }
 
-export function ScreenResults({ seoData, components, postHTML }: Props) {
+export function ScreenResults({
+  seoData,
+  components,
+  postHTML,
+  onTabChange,
+  onReanalyze,
+}: Props) {
   const {
     editPostTitle,
     editPostExcerpt,
+    editPostSlug,
     postTitle,
+    postExcerpt,
+    postSlug,
     revertTitle,
     revertExcerpt,
-    postExcerpt,
+    revertSlug,
   } = useEditPostData()
   const {
     editMetaDescription,
@@ -66,24 +77,23 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
     revertMetaDescription,
     revertMetaTitle,
   } = useEditMetadata()
-  const refreshAll = () => {
-    const componentKeys = Object.keys(components) as ComponentTypes[]
-    componentKeys.forEach((component) => {
-      seoData[component].refresh({ postHTML })
-    })
-  }
   return (
     <div>
       <div className="ntw-mb-24px ntw-flex ntw-items-center ntw-justify-between">
         <div className="ntw-text-h-900">Welcome to Nota</div>
         <div className="ntw-flex-shrink-0">
-          <Button variant="secondary" size={300} onClick={refreshAll}>
+          <Button variant="secondary" size={300} onClick={onReanalyze}>
             Reanalyze page
           </Button>
         </div>
       </div>
       <div className="ntw-rounded-2xl ntw-p-24px ntw-shadow">
-        <Tab.Group>
+        <Tab.Group
+          onChange={(index) => {
+            const nextTab = ['content', 'seo', 'social'][index]
+            onTabChange(nextTab)
+          }}
+        >
           <Tab.List className="ntw-mb-32px ntw-space-x-24px">
             <TabLabel>Content</TabLabel>
             <TabLabel>SEO</TabLabel>
@@ -165,6 +175,23 @@ export function ScreenResults({ seoData, components, postHTML }: Props) {
                   disabledMessage="Enabled Yoast to get meta title recommendations."
                   currentValue={metaTitle}
                   onRevert={revertMetaTitle}
+                />
+                <TextOptionList
+                  title="Slugs"
+                  subtitle="Select a slug to use on the page"
+                  isLoading={seoData.slugs.isLoading}
+                  error={seoData.slugs.error}
+                  options={seoData.slugs.data}
+                  onSelect={editPostSlug}
+                  updateOptions={seoData.slugs.update}
+                  onRefresh={() =>
+                    seoData.slugs.refresh({
+                      postHTML,
+                    })
+                  }
+                  history={seoData.slugs.history}
+                  currentValue={postSlug}
+                  onRevert={revertSlug}
                 />
                 <TextOptionList
                   title="Meta Description"
