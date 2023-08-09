@@ -22,7 +22,7 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "build": "wp-scripts build",
+    "build": "yarn typecheck && wp-scripts build",
     "bundle": "yarn build && yarn plugin-zip",
     "plugin-zip": "wp-scripts plugin-zip",
     "prepare": "husky install",
