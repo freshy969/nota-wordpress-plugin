@@ -15,6 +15,8 @@ import {
   SocialPostsRequest,
   Summary,
   SummaryRequest,
+  SMSRequest,
+  SMSMessages,
 } from 'assets/js/domain/nota'
 
 export interface NotaService {
@@ -26,6 +28,7 @@ export interface NotaService {
   getMetaTitles(args: MetaTitlesRequest): Promise<MetaTitles>
   getSocialPosts(args: SocialPostsRequest): Promise<SocialPosts>
   getSummary(args: SummaryRequest): Promise<Summary>
+  getSMS(args: SMSRequest): Promise<SMSMessages>
 }
 
 interface FindOrCreateTermArgs {
