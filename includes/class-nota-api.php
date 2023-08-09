@@ -145,6 +145,23 @@ class Nota_Api {
 		);
 	}
 
+		/**
+		 * Gets the hashtags from the text
+		 * 
+		 * @param string $text Text to get keywords from.
+		 */
+	public function get_text_hashtags( $text ) {
+		return $this->make_request(
+			'POST',
+			'social/v1/hashtags',
+			array(
+				'body' => array(
+					'text' => $text,
+				),
+			)
+		);
+	}
+
 	/**
 	 * Gets the headline from the text
 	 * 
@@ -164,6 +181,24 @@ class Nota_Api {
 		);
 	}
 
+	/**
+	 * Gets the slug from the text
+	 * 
+	 * @param string $text Text to get slugs from.
+	 * @param int    $count Number of slugs to get.
+	 */
+	public function get_text_slugs( $text, $count ) {
+		return $this->make_request(
+			'POST',
+			'sum/v1/slugs',
+			array(
+				'body' => array(
+					'text'  => $text,
+					'count' => $count,
+				),
+			)
+		);
+	}
 
 	/**
 	 * Gets the keywords from the text
@@ -223,6 +258,46 @@ class Nota_Api {
 					'text'        => $text,
 					'count'       => $count,
 					'variability' => $variability,
+				),
+			)
+		);
+	}
+
+	/**
+	 * Gets the social posts for the text
+	 * 
+	 * @param string $text Text to get title from.
+	 * @param string $platform Platform to get posts for (facebook, twitter, instagram, ...).
+	 * @param int    $count Number of titles to get.
+	 */
+	public function get_text_social_posts( $text, $platform, $count ) {
+		return $this->make_request(
+			'POST',
+			'social/v1/posts',
+			array(
+				'body' => array(
+					'text'     => $text,
+					'platform' => $platform,
+					'count'    => $count,
+				),
+			)
+		);
+	}
+
+	/**
+	 * Gets SMS messages from the text
+	 * 
+	 * @param string $text Text to get title from.
+	 * @param int    $count Number of titles to get.
+	 */
+	public function get_text_sms_messages( $text, $count ) {
+		return $this->make_request(
+			'POST',
+			'social/v1/sms',
+			array(
+				'body' => array(
+					'text'  => $text,
+					'count' => $count,
 				),
 			)
 		);

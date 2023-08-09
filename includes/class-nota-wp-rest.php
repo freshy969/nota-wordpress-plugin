@@ -33,12 +33,12 @@ class Nota_WP_Rest {
 	/**
 	 * Converts HTML to text and trims to acceptable length
 	 * 
-	 * @param $html string HTML to trim
+	 * @param string $html string HTML to trim.
 	 */
-	private function trim_html( $html) {
+	private function trim_html( $html ) {
 		// strip HTML tags from text.
 		$text = wp_strip_all_tags( $html );
-		$text = substr($text, 0, 12000);
+		$text = substr( $text, 0, 12000 );
 		return $text;
 	}
 
@@ -58,11 +58,15 @@ class Nota_WP_Rest {
 		$payload = $_REQUEST['nota'];
 
 		$actions = array(
+			'get_text_hashtags'          => array( $this, 'get_text_hashtags' ),
 			'get_text_summary'           => array( $this, 'get_text_summary' ),
 			'get_text_headlines'         => array( $this, 'get_text_headlines' ),
+			'get_text_slugs'             => array( $this, 'get_text_slugs' ),
 			'get_text_keywords'          => array( $this, 'get_text_keywords' ),
 			'get_text_meta_descriptions' => array( $this, 'get_text_meta_descriptions' ),
 			'get_text_meta_titles'       => array( $this, 'get_text_meta_titles' ),
+			'get_text_social_posts'      => array( $this, 'get_text_social_posts' ),
+			'get_text_sms_messages'      => array( $this, 'get_text_sms_messages' ),
 		);
 		if ( ! isset( $payload['nota_action'] ) || ! isset( $actions[ $payload['nota_action'] ] ) ) {
 			wp_send_json_error( array( 'message' => 'invalid action' ), 400 );
@@ -96,6 +100,23 @@ class Nota_WP_Rest {
 	}
 	
 	/**
+	 *  Gets hashtags
+	 *
+	 * @param array $data Data sent with the request.
+	 */
+	private function get_text_hashtags( $data ) {
+		if ( ! isset( $data['postHTML'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text = $this->trim_html( $data['postHTML'] );
+
+		return $this->api->get_text_hashtags( $text );
+	}
+
+	/**
 	 *  Gets headlines
 	 *
 	 * @param array $data Data sent with the request.
@@ -111,6 +132,24 @@ class Nota_WP_Rest {
 		$count = isset( $data['count'] ) ? (int) $data['count'] : 3;
 
 		return $this->api->get_text_headlines( $text, $count );
+	}
+
+	/**
+	 *  Gets slugs
+	 *
+	 * @param array $data Data sent with the request.
+	 */
+	private function get_text_slugs( $data ) {
+		if ( ! isset( $data['postHTML'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text  = $this->trim_html( $data['postHTML'] );
+		$count = isset( $data['count'] ) ? (int) $data['count'] : 3;
+
+		return $this->api->get_text_slugs( $text, $count );
 	}
 
 	/**
@@ -171,5 +210,47 @@ class Nota_WP_Rest {
 		$variability = 0.3;
 
 		return $this->api->get_text_meta_titles( $text, $count, $variability );
+	}
+
+	/**
+	 *  Gets social posts for the given platform
+	 *
+	 * @param array $data Data sent with the request.
+	 */
+	private function get_text_social_posts( $data ) {
+		if ( ! isset( $data['postHTML'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		if ( ! isset( $data['platform'] ) ) {
+			wp_send_json_error( array( 'message' => 'platform is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text     = $this->trim_html( $data['postHTML'] );
+		$platform = $data['platform'];
+		$count    = isset( $data['count'] ) ? (int) $data['count'] : 10;
+
+		return $this->api->get_text_social_posts( $text, $platform, $count );
+	}
+
+	/**
+	 *  Gets SMS messages
+	 *
+	 * @param array $data Data sent with the request.
+	 */
+	private function get_text_sms_messages( $data ) {
+		if ( ! isset( $data['postHTML'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text  = $this->trim_html( $data['postHTML'] );
+		$count = isset( $data['count'] ) ? (int) $data['count'] : 1;
+
+		return $this->api->get_text_sms_messages( $text, $count );
 	}
 }

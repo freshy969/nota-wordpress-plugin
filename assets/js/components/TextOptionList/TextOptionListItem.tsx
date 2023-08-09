@@ -5,7 +5,7 @@ import clsx from 'clsx'
 interface Props {
   value: string
   onChange: (value: string) => void
-  onSelect: () => void
+  onSelect?: () => void
   selected?: boolean
   onRevert?: () => void
 }
@@ -61,7 +61,7 @@ export function TextOptionListItem({
             Revert
           </Button>
         )}
-        {!selected && (
+        {!selected && onSelect && (
           <Button onClick={onSelect} variant="secondary" size={300}>
             Select
           </Button>
