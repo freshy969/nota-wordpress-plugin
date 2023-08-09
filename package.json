@@ -25,7 +25,8 @@
     "bundle": "yarn build && yarn plugin-zip",
     "plugin-zip": "wp-scripts plugin-zip",
     "prepare": "husky install",
-    "start": "wp-scripts start"
+    "start": "wp-scripts start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",

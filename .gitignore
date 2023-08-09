@@ -2,3 +2,7 @@
 /node_modules/
 /dist/
 nota-wordpress-plugin.zip
+
+# output by TypeScript when incremental: true
+# it can help speed up builds, but we don't actually need it 
+*.tsbuildinfo
