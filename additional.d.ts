@@ -14,6 +14,7 @@ type MetaKeys =
   | 'social_post_tiktok_history'
   | 'social_post_twitter_history'
   | 'tag_history'
+  | 'sms_history'
 interface Window {
   notaTools: {
     ajaxUrl: string
@@ -30,6 +31,7 @@ interface Window {
       social_posts_threads: boolean
       social_posts_tiktok: boolean
       social_posts_twitter: boolean
+      sms: boolean
     }
     meta_keys: Record<MetaKeys, string>
     post_title_suffix: string

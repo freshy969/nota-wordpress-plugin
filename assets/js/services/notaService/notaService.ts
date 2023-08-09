@@ -7,6 +7,7 @@ import { getMetaDescriptions } from 'assets/js/services/notaService/getMetaDescr
 import { getMetaTitles } from 'assets/js/services/notaService/getMetaTitles'
 import { getSocialPosts } from 'assets/js/services/notaService/getSocialPosts'
 import { getSummary } from 'assets/js/services/notaService/getSummary'
+import { getSMS } from 'assets/js/services/notaService/getSMS'
 
 export const notaService: NotaService = {
   getHashtags,
@@ -15,6 +16,7 @@ export const notaService: NotaService = {
   getKeywords,
   getMetaDescriptions,
   getMetaTitles,
+  getSMS,
   getSocialPosts,
   getSummary,
 }
