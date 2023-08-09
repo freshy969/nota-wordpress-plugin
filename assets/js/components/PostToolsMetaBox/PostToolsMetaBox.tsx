@@ -32,6 +32,7 @@ const components = {
   socialPostsTikTok: window.notaTools.components.social_posts_tiktok,
   socialPostsTwitter: window.notaTools.components.social_posts_twitter,
   tags: window.notaTools.components.tags,
+  sms: window.notaTools.components.sms,
 }
 
 const componentMap: Record<string, ComponentTypes[]> = {
@@ -44,6 +45,7 @@ const componentMap: Record<string, ComponentTypes[]> = {
     'socialPostsThreads',
     'socialPostsTikTok',
     'socialPostsTwitter',
+    'sms',
     'hashtags',
   ],
 }

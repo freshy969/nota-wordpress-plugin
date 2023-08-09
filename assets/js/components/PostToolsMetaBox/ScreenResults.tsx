@@ -312,6 +312,22 @@ export function ScreenResults({
                     history={seoData.socialPostsTikTok.history}
                   />
                 )}
+                {components.sms && (
+                  <TextOptionList
+                    title="SMS"
+                    subtitle="Recommended SMS messages"
+                    isLoading={seoData.sms.isLoading}
+                    error={seoData.sms.error}
+                    options={seoData.sms.data}
+                    updateOptions={seoData.sms.update}
+                    onRefresh={() =>
+                      seoData.sms.refresh({
+                        postHTML,
+                      })
+                    }
+                    history={seoData.sms.history}
+                  />
+                )}
                 {components.hashtags && (
                   <TagCloud
                     title="Hashtags"

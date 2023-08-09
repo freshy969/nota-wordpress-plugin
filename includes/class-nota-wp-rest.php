@@ -66,6 +66,7 @@ class Nota_WP_Rest {
 			'get_text_meta_descriptions' => array( $this, 'get_text_meta_descriptions' ),
 			'get_text_meta_titles'       => array( $this, 'get_text_meta_titles' ),
 			'get_text_social_posts'      => array( $this, 'get_text_social_posts' ),
+			'get_text_sms_messages'      => array( $this, 'get_text_sms_messages' ),
 		);
 		if ( ! isset( $payload['nota_action'] ) || ! isset( $actions[ $payload['nota_action'] ] ) ) {
 			wp_send_json_error( array( 'message' => 'invalid action' ), 400 );
@@ -233,5 +234,25 @@ class Nota_WP_Rest {
 		$count    = isset( $data['count'] ) ? (int) $data['count'] : 10;
 
 		return $this->api->get_text_social_posts( $text, $platform, $count );
+	}
+
+	/**
+	 *  Gets SMS messages
+	 *
+	 * @param array $data Data sent with the request.
+	 */
+	private function get_text_sms_messages( $data ) {
+		if ( ! isset( $data['postHTML'] ) ) {
+			wp_send_json_error( array( 'message' => 'HTML is required' ), 400 );
+			return;
+		}
+
+		// strip HTML tags from text.
+		$text  = $this->trim_html( $data['postHTML'] );
+		$count = isset( $data['count'] ) ? (int) $data['count'] : 10;
+		// maybe we'll expose this as a setting at some point.
+		$variability = 0.3;
+
+		return $this->api->get_text_sms_messages( $text, $count, $variability );
 	}
 }

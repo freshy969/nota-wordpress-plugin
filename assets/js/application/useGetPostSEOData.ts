@@ -35,6 +35,7 @@ interface Output {
   socialPostsTikTok: OutputSection<string[]>
   socialPostsTwitter: OutputSection<string[]>
   tags: OutputSection<string[]>
+  sms: OutputSection<string[]>
   run: (args: RunArgs) => void
 }
 
@@ -52,6 +53,7 @@ export type ComponentTypes =
   | 'socialPostsThreads'
   | 'socialPostsTikTok'
   | 'socialPostsTwitter'
+  | 'sms'
 
 interface Args {
   notaService: Pick<
@@ -64,6 +66,7 @@ interface Args {
     | 'getMetaTitles'
     | 'getSocialPosts'
     | 'getSummary'
+    | 'getSMS'
   >
   components: Record<ComponentTypes, boolean>
 }
@@ -102,6 +105,9 @@ export const useGetPostSEOData = ({
   })
   const socialPostsTwitter = useHistoryList<string[]>({
     key: metaKeys.social_post_twitter_history,
+  })
+  const smsMessages = useHistoryList<string[]>({
+    key: metaKeys.sms_history,
   })
 
   const { mutate: mutateHashtags, ...hashtagsMutation } = useMutation({
@@ -330,6 +336,23 @@ export const useGetPostSEOData = ({
     },
   })
 
+  const { mutate: mutateSMS, ...smsMutation } = useMutation({
+    mutationFn: ({
+      postHTML,
+      regenerate,
+      count,
+    }: {
+      postHTML: string
+      regenerate?: boolean
+      count?: number
+    }) => {
+      return notaService.getSMS({ postHTML, regenerate, count })
+    },
+    onSuccess: (data) => {
+      smsMessages.addHistoryItem(data.messages)
+    },
+  })
+
   const run = useCallback(
     (args: RunArgs) => {
       const componentMutations: Record<ComponentTypes, () => void> = {
@@ -353,6 +376,7 @@ export const useGetPostSEOData = ({
           mutateSocialPostsTikTok({ postHTML: args.postHTML }),
         socialPostsTwitter: () =>
           mutateSocialPostsTwitter({ postHTML: args.postHTML }),
+        sms: () => mutateSMS({ postHTML: args.postHTML }),
       }
       const componentKeys = Object.keys(components) as ComponentTypes[]
       const componentsToRun = args.components || componentKeys
@@ -375,6 +399,7 @@ export const useGetPostSEOData = ({
       mutateSocialPostsThreads,
       mutateSocialPostsTikTok,
       mutateSocialPostsTwitter,
+      mutateSMS,
       components,
     ],
   )
@@ -486,6 +511,14 @@ export const useGetPostSEOData = ({
       ...socialPostsTwitter,
       refresh: (args: RefreshArgs) => {
         mutateSocialPostsTwitter({ postHTML: args.postHTML, regenerate: true })
+      },
+    },
+    sms: {
+      error: smsMutation.error,
+      isLoading: smsMutation.isLoading,
+      ...smsMessages,
+      refresh: (args: RefreshArgs) => {
+        mutateSMS({ postHTML: args.postHTML, regenerate: true })
       },
     },
   }

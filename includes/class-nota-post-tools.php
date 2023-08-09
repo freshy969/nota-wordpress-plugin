@@ -39,6 +39,7 @@ class Nota_Post_Tools {
 		'social_post_threads_history'   => 'nota_social_post_threads_history',
 		'social_post_tiktok_history'    => 'nota_social_post_tiktok_history',
 		'social_post_twitter_history'   => 'nota_social_post_twitter_history',
+		'sms_history'                   => 'nota_sms_history',
 	];
 
 	/**
@@ -99,6 +100,7 @@ class Nota_Post_Tools {
 							'social_posts_threads'   => true,
 							'social_posts_tiktok'    => true,
 							'social_posts_twitter'   => true,
+							'sms'                    => true,
 						],
 						'meta_keys'         => self::$meta_keys,
 						'post_title_suffix' => $this->get_post_title_suffix(),

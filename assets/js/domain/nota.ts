@@ -84,3 +84,13 @@ export interface SocialPostsRequest {
   platform: SocialPlatform
   regenerate?: boolean
 }
+
+export interface SMSMessages {
+  messages: string[]
+}
+
+export interface SMSRequest {
+  postHTML: string
+  count?: number
+  regenerate?: boolean
+}
