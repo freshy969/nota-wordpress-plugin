@@ -294,7 +294,7 @@ class Nota_Api {
 	public function get_text_sms_messages( $text, $count, $variability ) {
 		return $this->make_request(
 			'POST',
-			'sum/v1/sms',
+			'social/v1/sms',
 			array(
 				'body' => array(
 					'text'        => $text,
