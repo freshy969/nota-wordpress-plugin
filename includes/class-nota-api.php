@@ -289,17 +289,15 @@ class Nota_Api {
 	 * 
 	 * @param string $text Text to get title from.
 	 * @param int    $count Number of titles to get.
-	 * @param float  $variability How much the titles should vary.
 	 */
-	public function get_text_sms_messages( $text, $count, $variability ) {
+	public function get_text_sms_messages( $text, $count ) {
 		return $this->make_request(
 			'POST',
 			'social/v1/sms',
 			array(
 				'body' => array(
-					'text'        => $text,
-					'count'       => $count,
-					'variability' => $variability,
+					'text'  => $text,
+					'count' => $count,
 				),
 			)
 		);
