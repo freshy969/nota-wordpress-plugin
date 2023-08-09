@@ -269,8 +269,8 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = $this->trim_html( $data['postHTML'] );
-		$count = isset( $data['count'] ) ? (int) $data['count'] : 1;
+		$text  = $data['postText'];
+		$count = ! is_null( $data['count'] ) ? $data['count'] : 1;
 
 		return $this->api->get_text_sms_messages( $text, $count );
 	}
