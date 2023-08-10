@@ -1,0 +1,21 @@
+name: CI
+on:
+  # runs on all pull requests
+  pull_request:
+  # runs on pushes to main and to the default branch ( i.e. develop )
+  push:
+    branches: [main, $default-branch]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - run: yarn
+      - run: yarn typecheck
