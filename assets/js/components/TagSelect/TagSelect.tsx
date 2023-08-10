@@ -11,7 +11,7 @@ interface Props {
   title: string
   subtitle: string
   isLoading: boolean
-  hasError: boolean
+  error?: unknown
   history?: History
   onRefresh: () => void
   tags?: string[]
@@ -20,7 +20,7 @@ export function TagSelect({
   title,
   subtitle,
   isLoading,
-  hasError,
+  error,
   history,
   onRefresh,
   tags,
@@ -45,11 +45,7 @@ export function TagSelect({
         onRefresh={onRefresh}
         history={history}
       />
-      <AsyncStateManager
-        isLoading={isLoading}
-        hasError={hasError}
-        retry={onRefresh}
-      >
+      <AsyncStateManager isLoading={isLoading} error={error} retry={onRefresh}>
         {!!generatedTags?.length && (
           <div>
             <div className="ntw-mb-24px">

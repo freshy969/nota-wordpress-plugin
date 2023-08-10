@@ -7,7 +7,7 @@ interface Props {
   title: string
   subtitle: string
   isLoading: boolean
-  hasError: boolean
+  error?: unknown
   history?: History
   onRefresh: () => void
   tags?: string[]
@@ -16,7 +16,7 @@ export function TagCloud({
   title,
   subtitle,
   isLoading,
-  hasError,
+  error,
   history,
   onRefresh,
   tags,
@@ -30,11 +30,7 @@ export function TagCloud({
         onRefresh={onRefresh}
         history={history}
       />
-      <AsyncStateManager
-        isLoading={isLoading}
-        hasError={hasError}
-        retry={onRefresh}
-      >
+      <AsyncStateManager isLoading={isLoading} error={error} retry={onRefresh}>
         {!!tags?.length && (
           <div>
             <div className="ntw-mb-24px">

@@ -1,9 +1,10 @@
 {
   "name": "nota-wordpress-plugin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The Nota WordPress plugin.",
   "devDependencies": {
     "@types/escape-html": "^1.0.2",
+    "@types/wordpress__edit-post": "^7.5.0",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@wordpress/block-editor": "^11.8.0",
     "@wordpress/data": "^9.1.0",
@@ -21,11 +22,12 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "build": "wp-scripts build",
+    "build": "yarn typecheck && wp-scripts build",
     "bundle": "yarn build && yarn plugin-zip",
     "plugin-zip": "wp-scripts plugin-zip",
     "prepare": "husky install",
-    "start": "wp-scripts start"
+    "start": "wp-scripts start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
