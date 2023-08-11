@@ -131,8 +131,9 @@ class Nota_Api {
 	 * 
 	 * @param string $text Text to summarise.
 	 * @param string $length_option How long the summary should be.
+	 * @param bool   $regenerate Whether to regenerate the value.
 	 */
-	public function get_text_summary( $text, $length_option ) {
+	public function get_text_summary( $text, $length_option, $regenerate ) {
 		return $this->make_request(
 			'POST',
 			'sum/v1/summary',
@@ -140,6 +141,7 @@ class Nota_Api {
 				'body' => array(
 					'text'         => $text,
 					'lengthOption' => $length_option,
+					'regenerate'   => $regenerate,
 				),
 			)
 		);
@@ -149,14 +151,16 @@ class Nota_Api {
 		 * Gets the hashtags from the text
 		 * 
 		 * @param string $text Text to get keywords from.
+		 * @param bool   $regenerate Whether to regenerate the value.
 		 */
-	public function get_text_hashtags( $text ) {
+	public function get_text_hashtags( $text, $regenerate ) {
 		return $this->make_request(
 			'POST',
 			'social/v1/hashtags',
 			array(
 				'body' => array(
-					'text' => $text,
+					'text'       => $text,
+					'regenerate' => $regenerate,
 				),
 			)
 		);
@@ -167,15 +171,17 @@ class Nota_Api {
 	 * 
 	 * @param string $text Text to get headlines from.
 	 * @param int    $count Number of headlines to get.
+	 * @param bool   $regenerate Whether to regenerate the value.
 	 */
-	public function get_text_headlines( $text, $count ) {
+	public function get_text_headlines( $text, $count, $regenerate ) {
 		return $this->make_request(
 			'POST',
 			'sum/v1/headlines',
 			array(
 				'body' => array(
-					'text'  => $text,
-					'count' => $count,
+					'text'       => $text,
+					'count'      => $count,
+					'regenerate' => $regenerate,
 				),
 			)
 		);
@@ -186,15 +192,17 @@ class Nota_Api {
 	 * 
 	 * @param string $text Text to get slugs from.
 	 * @param int    $count Number of slugs to get.
+	 * @param bool   $regenerate Whether to regenerate the value.
 	 */
-	public function get_text_slugs( $text, $count ) {
+	public function get_text_slugs( $text, $count, $regenerate ) {
 		return $this->make_request(
 			'POST',
 			'sum/v1/slugs',
 			array(
 				'body' => array(
-					'text'  => $text,
-					'count' => $count,
+					'text'       => $text,
+					'count'      => $count,
+					'regenerate' => $regenerate,
 				),
 			)
 		);
@@ -206,8 +214,9 @@ class Nota_Api {
 	 * @param string $text Text to get keywords from.
 	 * @param int    $count Number of keywords to get.
 	 * @param float  $variability How much the keywords should vary.
+	 * @param bool   $regenerate Whether to regenerate the value.
 	 */
-	public function get_text_keywords( $text, $count, $variability ) {
+	public function get_text_keywords( $text, $count, $variability, $regenerate ) {
 		return $this->make_request(
 			'POST',
 			'sum/v1/keywords',
@@ -216,6 +225,7 @@ class Nota_Api {
 					'text'        => $text,
 					'count'       => $count,
 					'variability' => $variability,
+					'regenerate'  => $regenerate,
 				),
 			)
 		);
@@ -227,8 +237,9 @@ class Nota_Api {
 	 * @param string $text Text to get description from.
 	 * @param int    $count Number of descriptions to get.
 	 * @param float  $variability How much the descriptions should vary.
+	 * @param bool   $regenerate Whether to regenerate the value.
 	 */
-	public function get_text_meta_descriptions( $text, $count, $variability ) {
+	public function get_text_meta_descriptions( $text, $count, $variability, $regenerate ) {
 		return $this->make_request(
 			'POST',
 			'sum/v1/meta/descriptions',
@@ -237,6 +248,7 @@ class Nota_Api {
 					'text'        => $text,
 					'count'       => $count,
 					'variability' => $variability,
+					'regenerate'  => $regenerate,
 				),
 			)
 		);
@@ -248,8 +260,9 @@ class Nota_Api {
 	 * @param string $text Text to get title from.
 	 * @param int    $count Number of titles to get.
 	 * @param float  $variability How much the titles should vary.
+	 * @param bool   $regenerate Whether to regenerate the value.
 	 */
-	public function get_text_meta_titles( $text, $count, $variability ) {
+	public function get_text_meta_titles( $text, $count, $variability, $regenerate ) {
 		return $this->make_request(
 			'POST',
 			'sum/v1/meta/titles',
@@ -258,6 +271,7 @@ class Nota_Api {
 					'text'        => $text,
 					'count'       => $count,
 					'variability' => $variability,
+					'regenerate'  => $regenerate,
 				),
 			)
 		);
@@ -269,16 +283,18 @@ class Nota_Api {
 	 * @param string $text Text to get title from.
 	 * @param string $platform Platform to get posts for (facebook, twitter, instagram, ...).
 	 * @param int    $count Number of titles to get.
+	 * @param bool   $regenerate Whether to regenerate the value.
 	 */
-	public function get_text_social_posts( $text, $platform, $count ) {
+	public function get_text_social_posts( $text, $platform, $count, $regenerate ) {
 		return $this->make_request(
 			'POST',
 			'social/v1/posts',
 			array(
 				'body' => array(
-					'text'     => $text,
-					'platform' => $platform,
-					'count'    => $count,
+					'text'       => $text,
+					'platform'   => $platform,
+					'count'      => $count,
+					'regenerate' => $regenerate,
 				),
 			)
 		);
@@ -289,15 +305,17 @@ class Nota_Api {
 	 * 
 	 * @param string $text Text to get title from.
 	 * @param int    $count Number of titles to get.
+	 * @param bool   $regenerate Whether to regenerate the value.
 	 */
-	public function get_text_sms_messages( $text, $count ) {
+	public function get_text_sms_messages( $text, $count, $regenerate ) {
 		return $this->make_request(
 			'POST',
 			'social/v1/sms',
 			array(
 				'body' => array(
-					'text'  => $text,
-					'count' => $count,
+					'text'       => $text,
+					'count'      => $count,
+					'regenerate' => $regenerate,
 				),
 			)
 		);
