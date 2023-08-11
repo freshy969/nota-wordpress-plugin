@@ -61,7 +61,9 @@ const PostToolsMetaBoxInner = () => {
     components,
   })
   const [tabsToRefresh, setTabsToRefresh] = useState<string[]>([])
-  const [currentTab, setCurrentTab] = useState<string>('')
+  const [currentTab, setCurrentTab] = useState<string>(
+    Object.keys(componentMap)[0],
+  )
 
   const componentKeys = Object.keys(components) as (keyof typeof components)[]
   const hasData = componentKeys.some((key) => getPostSeoData[key].data?.length)
