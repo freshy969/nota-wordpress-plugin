@@ -5,6 +5,7 @@ import qs from 'qs'
 export const getSummary: NotaService['getSummary'] = ({
   postHTML,
   lengthOption,
+  regenerate,
 }) => {
   return fetch
     .post<{ result: { summary: string } }>(window.notaTools.ajaxUrl, {
@@ -15,6 +16,7 @@ export const getSummary: NotaService['getSummary'] = ({
           nota_action: 'get_text_summary',
           postHTML,
           length_option: lengthOption,
+          regenerate,
         },
       }),
     })
