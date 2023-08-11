@@ -5,6 +5,7 @@ import qs from 'qs'
 export const getSocialPosts = ({
   postHTML,
   platform,
+  regenerate,
 }: SocialPostsRequest): Promise<SocialPosts> => {
   return fetch
     .post<{ result: { posts: string[] } }>(window.notaTools.ajaxUrl, {
@@ -16,6 +17,7 @@ export const getSocialPosts = ({
           postHTML,
           platform,
           count: 1,
+          regenerate,
         },
       }),
     })

@@ -5,6 +5,7 @@ import qs from 'qs'
 export const getMetaTitles: NotaService['getMetaTitles'] = ({
   postHTML,
   count,
+  regenerate,
 }) => {
   return fetch
     .post<{ result: { metaTitles: string[] } }>(window.notaTools.ajaxUrl, {
@@ -15,6 +16,7 @@ export const getMetaTitles: NotaService['getMetaTitles'] = ({
           nota_action: 'get_text_meta_titles',
           postHTML,
           count,
+          regenerate,
         },
       }),
     })
