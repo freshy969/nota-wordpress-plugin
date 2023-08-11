@@ -5,6 +5,7 @@ import qs from 'qs'
 export const getKeywords: NotaService['getKeywords'] = ({
   postHTML,
   count,
+  regenerate,
 }) => {
   return fetch
     .post<{ result: { keywords: string[] } }>(window.notaTools.ajaxUrl, {
@@ -15,6 +16,7 @@ export const getKeywords: NotaService['getKeywords'] = ({
           nota_action: 'get_text_keywords',
           postHTML,
           count,
+          regenerate,
         },
       }),
     })

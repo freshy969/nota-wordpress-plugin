@@ -5,6 +5,7 @@ import qs from 'qs'
 export const getHeadlines: NotaService['getHeadlines'] = ({
   postHTML,
   count,
+  regenerate,
 }) => {
   return fetch
     .post<{ result: { headlines: string[] } }>(window.notaTools.ajaxUrl, {
@@ -15,6 +16,7 @@ export const getHeadlines: NotaService['getHeadlines'] = ({
           nota_action: 'get_text_headlines',
           postHTML,
           count,
+          regenerate,
         },
       }),
     })

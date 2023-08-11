@@ -5,6 +5,7 @@ import qs from 'qs'
 export const getMetaDescriptions: NotaService['getMetaDescriptions'] = ({
   postHTML,
   count,
+  regenerate,
 }) => {
   return fetch
     .post<{ result: { metaDescriptions: string[] } }>(
@@ -17,6 +18,7 @@ export const getMetaDescriptions: NotaService['getMetaDescriptions'] = ({
             nota_action: 'get_text_meta_descriptions',
             postHTML,
             count,
+            regenerate,
           },
         }),
       },

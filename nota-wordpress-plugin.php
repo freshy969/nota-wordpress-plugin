@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Nota Tools
  * Description: Nota’s assistive AI tools help publishers create headlines, summaries, SEO keywords and more.
- * Version: 0.2.2
+ * Version: 0.2.3
  * Author: Nota
  * Author URI: https://heynota.com
  * License: GPL2
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'NOTA_PLUGIN_VERSION', '0.2.2' );
+define( 'NOTA_PLUGIN_VERSION', '0.2.3' );
 
 if ( ! defined( 'NOTA_PLUGIN_FILE' ) ) {
 	define( 'NOTA_PLUGIN_FILE', __FILE__ );
