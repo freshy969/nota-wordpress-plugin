@@ -66,6 +66,11 @@ class Nota_WP_Rest {
 		$valid_count           = isset( $request['nota']['count'] ) && ( is_int( $request['nota']['count'] ) || is_string( $request['nota']['count'] ) );
 		$safe_request['count'] = $valid_count ? (int) $request['nota']['count'] : null;
 
+		// sanitize regenerate.
+		// regenerate needs to be a boolean, but we'll cast any strings to a boolean if need be.
+		$valid_regenerate           = isset( $request['nota']['regenerate'] ) && ( is_bool( $request['nota']['regenerate'] ) || is_string( $request['nota']['regenerate'] ) );
+		$safe_request['regenerate'] = $valid_regenerate ? (bool) $request['nota']['regenerate'] : false;
+
 		return $safe_request;
 	}
 
@@ -122,8 +127,9 @@ class Nota_WP_Rest {
 
 		$text          = $data['postText'];
 		$length_option = isset( $data['length_option'] ) && is_string( $data['length_option'] ) ? $data['length_option'] : '1-sentence';
+		$regenerate    = isset( $data['regenerate'] ) ? $data['regenerate'] : false;
 
-		return $this->api->get_text_summary( $text, $length_option );
+		return $this->api->get_text_summary( $text, $length_option, $regenerate );
 	}
 	
 	/**
@@ -137,9 +143,10 @@ class Nota_WP_Rest {
 			return;
 		}
 
-		$text = $data['postText'];
+		$text       = $data['postText'];
+		$regenerate = isset( $data['regenerate'] ) ? $data['regenerate'] : false;
 
-		return $this->api->get_text_hashtags( $text );
+		return $this->api->get_text_hashtags( $text, $regenerate );
 	}
 
 	/**
@@ -153,10 +160,11 @@ class Nota_WP_Rest {
 			return;
 		}
 
-		$text  = $data['postText'];
-		$count = ! is_null( $data['count'] ) ? $data['count'] : 3;
+		$text       = $data['postText'];
+		$count      = ! is_null( $data['count'] ) ? $data['count'] : 3;
+		$regenerate = isset( $data['regenerate'] ) ? $data['regenerate'] : false;
 
-		return $this->api->get_text_headlines( $text, $count );
+		return $this->api->get_text_headlines( $text, $count, $regenerate );
 	}
 
 	/**
@@ -171,10 +179,11 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = $data['postText'];
-		$count = isset( $data['count'] ) ? $data['count'] : 3;
+		$text       = $data['postText'];
+		$count      = isset( $data['count'] ) ? $data['count'] : 3;
+		$regenerate = isset( $data['regenerate'] ) ? $data['regenerate'] : false;
 
-		return $this->api->get_text_slugs( $text, $count );
+		return $this->api->get_text_slugs( $text, $count, $regenerate );
 	}
 
 	/**
@@ -188,12 +197,14 @@ class Nota_WP_Rest {
 			return;
 		}
 
-		$text  = $data['postText'];
-		$count = ! is_null( $data['count'] ) ? $data['count'] : 10;
+		$text       = $data['postText'];
+		$count      = ! is_null( $data['count'] ) ? $data['count'] : 10;
+		$regenerate = isset( $data['regenerate'] ) ? $data['regenerate'] : false;
+
 		// maybe we'll expose this as a setting at some point.
 		$variability = 0.3;
 
-		return $this->api->get_text_keywords( $text, $count, $variability );
+		return $this->api->get_text_keywords( $text, $count, $variability, $regenerate );
 	}
 
 	/**
@@ -207,12 +218,14 @@ class Nota_WP_Rest {
 			return;
 		}
 
-		$text  = $data['postText'];
-		$count = ! is_null( $data['count'] ) ? $data['count'] : 10;
+		$text       = $data['postText'];
+		$count      = ! is_null( $data['count'] ) ? $data['count'] : 10;
+		$regenerate = isset( $data['regenerate'] ) ? $data['regenerate'] : false;
+
 		// maybe we'll expose this as a setting at some point.
 		$variability = 0.3;
 
-		return $this->api->get_text_meta_descriptions( $text, $count, $variability );
+		return $this->api->get_text_meta_descriptions( $text, $count, $variability, $regenerate );
 	}
 
 	/**
@@ -226,12 +239,14 @@ class Nota_WP_Rest {
 			return;
 		}
 
-		$text  = $data['postText'];
-		$count = ! is_null( $data['count'] ) ? $data['count'] : 10;
+		$text       = $data['postText'];
+		$count      = ! is_null( $data['count'] ) ? $data['count'] : 10;
+		$regenerate = isset( $data['regenerate'] ) ? $data['regenerate'] : false;
+
 		// maybe we'll expose this as a setting at some point.
 		$variability = 0.3;
 
-		return $this->api->get_text_meta_titles( $text, $count, $variability );
+		return $this->api->get_text_meta_titles( $text, $count, $variability, $regenerate );
 	}
 
 	/**
@@ -250,11 +265,12 @@ class Nota_WP_Rest {
 			return;
 		}
 
-		$text     = $data['postText'];
-		$platform = $data['platform'];
-		$count    = ! is_null( $data['count'] ) ? $data['count'] : 10;
+		$text       = $data['postText'];
+		$platform   = $data['platform'];
+		$count      = ! is_null( $data['count'] ) ? $data['count'] : 10;
+		$regenerate = isset( $data['regenerate'] ) ? $data['regenerate'] : false;
 
-		return $this->api->get_text_social_posts( $text, $platform, $count );
+		return $this->api->get_text_social_posts( $text, $platform, $count, $regenerate );
 	}
 
 	/**
@@ -269,9 +285,10 @@ class Nota_WP_Rest {
 		}
 
 		// strip HTML tags from text.
-		$text  = $data['postText'];
-		$count = ! is_null( $data['count'] ) ? $data['count'] : 1;
+		$text       = $data['postText'];
+		$count      = ! is_null( $data['count'] ) ? $data['count'] : 1;
+		$regenerate = isset( $data['regenerate'] ) ? $data['regenerate'] : false;
 
-		return $this->api->get_text_sms_messages( $text, $count );
+		return $this->api->get_text_sms_messages( $text, $count, $regenerate );
 	}
 }
