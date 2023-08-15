@@ -66,6 +66,11 @@ class Nota_WP_Rest {
 		$valid_count           = isset( $request['nota']['count'] ) && ( is_int( $request['nota']['count'] ) || is_string( $request['nota']['count'] ) );
 		$safe_request['count'] = $valid_count ? (int) $request['nota']['count'] : null;
 
+		// sanitize regenerate.
+		// regenerate needs to be a boolean, but we'll cast any strings to a boolean if need be.
+		$valid_regenerate           = isset( $request['nota']['regenerate'] ) && ( is_bool( $request['nota']['regenerate'] ) || is_string( $request['nota']['regenerate'] ) );
+		$safe_request['regenerate'] = $valid_regenerate ? (bool) $request['nota']['regenerate'] : false;
+
 		return $safe_request;
 	}
 
