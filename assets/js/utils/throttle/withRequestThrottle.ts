@@ -20,7 +20,7 @@ const throttled = throttle(<TReturn>(fn: () => TReturn): TReturn => {
  *
  * @param fn The function that will get run
  */
-export const withThrottle =
+export const withRequestThrottle =
   <TArgs extends readonly unknown[], TReturn>(
     fn: (...args: TArgs) => TReturn,
   ) =>
