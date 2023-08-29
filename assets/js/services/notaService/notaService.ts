@@ -8,15 +8,16 @@ import { getMetaTitles } from 'assets/js/services/notaService/getMetaTitles'
 import { getSocialPosts } from 'assets/js/services/notaService/getSocialPosts'
 import { getSummary } from 'assets/js/services/notaService/getSummary'
 import { getSMS } from 'assets/js/services/notaService/getSMS'
+import { withRequestThrottle } from 'assets/js/utils/throttle/withRequestThrottle'
 
 export const notaService: NotaService = {
-  getHashtags,
-  getHeadlines,
-  getSlugs,
-  getKeywords,
-  getMetaDescriptions,
-  getMetaTitles,
-  getSMS,
-  getSocialPosts,
-  getSummary,
+  getHashtags: withRequestThrottle(getHashtags),
+  getHeadlines: withRequestThrottle(getHeadlines),
+  getSlugs: withRequestThrottle(getSlugs),
+  getKeywords: withRequestThrottle(getKeywords),
+  getMetaDescriptions: withRequestThrottle(getMetaDescriptions),
+  getMetaTitles: withRequestThrottle(getMetaTitles),
+  getSMS: withRequestThrottle(getSMS),
+  getSocialPosts: withRequestThrottle(getSocialPosts),
+  getSummary: withRequestThrottle(getSummary),
 }

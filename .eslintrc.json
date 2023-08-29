@@ -17,7 +17,9 @@
   "rules": {
     "eslint-comments/disable-enable-pair": [
       "error",
-      { "allowWholeFile": true }
+      {
+        "allowWholeFile": true
+      }
     ],
     "eslint-comments/require-description": "error",
     "import/no-anonymous-default-export": "off",
@@ -53,7 +55,7 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".ts", ".tsx"],
+        "extensions": [".js", ".ts", ".tsx"],
         "moduleDirectory": [".", "node_modules"]
       }
     }
