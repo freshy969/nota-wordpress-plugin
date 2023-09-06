@@ -87,5 +87,5 @@ yarn start
 The plugin requires API URL, key, and timeout settings which may be configured via the WordPress admin _Settings_ → _Nota Tools_ page. For developing locally against the development gateway:
 
 - API key: Obtain an API key from the dev.heynota.com environment.
-- API URL: https://nota-api-gateway-integration-develop.developer.azure-api.net
+- API URL: https://nota-api-gateway-integration-develop.azure-api.net
 - Request timeout: 30
