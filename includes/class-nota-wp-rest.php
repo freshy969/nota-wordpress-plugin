@@ -108,7 +108,21 @@ class Nota_WP_Rest {
 		$action   = sanitize_key( $payload['nota_action'] );
 		$response = $actions[ $action ]( $payload );
 		if ( is_wp_error( $response ) ) {
-			wp_send_json_error( $response, 400 );
+			$error_code = $response->get_error_code();
+			// Detect a 429 error specifically and send a custom message.
+			if ( 429 === $error_code ) {
+				wp_send_json_error(
+					array(
+						array(
+							'code'    => 'nota_error',
+							'message' => 'Rate limit error: API rate limit exceeded. Please try again later.',
+						),
+					),
+					429
+				);
+			} else {
+				wp_send_json_error( $response, 400 );
+			}
 		} else {
 			wp_send_json( $response );
 		}
