@@ -1,7 +1,7 @@
 import pThrottle from 'p-throttle'
 
 // defines our throttle rate
-const throttle = pThrottle({ limit: 1, interval: 750 })
+const throttle = pThrottle({ limit: 1, interval: 1000 })
 
 /**
  * The throttled function that will get called by our wrapper.
