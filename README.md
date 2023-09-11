@@ -81,3 +81,11 @@ All front-end assets ( JS, CSS ) are compiled and the compiled versions are not 
 ```
 yarn start
 ```
+
+### Configuration
+
+The plugin requires API URL, key, and timeout settings which may be configured via the WordPress admin _Settings_ → _Nota Tools_ page. For developing locally against the development gateway:
+
+- API key: Obtain an API key from the dev.heynota.com environment.
+- API URL: https://nota-api-gateway-integration-develop.azure-api.net
+- Request timeout: 30
