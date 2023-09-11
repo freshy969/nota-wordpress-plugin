@@ -1,6 +1,6 @@
 {
   "name": "nota-wordpress-plugin",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "The Nota WordPress plugin.",
   "devDependencies": {
     "@types/escape-html": "^1.0.2",
