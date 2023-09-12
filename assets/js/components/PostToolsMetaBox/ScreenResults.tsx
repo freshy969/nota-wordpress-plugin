@@ -250,8 +250,8 @@ export function ScreenResults({
                 )}
                 {components.socialPostsTwitter && (
                   <TextOptionList
-                    title="X"
-                    subtitle="Recommended Tweets"
+                    title="X (formerly Twitter)"
+                    subtitle="Recommended X posts"
                     isLoading={seoData.socialPostsTwitter.isLoading}
                     error={seoData.socialPostsTwitter.error}
                     options={seoData.socialPostsTwitter.data}
