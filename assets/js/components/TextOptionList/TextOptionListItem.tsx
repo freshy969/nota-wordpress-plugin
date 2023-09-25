@@ -8,6 +8,7 @@ interface Props {
   onSelect?: () => void
   selected?: boolean
   onRevert?: () => void
+  showCharacterCount?: boolean
 }
 
 export function TextOptionListItem({
@@ -16,6 +17,7 @@ export function TextOptionListItem({
   onSelect,
   selected,
   onRevert,
+  showCharacterCount = true,
 }: Props): React.ReactElement {
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -32,41 +34,48 @@ export function TextOptionListItem({
   }, [textAreaRef, value])
 
   return (
-    <div
-      className={clsx(
-        'ntw-group ntw-flex ntw-items-center ntw-justify-between ntw-rounded-lg ntw-border ntw-border-gray-100 ntw-p-16px',
-        {
-          'ntw-bg-gamma-ray-200': selected,
-        },
-      )}
-    >
-      <div className="ntw-flex-1">
-        <textarea
-          ref={textAreaRef}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          rows={1}
-          style={{ minHeight: '1.5rem' }}
-          className="ntw-w-full ntw-resize-none ntw-border-none ntw-bg-transparent ntw-text-paragraph-base ntw-shadow-none ntw-outline-none"
-          disabled={selected}
-        />
-      </div>
+    <div>
       <div
-        className={clsx('ntw-ml-16px', {
-          'ntw-opacity-0 group-hover:ntw-opacity-100': !selected,
-        })}
+        className={clsx(
+          'ntw-group ntw-flex ntw-items-center ntw-justify-between ntw-rounded-lg ntw-border ntw-border-gray-100 ntw-p-16px',
+          {
+            'ntw-bg-gamma-ray-200': selected,
+          },
+        )}
       >
-        {!!(selected && onRevert) && (
-          <Button onClick={onRevert} size={300}>
-            Revert
-          </Button>
-        )}
-        {!selected && onSelect && (
-          <Button onClick={onSelect} variant="secondary" size={300}>
-            Select
-          </Button>
-        )}
+        <div className="ntw-flex-1">
+          <textarea
+            ref={textAreaRef}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            rows={1}
+            style={{ minHeight: '1.5rem' }}
+            className="ntw-w-full ntw-resize-none ntw-border-none ntw-bg-transparent ntw-text-paragraph-base ntw-shadow-none ntw-outline-none"
+            disabled={selected}
+          />
+        </div>
+        <div
+          className={clsx('ntw-ml-16px', {
+            'ntw-opacity-0 group-hover:ntw-opacity-100': !selected,
+          })}
+        >
+          {!!(selected && onRevert) && (
+            <Button onClick={onRevert} size={300}>
+              Revert
+            </Button>
+          )}
+          {!selected && onSelect && (
+            <Button onClick={onSelect} variant="secondary" size={300}>
+              Select
+            </Button>
+          )}
+        </div>
       </div>
+      {!!showCharacterCount && (
+        <div className="ntw-pt-4px ntw-text-right ntw-text-xs ntw-text-typography-medium">
+          {value.length} characters
+        </div>
+      )}
     </div>
   )
 }
