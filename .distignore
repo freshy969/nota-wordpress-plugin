@@ -1,0 +1,27 @@
+# These files are ignored by the WordPress SVN push
+
+# Ignore github, build, and config related files
+/.wordpress-org
+/.git
+/.github
+/node_modules
+.distignore
+.gitignore
+.eslintignore
+.eslintrc.json
+.lintstagedrc.js
+additional.d.ts
+composer.json
+composer.lock
+package.json
+phpcs.xml
+postcss.config.js
+prettier.config.js
+README.md
+tailwind.config.js
+tsconfig.json
+webpack.config.js
+yarn.lock
+
+# Ignore pre-built source files
+/assets
