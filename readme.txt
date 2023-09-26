@@ -19,6 +19,8 @@ Nota SUM is a time-saving tool for editorial, marketing and content teams focuse
 
 SUM runs text through uber-powerful AI and ML tools to break down all that content into workable outputs. No prompts or queries, no AI learning curves, just quick-and-easy text results. Input the text you want analyzed and then tailor the results for more, less or just different outputs with the push of a button. If you’re looking for a human touch, you can edit the outputs directly to your liking. Use your results for social captions, article headlines, videos, SEO updates and more.
 
+[Nota AI Tools on GitHub](https://github.com/nota-3/nota-wordpress-plugin).
+
 == Installation ==
 
 To use SUM, create an API key. You can create an API key through the Nota [developer portal](https://www.heynota.com/). Add your API key to the Nota settings in the WordPress dashboard.
