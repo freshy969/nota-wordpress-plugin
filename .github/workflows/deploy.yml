@@ -4,6 +4,14 @@ on:
   # We'll run this action manually instead of triggering anything.
   workflow_dispatch:
 
+inputs:
+  generate-zip:
+    description: 'Generate package zip file?'
+    default: false
+  dry-run:
+    description: 'Run the deployment process without committing.'
+    default: false
+
 jobs:
   tag:
     name: New tag
