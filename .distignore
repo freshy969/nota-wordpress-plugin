@@ -4,7 +4,10 @@
 /.wordpress-org
 /.git
 /.github
+/.husky
+/.vscode
 /node_modules
+/scripts
 .distignore
 .gitignore
 .eslintignore
@@ -20,6 +23,7 @@ prettier.config.js
 README.md
 tailwind.config.js
 tsconfig.json
+tsconfig*
 webpack.config.js
 yarn.lock
 
