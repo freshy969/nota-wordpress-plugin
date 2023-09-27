@@ -99,7 +99,7 @@ Before running them you'll need to ensure that the `SVN_USERNAME` and `SVN_PASSW
 ### Deploying a new plugin version
 
 1. Ensure all code has been merged to `main` and that the `main` branch has been tagged with the appropriate version. The tag should match the version specified in the `nota-wordpress-plugin.php` file. This means that `v1.1.1` is invalid, instead use `1.1.1`.
-2. Head over to the Actions tab in GitHub and choose "Deploy to WordPress". Make sure the action is targeting the `main` branch.
+2. Head over to the Actions tab in GitHub and choose "Deploy to WordPress". Dropdown the "Use workflow from" dropdown and select the tag you want to deploy.
 3. Sit back, relax, and enjoy the show.
 
 ### Deploying new assets
