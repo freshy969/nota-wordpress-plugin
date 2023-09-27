@@ -23,6 +23,7 @@
   },
   "scripts": {
     "build": "yarn typecheck && wp-scripts build",
+    "check-versions": "node ./scripts/check-plugin-version.js",
     "bundle": "yarn build && yarn plugin-zip",
     "plugin-zip": "wp-scripts plugin-zip",
     "prepare": "husky install",

@@ -89,3 +89,19 @@ The plugin requires API URL, key, and timeout settings which may be configured v
 - API key: Obtain an API key from the dev.heynota.com environment.
 - API URL: https://nota-api-gateway-integration-develop.azure-api.net
 - Request timeout: 30
+
+## Deploying to production
+
+WordPress uses SVN to manage plugin releases and they have some [ great documentation ](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/) on how that works. We use a GitHub action to manage our releases which builds and pushes code to the WordPress SVN repository.
+
+Before running them you'll need to ensure that the `SVN_USERNAME` and `SVN_PASSWORD` secrets are set in the GitHub actions settings. These should be set to the Nota WordPress username and password used to log in to WordPress.org ( note: not the email address ).
+
+### Deploying a new plugin version
+
+1. Ensure all code has been merged to `main` and that the `main` branch has been tagged with the appropriate version. The tag should match the version specified in the `nota-wordpress-plugin.php` file. This means that `v1.1.1` is invalid, instead use `1.1.1`.
+2. Head over to the Actions tab in GitHub and choose "Deploy to WordPress". Make sure the action is targeting the `main` branch.
+3. Sit back, relax, and enjoy the show.
+
+### Deploying new assets
+
+If you only need to update the `readme.txt` or any of the assets in `.wordpress-org/` then you can run the "Plugin asset/readme update" action. This will only push assets and no new code.
